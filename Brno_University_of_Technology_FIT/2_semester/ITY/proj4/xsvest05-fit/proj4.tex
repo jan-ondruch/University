@@ -1,0 +1,53 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[left=1.5cm,text={18cm, 25cm},top=2.5cm]{geometry}
+
+\usepackage[cp1250]{inputenc}
+\usepackage[IL2]{fontenc}
+\usepackage[czech]{babel}
+\usepackage{natbib}
+\usepackage{dtklogos}
+\usepackage{url}
+
+\pagenumbering{arabic}
+
+\begin{document}
+
+\begin{titlepage}
+
+
+\begin{center}
+\textsc{\Large{Vysoké uèení technické v~Brnì}}\\
+\vspace{\stretch{0.0055}}
+\textsc{\Large{Fakulta informaèních technologií}}\\
+\vspace{\stretch{0.382}}
+\LARGE{Typografie a publikování\,--\,4. projekt}\\
+\Huge{Sazba dokumentù s~balíèkem \BibTeX}
+\vspace{\stretch{0.618}}
+\end{center}
+
+\hspace*{-16pt}{\Large \today \hfill
+Jakub Švestka}
+\vspace{\stretch{0.02}}
+
+\end{titlepage}
+
+\section{Sázecí nástroje}
+\LaTeX je výjimeèný nástroj, který zkušenému uživateli umožòuje vytváøet díla ve vysoké typografické kvalitì.
+Ten kdo byl zvyklý na klasické textový procesor jako \emph{Microsoft Word}, bude v~zaèátku zaskoèen složitostí systému \LaTeX. O~tomto populárním systému byla vydána øada publikací, které mohou pomoc zaèáteèníkùm.
+Mnì se napøíklad osvìdèila publikace \cite{Jiri_Rybicka}. Kdo by nìkdo chtìl spíše cizojazyènou publikaci, mìl by se poohlédnou po knize \cite{A_Guide_to_LATEX}. Ta je urèena jak pro zaèáteèníky, tak i pokroèilé uživatele {\LaTeX}u.
+Existuje také mnoho elektronických tutoriálù jako \cite{Strajt:LaTeX_pro_zacatecniky} èi \cite{Svamberg:Jak_na_LaTeX}. Za zmínku také stojí shrnutí {\LaTeX}u na \cite{WIKIbooks}, kde je také možné stáhnout kompletní texty v~\emph{PDF}.
+\LaTeX není jediní sázecí nástroj. Jako další mohu uvést napøíklad \emph{Adobe InDesign}, který slouží pro všestrannou sazbu. Tento nástroj umožòuje automatickou kontrolu typografických zásad \cite{Kubova-typografie}.
+Pro ty koho zajímá polygrafie z~manažerské stránky, je tu èasopis \cite{typografia}. 
+
+\section{Tisk}
+Již v~roce 1447 si lidé místo opisování rozmnožovali text èi obraz pomocí knihtisku \cite{Filousova-knihtisk}. Dnes již máme tiskárnu, která nám jednoduše pøevode data z~elektronického formátu na papír èi jiné médium. Tudíž bez ní bychom mohli šíøit dokumenty jen v~elektronické podobì, což by bylo znaènì nevýhodné. Kdo ještì nevlastní tiskárnu a již nechce být závislý na drahých \emph{copy centrech},
+mìl by si pøed její koupí pøeèíst èlánek o~\emph{testu inkoustových tiskáren} \cite{computer:clanek1}. Samozøejmì neexistují jen tyto inkoustové tiskárny. Na trhu je plno jiných (spíše již profesionálních), které slouží pro tisk na odlišné materály než je papír.
+Napøíklad pro tisk velkých formátù mìkkých materiálù (tvrdý by byl proražen skrz), jako jsou fólie, lepenky a kartóny; slouží \emph{Flexotisk} \cite{flexotisk:clanek2}. U~této metody tisku tvoøí tiskovou formu pružný štoèek ze silikonu.
+
+\newpage
+\bibliographystyle{czechiso}
+\renewcommand{\refname}{Literatura}
+\bibliography{proj4}
+
+\end{document} 

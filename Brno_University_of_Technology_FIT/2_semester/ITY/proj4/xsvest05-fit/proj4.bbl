@@ -1,0 +1,67 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[a~Jakub~Michlovks{\'{y}}(2013)]{computer:clanek1}
+JAKUB~MICHLOVKS{\'{Y}}, J.~K.
+\newblock Malování kapkami inkoustu.
+\newblock \emph{Computer}. 2013, 20, 2, s.~18--29.
+\newblock ISSN 1214-8790.
+
+\bibitem[Ba{\v{d}}urov{\'{a}}(2013)]{typografia}
+BA{\v{D}}UROV{\'{A}}, A.
+\newblock Dìjiny a èinnost ZK-ÚVI ÈSAV [Základní knihovny Ústøedí vìdeckých
+  informací Èeskoslovenské akademie vìd], 2013.
+
+\bibitem[Filou{\v{s}}ov{\'{a}}(2009)]{Filousova-knihtisk}
+FILOU{\v{S}}OV{\'{A}}, I.
+\newblock Poèátky knihtisku na Moravì.
+\newblock Bakal{\'{a}}øsk{\'{a}} diplomov{\'{a}} pr{\'{a}}ce, MU-FK, Brno,
+  2009.
+
+\bibitem[HELMUT -- Daly(1999)HELMUT, Daly]{A_Guide_to_LATEX}
+HELMUT, K. -- DALY, P.~W.
+\newblock \emph{A Guide to LATEX}.
+\newblock  3.~vyd. Boston~: Addison-Wesley, 1999.
+\newblock ISBN 02-013-9825-7.
+
+\bibitem[Kubov{\'{a}}(2011)]{Kubova-typografie}
+KUBOV{\'{A}}, M.
+\newblock Kontrola typografie v Adobe InDesign.
+\newblock Bakal{\'{a}}øsk{\'{a}} pr{\'{a}}ce, ZCU, Plzeò, 2011.
+
+\bibitem[Rybi{\v{c}}ka(2003)]{Jiri_Rybicka}
+RYBI{\v{C}}KA, J.
+\newblock \emph{Latex pro zaèáteèníky}.
+\newblock  3.~vyd. Brno~: Konvoj, 2003.
+\newblock ISBN 80-7302-049-1.
+
+\bibitem[Thoma(2005)]{flexotisk:clanek2}
+THOMA, P.
+\newblock Flexotisk.
+\newblock \emph{Reklamní produkce}. 2005, 7, 3, s.~9--12.
+\newblock ISSN 1212-4141.
+
+\bibitem[WIKIbooks()]{WIKIbooks}
+WIKIBOOKS.
+\newblock \emph{\LaTeX}.
+\newblock Dostupn{\'{e}} z: \url{http://en.wikibooks.org/wiki/LaTeX}.
+\newblock [online]. 2013 [cit. 2013-04-17].
+
+\bibitem[Štrajt()]{Strajt:LaTeX_pro_zacatecniky}
+ŠTRAJT, P.
+\newblock \emph{\LaTeX pro zaèáteèníky}.
+\newblock Dostupn{\'{e}} z:
+  \url{http://www.abclinuxu.cz/clanky/latex-pro-zacatecniky}.
+\newblock [online]. 2010 [cit. 2013-04-17].
+
+\bibitem[Švamberg()]{Svamberg:Jak_na_LaTeX}
+ŠVAMBERG, M.
+\newblock \emph{Jak na \LaTeX}.
+\newblock Dostupn{\'{e}} z: \url{http://www.root.cz/serialy/jak-na-latex/}.
+\newblock [online]. 2003 [cit. 2013-04-17].
+
+\end{thebibliography}

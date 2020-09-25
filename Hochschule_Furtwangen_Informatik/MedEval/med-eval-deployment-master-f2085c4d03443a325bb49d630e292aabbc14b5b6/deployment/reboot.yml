@@ -1,0 +1,7 @@
+- name: limesurvey
+  remote_user: root
+  hosts: limesurvey
+  vars_files:
+    - vars.yml
+  roles:
+    - reboot

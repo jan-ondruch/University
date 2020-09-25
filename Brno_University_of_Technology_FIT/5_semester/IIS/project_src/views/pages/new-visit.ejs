@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+<%- include('../partials/navbar', {type: type, user: user}); %>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-7 visit visit_1">
+			<div class="container">
+				<div class="patient">
+					<div class="pacName">
+						<i class="fa fa-user" aria-hidden="true"></i>
+					  <h3><%= patient[0].firstname %></h3>
+					  <h3><%= patient[0].lastname %></h3>
+					  <h3> [<%= patient[0].birth_cn %>]</h3>
+				  </div>
+					<% var visit = visit || "" %>
+					<% if (visit.length > 0) { %>
+						<h4 class="visitHeader">Naplánovaná prohlídka: 
+						<% var dtr = visit[0].date.toISOString().slice(0, 19).replace('T', ' ') %>
+			        <% var idx = dtr.indexOf(" ") %>
+			        <%= dtr.substr(0, idx).split("-").reverse().join(".") %>
+			        |
+			        <%= dtr.substr(idx + 1) %>
+						</h4>
+					<% } else { %>
+						<h4 class="visitHeader">Nová prohlídka</h4>
+					<% } %>
+				</div>
+			</div>
+		  <div class="form-group">
+		    <label for="exampleTextarea"><b>Popis</b> <a style="color: #cc0000">*</a></label>
+		    <textarea class="form-control" id="visitDescription" rows="3" required='required' maxlength="1024"></textarea>
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleTextarea"><b>Diagnóza</b> <a style="color: #cc0000">*</a></label>
+		    <textarea class="form-control" id="visitDiagnosis" rows="3" required='required' maxlength="1024"></textarea>
+		  </div>
+		  <p>Pole označná <a style="color: #cc0000">*</a> jsou povinná.</p>
+	  </div>
+		
+		<div class="col-sm-5 visit">
+	  	<!-- Execution -->
+	    <div class="form-group">
+	  	  <h4>Výkony</h4>
+	  	  <table class="table" id="execTable">
+	  	      <tr>
+	  	          <th style="width:28vw">
+	  	              <p>Název výkonu</p>
+	  	          </th>
+	  	          <th>
+	  	              <p>Smazat</p>
+	  	          </th>
+	  	      </tr>
+	  	      <% var planned_executions = planned_executions || "" %>
+	  	      <% var execs_temp = executions || "" %>
+	  	      <% if (planned_executions.length > 0) { %>
+	  	      <% planned_executions.forEach(function(pe) { %>
+	  	     		<% execs_temp.forEach(function(et) { %>
+	  	     		<%	if (et.execution_code === pe.execution_code) { %>
+	  	     			<tr>
+	  	     			    <td class="ev_exec">
+	  	     			        <input type="text" style="width:28vw; background-color: #5bc0de" class="form-control execData" value="<%= et.name %>" maxlength="60" required='required' readonly="readonly" />
+	  	     			    </td>
+	  	     			    <td>
+	  	     			        <button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+	  	     			    </td>
+	  	     			</tr>
+	  	     		<%		} %>
+	  	     		<%	}) %>
+	  	      <%	}) %>
+
+	  	      <% } else { %>
+		  	      <tr>
+		  	          <td class="ev_exec">
+		  	              <input type="text" style="width:28vw" class="form-control execData" value="Vyšetření a potvrzení pro řidičský průkaz." maxlength="60" required='required' readonly="readonly" />
+		  	          </td>
+		  	          <td>
+		  	              <button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+		  	          </td>
+		  	      </tr>
+	  	      <% } %>
+	  	  </table>
+
+	   		<label for="searchExec">
+	   			Vyhledat výkon 
+	   			<input id="searchExec" list="searchExecList" class="form-control" value="" style="width: 400px" placeholder="např. Komplexní předoperační vyšetření pacienta">
+	   			<datalist id="searchExecList">
+	   				<% var executions = executions || "" %>
+	   				<% if (executions.length > 0) { %>
+	   				<% executions.forEach(function(e) { %>
+	   					<option value="<%= e.name %>">
+	   					</option>
+	   				<% }); %>
+	   				<% }; %>
+	   			</datalist>
+	   		</label>
+	   		<p>
+	  	    <input type="button" value="Přidat výkon" class="addNewExec btn btn-info">
+	  	  </p>
+	  	  <p id="limitExec" class="limit">Maximální počet provedených výkonů je omezen na 3.</p>
+	    </div>
+	    <!-- Of of Execution -->
+	  </div> 
+
+		<div class="col-sm-7 visit">
+			<!-- Externi vysetreni -->
+			<div class="form-group">
+				<h4>Externí vyšetření</h4>
+				<table class="table" id="externalTable">
+				    <tr>
+				        <th style="width:14vw">
+				            <p>Odborné pracoviště <a style="color: #cc0000">*</a></p>
+				        </th>
+				        <th style="width:28vw">
+				            <p>Stručný popis</p>
+				        </th>
+				        <th>
+				            <p>Smazat</p>
+				        </th>
+				    </tr>
+				    <tr>
+				        <td class="ev_data">
+				        	<textarea style="width:14vw" class="form-control externalWorkplace" id="visitDiagnosis" rows="2" required='required' maxlength="128">Oční ambulance</textarea>
+				        </td>
+				        <td class="ev_data">
+				        		<textarea style="width:28vw" class="form-control" id="visitDiagnosis" rows="2" maxlength="256">Pacient bude potřebovat nové brýle.</textarea>
+				        </td>
+				        <td>
+				            <button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+				        </td>
+				    </tr>
+				</table>
+
+			  <p>
+			     <input type="button" value="Přidat externí vyšetření" class="addExternalVisit btn btn-info">
+			  </p>
+			  <p id="limitExternal" class="limit">Maximální počet externích vyšetření je omezen na 3.</p>
+		  </div>
+		  <!-- End of Externi vysetreni -->
+		</div>
+
+
+		<div class="col-sm-5 visit visit_1">
+			<!-- Drugs -->
+		  <div class="form-group">
+			  <h4>Předepsané léky</h4>
+			  <table class="table" id="drugTable">
+			      <tr>
+			          <th style="width:20vw">
+			              <p>Název léku</p>
+			          </th>
+			          <th style="width:60px">
+			              <p>Počet <a style="color: #cc0000">*</a></p>
+			          </th>
+			          <th>
+			              <p>Smazat</p>
+			          </th>
+			      </tr>
+			      <tr>
+			          <td class="ev_drug">
+			              <input type="text" style="width:20vw" class="form-control drugData" value="Bioparox" maxlength="20" required='required' readonly="readonly" />
+			          </td>
+			          <td class="ev_drug">
+			              <input type="number" style="width:60px" class="form-control" value="1" step="1" min="1" max="10" required="required"/>
+			          </td>
+			          <td>
+			              <button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+			          </td>
+			      </tr>
+			  </table>
+
+		 		<label for="searchDrug">
+		 			Vyhledat lék 
+		 			<input id="searchDrug" list="searchDrugList" class="form-control" value="" placeholder="např. Akneroxid" style="width: 400px">
+		 			<datalist id="searchDrugList">
+		 				<% var drugs = drugs || "" %>
+		 				<% if (drugs.length > 0) { %>
+		 				<% drugs.forEach(function(d) { %>
+		 					<option class="form-control" value="<%= d.name %>">
+		 						<%= d.name %>: 
+		 						<%= d.description %>
+		 					</option>
+		 				<% }); %>
+		 				<% }; %>
+		 			</datalist>
+		 		</label>
+		 		<p>
+			    <input type="button" value="Přidat lék" class="addNewDrug btn btn-info">
+			  </p>
+			  <p id="limitDrug" class="limit">Maximální počet předepsaných léků je omezen na 5.</p>
+		  </div>
+			
+			<button type="button" class="btn btn-primary savebtn">
+			  Ukončit prohlídku a uložit
+			</button> 
+
+			<button type="button" class="btn btn-danger deletebtn" data-toggle="modal" data-target="#cancelVisitModal">
+			  Zrušit prohlídku
+			</button>
+			<br></br>
+			<p style="font-size: 14px" id="formValidity" class="limit">Pole označná jako "povinná" jsou nutná vyplnit. (Popis, Diagnóza, Odborné pracoviště).</p>
+		  <!-- End of drugs -->
+		</div>
+		
+	</div>
+
+	<!-- Cancel Visit Modal -->
+	  <div class="modal fade" id="cancelVisitModal" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <h4 class="modal-title">Zrušit prohlídku</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        <div class="modal-body">
+	          <p>Opravdu chcete zrušit tuto prohlídku? Veškerá zadaná data budou ztracena.</p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-primary" data-dismiss="modal">Pokračovat v prohlídce</button>
+	          <button type="button" class="btn btn-danger btns cancel-visit">Zrušit prohlídku</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+</div>
+
+<% include ../partials/scripts.ejs %>
+
+<script>
+
+	$(document).ready(function () {
+
+		// cancel visit
+		$('.cancel-visit').click(function () {
+			var birth_cn = <%- JSON.stringify(patient[0].birth_cn) %>;
+		  var url = '/visits?birth_cn=' + birth_cn;
+		  window.location = url;
+		});
+
+		// add new external visit
+		$('#externalTable').on('click', '.smazat', function () {
+			$('#formValidity').css("display", "none");
+		  $(this).closest('tr').remove();
+			var len = $('#externalTable .smazat').length;
+			if (len > 2) {
+				$('#limitExternal').css("display", "inline");
+			}
+			else {
+				$('#limitExternal').css("display", "none");	
+			}
+		})
+		$('.addExternalVisit').click(function () {
+			$('#formValidity').css("display", "none");
+			// check number first, maximum is 3
+			var len = $('#externalTable .smazat').length;
+			if (len > 2) {
+				$('#limitExternal').css("display", "inline");
+			}
+	    else {
+	    	// check if the previous is not empty
+	    	var content = $(".externalWorkplace").last().val();
+	    	if (content !== "") {
+		    	$('#limitExternal').css("display", "none");
+		    	$('#externalTable').append('<tr><td class="ev_data"><textarea style="width:14vw" class="form-control externalWorkplace" id="visitDiagnosis" rows="2" required="required" maxlength="128"></textarea></td><td class="ev_data"><textarea style="width:28vw" class="form-control" id="visitDiagnosis" rows="2" maxlength="256"></textarea></td><td><button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td></tr>');
+	    	}
+	    }
+		});
+
+		// add new drug
+		$('#drugTable').on('click', 'button[type="button"]', function () {
+				$('#formValidity').css("display", "none");
+		    $(this).closest('tr').remove();
+		    var len = $('#drugTable .smazat').length;
+		    if (len > 4) {
+		    	$('#limitDrug').css("display", "inline");
+		    }
+		    else {
+		    	$('#limitDrug').css("display", "none");	
+		    }
+		})
+		$('.addNewDrug').click(function () {
+				$('#formValidity').css("display", "none");
+				// check number first, maximum is 3
+				var len = $('#drugTable .smazat').length;
+				if (len > 4) {
+					$('#limitDrug').css("display", "inline");
+				}
+			  else {
+					var value = $('#searchDrug').val();
+					if (!(value === "")) {
+						$('#limitDrug').css("display", "none");
+						var str = '<tr><td class="ev_drug"><input type="text" style="width:20vw" class="form-control drugData" value="' + value + '" maxlength="20" required="required" readonly="readonly"/></td><td class="ev_drug"><input type="number" style="width:60px" class="form-control" value="1" step="1" min="1" max="10" oninput="this.value = Math.abs(this.value)" required="required"/></td><td><button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td></tr>'
+			    	$('#drugTable').append(str);
+			    	$('#searchDrug').val("");
+			  	}
+				}
+		});
+
+		// add new execution
+		$('#execTable').on('click', 'button[type="button"]', function () {
+				$('#formValidity').css("display", "none");
+		    $(this).closest('tr').remove();
+		    var len = $('#execTable .smazat').length;
+		    if (len > 2) {
+		    	$('#limitExec').css("display", "inline");
+		    }
+		    else {
+		    	$('#limitExec').css("display", "none");	
+		    }
+		})
+		$('.addNewExec').click(function () {
+				$('#formValidity').css("display", "none");
+				// check number first, maximum is 3
+				var len = $('#execTable .smazat').length;
+				if (len > 2) {
+					$('#limitExec').css("display", "inline");
+				}
+			  else {
+					var value = $('#searchExec').val();
+					if (!(value === "")) {
+						$('#limitExec').css("display", "none");
+						var str = '<tr><td class="ev_exec"><input type="text" style="width:28vw" class="form-control execData" value="' + value + '" maxlength="60" required="required" readonly="readonly"/></td><td><button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td></tr>'
+			    	$('#execTable').append(str);
+			    	$('#searchExec').val("");
+			  	}
+			  }
+		});
+
+		// prevent editing of the number type field
+		$('input[type="number"]').keydown(function (e) {
+			$('#formValidity').css("display", "none");
+  		e.preventDefault();
+		});
+
+	  // save visit
+	  $('.savebtn').click(function() {
+
+			// required check
+			var check = true;
+			$(':input[required]').each(function(){
+			   // run other filter functions here
+			   if ($(this).val().trim().length < 1){
+			     check = false;
+			   }
+			});  
+			if (!check){
+			  $('#formValidity').css("display", "inline");
+			} else {
+
+
+	  		var data = {};
+	    	
+	    	// visit
+	    	var patient = <%- JSON.stringify(patient) %>;
+	    	data.birth_cn = patient[0].birth_cn;
+	    	data.insurance = patient[0].insurance;
+	    	data.diagnosis = $('textarea#visitDiagnosis').val();
+	    	data.description = $('textarea#visitDescription').val();
+
+	    	// external_med_check
+	    	var external_mc_arr = [];
+	    	var name, diagnosis;
+	    	name = diagnosis = "";
+	    	$('.ev_data').each(function() {
+	    		if (name === "") {
+	    			name = ($(this).find("textarea").val());
+	    		}
+	    		else if (diagnosis === "") {
+	    			diagnosis = ($(this).find("textarea").val());
+	    			
+	    			var jsonObj = {
+	    			  name : name,
+	    			  diagnosis : diagnosis,
+	    			}
+	    			external_mc_arr.push(jsonObj);
+	    			name = "";
+	    			diagnosis = "";
+	    		}
+	    	});
+	    	data.externals = external_mc_arr;
+
+	    	// drugs
+	    	var drugs = <%- JSON.stringify(drugs) %>;
+	    	var drugs_arr = [];
+	    	var d_name, amount, drug_code;
+	    	d_name = amount = "";
+	    	$('.ev_drug').each(function() {
+	    		if (d_name === "") {
+	    			d_name = ($(this).find("input").val());
+	    		}
+	    		else if (amount === "") {
+	    			amount = ($(this).find("input").val());
+	    			drugs.forEach(function(d) {
+	    				if (d.name === d_name) {
+	    					drug_code = d.drug_code;
+	    				}
+	    			});
+	    			
+	    			var jsonObj = {
+	    			  drug_code : drug_code,
+	    			  amount : amount,
+	    			}
+	    			drugs_arr.push(jsonObj);
+	    			d_name = "";
+	    			amount = "";
+	    		}
+	    	});
+	    	data.drugs = drugs_arr;
+
+	    	// executions
+	    	var executions = <%- JSON.stringify(executions) %>;
+	    	var executions_arr = [];
+	    	var e_name, execution_code;
+	    	e_name = "";
+	    	$('.ev_exec').each(function() {
+	    		if (e_name === "") {
+	    			e_name = ($(this).find("input").val());
+
+	    			executions.forEach(function(e) {
+	    				if (e.name === e_name) {
+	    					execution_code = e.execution_code;
+	    				}
+	    			});
+	    			
+	    			var jsonObj = {
+	    			  execution_code : execution_code
+	    			}
+	    			executions_arr.push(jsonObj);
+	    			e_name = "";
+	    		}
+	    	});
+	    	data.executions = executions_arr;
+
+	    	// planned visit
+	    	if (<%- JSON.stringify(visit) %> !== "") {
+	    		var visit = <%- JSON.stringify(visit) %>;
+	    		data.visit = visit[0];
+	    	}
+
+		    $.ajax({
+		      type: 'POST',
+		      data: JSON.stringify(data),
+		      contentType: 'application/json',
+		      url: '/save-visit',
+		      success: function(response) {
+		        if (response.result == 'redirect') {
+		          //redirecting to main page from here.
+		          window.location.replace(response.url);
+		        }
+		      }
+		    });
+	    }
+	  });
+	});
+
+</script>
+

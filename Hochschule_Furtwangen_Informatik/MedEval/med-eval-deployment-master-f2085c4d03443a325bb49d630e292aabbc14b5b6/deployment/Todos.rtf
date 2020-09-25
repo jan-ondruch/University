@@ -1,0 +1,77 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red242\green242\blue242;\red255\green255\blue255;
+\red44\green44\blue44;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;\csgray\c100000;\csgenericrgb\c0\c0\c0;\cssrgb\c96078\c96078\c96078;\cssrgb\c100000\c100000\c100000\c95294;
+\cssrgb\c22745\c22745\c22745;\cssrgb\c0\c0\c0\c4706;\csgray\c100000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14260\viewh19580\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+Firewall:\
+apt-get install ufw\
+ufw allow ssh\
+ufw allow http\
+ufw allow https\
+ufw enable\
+\
+Apache Hardening:\
+/etc/apache2/mods-available/ssl.conf\
+->\
+SSLProtocol all -SSLv2 -SSLv3\
+service apache2 restart\
+\
+Sysctl:\
+/etc/sysctl.conf upload\
+sysctl -p\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb4 7.\'a0Disable Open DNS Recursion and Remove Version Info\'a0 - BIND DNS Server. -> Hosting Informationen erfragen\
+\
+IP Spoofing:\
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3 /etc/host.conf upload\
+\
+Apache Leakage\
+/etc/apache2/conf-available/security.conf upload\
+\
+ModSecurity - App Firewall:\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf5 \cb6 libapache2-mod-security2
+\f0 \cf2 \cb4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb7 \
+Move Config Files:\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf5 \cb6 mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf\
+\
+Reload Apache\
+service apache2 reload\
+\
+Upload modsecurity.conf\
+/etc/modsecurity/modsecurity.conf\
+\
+Upload security2.conf\
+/etc/apache2/mods-enabled/security2.conf\
+\
+\
+Link rules:\
+raw: \
+ln -s /usr/share/modsecurity-crs/base_rules/modsecurity_crs_41_sql_injection_attacks.conf /usr/share/modsecurity-crs/activated_rules/modsecurity_crs_41_sql_injection_attacks.conf\
+\
+Reload Apache\
+service apache2 reload\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Fail2Ban\
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb6 apt-get install fail2ban\cf5 \cb6 \
+\
+upload jail.local\
+\
+/etc/fail2ban/jail.local\
+}

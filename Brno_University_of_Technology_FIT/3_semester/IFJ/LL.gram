@@ -1,0 +1,61 @@
+LL pravidla
+
+
+/* start + definice / deklarace funkci */
+<s> -> <func>
+<func> -> <type> "ID" "(" <params> ")" <diff> <func>
+<func> -> "EPSILON"			// program je prazdny, spadne to na semantice...?
+<diff> -> <stat_list>
+<diff> -> ";"
+<params> -> <type> "ID" <params_n>
+<params> -> "EPSILON"
+<params_n> -> "," <type> "ID" <params_n>
+<params_n> -> "EPSILON"
+
+
+/* slozeny prikaz */
+<stat_list> -> "{" <stat> "}"
+<stat> -> <stat_list>
+<stat> -> "EPSILON"
+<stat> -> <for> <stat>
+<stat> -> <return>
+<stat> -> <if> <stat>
+<stat> -> <cin> <stat>
+<stat> -> <cout> <stat>
+<stat> -> <vars> <stat>
+
+/* funcke programu */
+<cin> -> "CIN" ">>" ID <cin_n> ";"
+<cin_n> -> ">>" ID <cin_n>
+<cin_n> -> "EPSILON"
+<cout> -> "COUT" "<<" <term> <cout_n> ";"
+<cout_n> -> "<<" <term> <cout_n>
+<cout_n> -> "EPSILON"
+<if> -> "IF" "(" <expr> ")" <stat_list> "ELSE" <stat_list>
+<return> -> "RETURN" <expr> ";"
+<for> -> "FOR" "(" <type> "ID" <asign_2> ";" <expr> ";" "ID" "=" <expr> ")" <stat_list>
+
+/* <type> a <term> */
+<type> -> "INT"
+<type> -> "DOUBLE"
+<type> -> "STRING"
+<type> -> "AUTO"
+
+<term> -> "CELECISLO"
+<term> -> "DESETINNE"
+<term> -> "RETEZEC"
+<term> -> "ID"
+
+/* parametry volani funkce */
+<params_in> -> <term> <params_in_n>
+<params_in_n> -> "EPSILON"
+<params_in> -> "EPSILON"
+<params_in_n> -> , <term> <params_in_n>
+
+/*vars - variables a volani funkce */
+<vars> -> "ID" "=" <asign> ";"
+<vars> -> <type> "ID" <asign_2> ";"
+<asign> -> "ID" "(" <params_in> ")"
+<asign> -> <expr>
+<asign_2> -> "=" <expr>
+<asign_2> -> "EPSILON"

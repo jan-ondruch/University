@@ -1,0 +1,37 @@
+<nav class="navbar navbar-default bg-light" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/home">Praktický Lékař IIS</a>
+    </div>
+    <ul class="navbar-nav mr-auto">
+
+      <!-- show "Faktury" only for doctors and admin -->
+      <% var type = type || "" %>
+      <% if (type.length > 0) { %>
+        <% if (type !== 'nurse') { %>
+          <li class="nav-item active">
+            <form action="/invoices" method="GET">
+              <a href="/invoices" onclick="this.parentNode.submit()">Faktury</a>
+            </form>
+          </li>
+        <% } %>
+      <% } %>
+
+
+    </ul>
+    <ul class="navbar-nav navbar-right">
+      <% var user = user || "admin" %>
+      <% if (user.length > 0) { %>
+        <li class="nav-item active">
+          <a><i class="fa fa-user" aria-hidden="true"></i><%= user %></a>
+        </li>
+      <% } %>
+
+      <li class="nav-item active">
+        <form action="/logout-user" method="POST">
+          <a href="#" onclick="this.parentNode.submit()"><i class="fa fa-sign-out" aria-hidden="true"></i>Odhlásit</a>
+        </form>
+      </li>
+    </ul>
+  </div>
+</nav>

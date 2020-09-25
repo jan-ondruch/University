@@ -1,0 +1,295 @@
+<!-- pure html and bootstrap -->
+<div class="wrapper">
+<!--
+	<p>
+		VIN
+		SPZ
+		Kategorie vozidla (Firemní, Soukromé nebo Zaměstnanecké)
+		Druh vozidla (https://cs.wikipedia.org/wiki/Kategorie_vozidel)
+		Typ vozidla (Osobní, Tahač, Návěs, Autobus,  Nákladní, Přívěs, Vozidla v rostlinné výrobě, Tandemový přívěs, Motocykl nebo Jiné.)
+		Značka a obchodní označení
+		Barva vozidla (dropdown list)
+		Číslo technického průkazu
+		Číslo schválení technické způsobilosti
+		Pozn. : zvláštní výbava, povolené výjimky…
+		Účel využití vozidla (dropdown)
+		Vlastnik (jeden staci myslim)
+		Provozovatel (nwm jestli 1 nebo vice...)
+		Mozna pridat "import dat", coz by znamenalo, ze se z nejakou souboru importuji data, takze se to automaticky vyplni (nafejkovat jenom button, zadna hlubsi implementace neni treba...)
+	</p>
+-->
+	<form action="/dashboard" method="get">
+
+		<div class="row">
+			<div class="col-md- mb-2">
+				<h4 style="margin-left: 0px">
+			  	Nahrát data ze souboru
+				</h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2 mb-2">
+		  	<label class="btn btn-default">
+		  	    Vybrat soubor <input type="file" hidden>
+		  	</label>
+			</div>
+			<div class="col-md-3 mb-3" style="margin-top: -24px; padding-bottom: 24px; margin-left: -72px">
+				<label for="jmeno" style="visibility: hidden;">Jméno</label>
+				<input type="text" class="form-control" id="jmeno" placeholder="jméno souboru...">
+			</div>
+		</div>
+
+	<div class="row">
+		<h4>Vlastník</h4>
+	  <div class="col-md-4 mb-4">
+	    <label for="jmeno">Jméno</label>
+	    <input type="text" class="form-control" id="jmeno" placeholder="Jméno" required>
+	  </div>
+	  <div class="col-md-4 mb-4">
+	    <label for="prijmeni">Příjmení</label>
+	    <input type="text" class="form-control" id="prijmeni" placeholder="Příjmení" required>
+	  </div>
+	  <div class="col-md-4 mb-4" style="width: 140px;">
+	    <label for="rc">Rodné číslo</label>
+	    <input type="text" class="form-control" id="rc" placeholder="Rodné číslo">
+	  </div>
+	</div>
+
+	<div class="row">
+	  <div class="col-md-4 mb-4">
+	    <label for="idc">Identifikační číslo</label>
+	    <input type="text" class="form-control" id="idc" placeholder="Identifikační číslo" >
+	  </div>
+	</div>
+
+	<div class="row">
+	  <div class="col-md-4 mb-4">
+	    <label for="city">Město</label>
+	    <input type="text" class="form-control" id="city" placeholder="Město" required>
+	  </div>
+		<div class="col-md-4 mb-4">
+	    <label for="address">Adresa</label>
+	    <input type="text" class="form-control" id="address" placeholder="Ulice číslo" required>
+	  </div>
+		<div class="col-md-4 mb-4" style="width: 100px;">
+	    <label for="psc">PSČ</label>
+	    <input type="text" class="form-control" id="psc" placeholder="PSČ" required>
+	  </div>
+	</div>
+
+
+	<div class="row">
+		<h4>Provozovatel</h4>
+		<div class="col-md-4 mb-4">
+			<label for="jmenop">Jméno</label>
+			<input type="text" class="form-control" id="jmenop" placeholder="Jméno" required>
+		</div>
+		<div class="col-md-4 mb-4">
+			<label for="prijmenip">Příjmení</label>
+			<input type="text" class="form-control" id="prijmenip" placeholder="Příjmení" required>
+		</div>
+		<div class="col-md-4 mb-4" style="width: 140px;">
+			<label for="rcp">Rodné číslo</label>
+			<input type="text" class="form-control" id="rcp" placeholder="Rodné číslo">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 mb-4">
+			<label for="idcp">Identifikační číslo</label>
+			<input type="text" class="form-control" id="idcp" placeholder="Identifikační číslo" >
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 mb-4">
+			<label for="cityp">Město</label>
+			<input type="text" class="form-control" id="cityp" placeholder="Město" required>
+		</div>
+		<div class="col-md-4 mb-4">
+			<label for="addressp">Adresa</label>
+			<input type="text" class="form-control" id="addressp" placeholder="Ulice číslo" required>
+		</div>
+		<div class="col-md-4 mb-4" style="width: 100px;">
+			<label for="pscp">PSČ</label>
+			<input type="text" class="form-control" id="pscp" placeholder="PSČ" required>
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<h4>Vozidlo</h4>
+		<div class="col-md-4 mb-4">
+	    <label for="spz">SPZ</label>
+	    <input type="text" class="form-control" id="spz" placeholder="SPZ" maxlenght="8" required>
+	  </div>
+		<div class="col-md-4 mb-4">
+	    <label for="vin">VIN</label>
+	    <input type="text" class="form-control" id="vin" placeholder="VIN" maxlenght="17" required>
+	  </div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 mb-4">
+			<label for="kategorie">Kategorie vozidla</label>
+			<select id="kategorie" class="form-control" required>
+			  <option selected>Výběr kategorie</option>
+			  <option value="1">L – motorová vozidla zpravidla s méně než čtyřmi koly</option>
+			  <option value="2">M – motorová vozidla, která mají nejméně čtyři kola a používají se pro dopravu osob</option>
+			  <option value="4">N – motorová vozidla, která mají nejméně čtyři kola a používají se pro dopravu nákladů</option>
+				<option value="4">O – přípojná vozidla</option>
+				<option value="5">T – traktory zemědělské nebo lesnické</option>
+				<option value="6">S – pracovní stroje</option>
+				<option value="7">R – ostatní vozidla, která nelze zařadit do výše uvedených kategorií</option>
+			</select>
+		</div>
+		<div class="col-md-4 mb-4">
+			<label for="druh">Druh vozidla</label>
+			<select id="druh" class="form-control" required>
+			  <option selected>Výběr druhu</option>
+			  <option value="1">Motocykl</option>
+			  <option value="2">Osobní automobil</option>
+			  <option value="4">Autobus</option>
+				<option value="4">Nákladní automobil</option>
+				<option value="5">Speciální automobil</option>
+				<option value="6">Traktor</option>
+				<option value="7">Nákladní přívěs</option>
+				<option value="8">Nákladní přívěs traktorový</option>
+				<option value="9">Speciální přívěs</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 mb-4">
+			<label for="znacka">Značka vozidla</label>
+			<input type="text" class="form-control" id="znacka" placeholder="Značka vozidla" required>
+		</div>
+		<div class="col-md-4 mb-4">
+			<label for="typ">Typ vozidla</label>
+			<input type="text" class="form-control" id="typ" placeholder="Typ vozidla" required>
+		</div>
+	</div>
+
+		<div class="row">
+			<div class="col-md-2 mb-4">
+				<label for="bila">Barva vozidla</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1 mb-4">
+				<label class="form-control">
+					<input id="bila" name="radio" type="radio" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">bílá</span>
+				</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="zluta" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">žlutá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="oranzova" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">oranžová</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="cervena" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">červená</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="fialova" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">fialová</span>
+					</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="modra" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">modrá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+					  <input id="zelena" name="radio" type="radio" class="custom-control-input">
+					  <span class="custom-control-indicator"></span>
+					  <span class="custom-control-description">zelená</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="seda" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">šedá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+					  <input id="hneda" name="radio" type="radio" class="custom-control-input">
+					  <span class="custom-control-indicator"></span>
+					  <span class="custom-control-description">hnědá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+					  <input id="cerna" name="radio" type="radio" class="custom-control-input">
+					  <span class="custom-control-indicator"></span>
+					  <span class="custom-control-description">černá</span>
+					</label>
+			</div>
+		</div>
+
+	<div class="row" style="padding-top: 12px;">
+		<div class="col-md-4 mb-4">
+			<label for="technum">Číslo technického průkazu</label>
+			<input type="text" class="form-control" id="technum" placeholder="Číslo technického průkazu" required>
+		</div>
+		<div class="col-md-4 mb-4">
+			<label for="schvaleni">Číslo schválení technické způsobilosti</label>
+			<input type="text" class="form-control" id="schvaleni" placeholder="Číslo schválení technické způsobilosti" required>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6 mb-6">
+			<label for="notes">Poznámky</label>
+			<input type="text" class="form-control" id="notes" placeholder="Zvláštní výbava a zařízení, povolené výjimky apod." required>
+		</div>
+	</div>
+
+	<div class="row" style="padding-top: 12px;">
+		<div class="col-md-4 mb-4">
+			<label for="druh">Účel využití vozidla</label>
+			<select id="druh" class="form-control" required>
+			  <option selected>Výběr účelu</option>
+			  <option value="1">vozidlo taxislužby</option>
+			  <option value="2">silniční vozidlo s právem přednosti v jízdě</option>
+			  <option value="4">vozidlo půjčovny automobilů určené k nájmu</option>
+				<option value="4">vozidlo obecného užití</option>
+			</select>
+		</div>
+	</div>
+
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin-top: 12px; float: right; margin-right: 100px">
+			  Registrovat vozidlo
+			</button>
+			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="margin-top: 12px; float: right; margin-right: 10px; margin-bottom: 80px">
+			  Zrušit registraci
+			</button>
+	</form>
+
+</div>

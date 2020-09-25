@@ -1,0 +1,7 @@
+---
+- name: Upload database backup to server
+  synchronize: src={{ limesurvey.backupandrestore.restoredir }} dest=/tmp/limesurveydatabase
+- name: Merge files and extract limesurvey data
+  raw: 7z e /tmp/limesurveydatabase/limesurveydatabase/databasebackup.7z.001 -o/tmp/database_backup.sql
+- name: Restore database
+  mysql_db: name=my_db state=import target=/tmp/database_backup.sql/database_backup.sql

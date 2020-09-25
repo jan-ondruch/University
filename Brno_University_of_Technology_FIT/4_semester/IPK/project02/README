@@ -1,0 +1,56 @@
+IPK project2 (File transfer) README file.
+author: 	Jan Ondruch, xondru14
+
+
+Project description:
+Project comprises of 2 programs - client and a server. API sockets are used for file transfer. The programs use TCP and their own special application protocol. Server is concurrent.
+
+
+Programs:
+Written in c++ programming language.
+
+
+Test:
+File test.sh demonstrates project functionality.
+
+
+Usage:
+Client Synopsis: client ‐h hostname -­p port [-­d|u] file_name
+Server Synopsis: server -p port
+
+[--help|-h] prints out help message, standalone options
+hostname	hostname of the server
+port		port number for connection
+[-­d|u]		download or upload
+file_name	filename of the file to be donwloaded/uploaded
+
+sidenote: ports (both on the client and server side) have to match...
+
+
+Functionality:
+Help message
+File upload
+File download
+
+For exact application protocol functionality, check protocol.pdf
+
+
+Error handling:
+Wrong filenames are handled, invalid parameters, 
+socket connection problems, forking problems, ...
+
+For further info check protocol.pdf
+
+
+Functionality disclaimer:
+Concurrent file manipulation results in an undefined behavior.
+Too big files (hundreds of mb) were not tested - unknown behavior.
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,81 @@
+POP3 SERVER
+=========== 
+Implementation of a POP3 Server standardized by RFC 1939 Internet standard.
+This tool named 'popser' was created as a project for a Network Applications 
+and Network Administration 2017 class.
+
+
+File contents
+=============
+* Description
+* Installation
+* Usage example
+* Limitations
+* File list
+
+
+Description
+===========
+Popser operates as a POP3 server. It enables clients to connect to it and download 
+data via POP3 protocol. The tool works with e-mails in an IMF format in a Maildir 
+format structure. The Maildir manipulates only 1 mailbox for 1 user. Popser utilizes
+a non-blocking parallel TCP socket, thus concurrently handles multiple client 
+communication. Authentication of users is required, as well as an unique access 
+to the maildrop ensured by a mutex lock. Once the user is given access to it,
+new e-mails are downloaded. Next manipulation such as listing, deleting or retrieving
+e-mails follow. Afterwards, the client ends the communication and the connection is
+terminated.
+
+
+Installation
+============
+Execution of the tool is possible right after the provided Makefile is run. The 
+executable file name is 'popser'. Any further manipulation within the executable 
+binary file's directory is highly discouraged as it may disrupt the functionality
+of the program.
+
+make 		runs the script and outputs an executable binary file 'popser'
+make clean	cleans files created by the make execution
+
+
+Usage example
+=============
+Popser usage: ./popser [-h] [-a PATH] [-c] [-p PORT] [-d PATH] [-r]
+	[-h|--help] Prints help (this message) and exit
+	[-a] Path to the authentication file
+	[-c] Accepts non-encrypted login password method (optional parameter)
+	[-p] Runs application on this port
+	[-d] Path to the Maildir folder
+	[-r] Resets the Maildir (optional parameter)
+
+Examples:
+./popser -h
+./popser -a ~/popser_authentication -p 13378 -d ~/Maildir/ -r
+./popser -a ~/popser_authentication -c -p 13378 -d ~/Maildir/
+
+Clients can then connect via Telnet on the given port.
+
+
+Limitations
+===========
+The program fully implements the RFC 1939 specification apart from the section 8,
+does not support encryption (TSL/SSL) and omits the 'TOP' command.
+
+
+File list
+=========
+Makefile		program installation
+README 			this file
+args.cpp		parses arguments
+args.hpp		header for arguments parsing
+mail.cpp		main popser logic
+mail.hpp		header for main popser logic
+main.cpp		main file
+main.hpp		header for main file
+manual.pdf		project documentation
+md5.cpp			md5 hash
+md5.hpp			header for md5 hash
+server.cpp		server setup
+server.hpp		header for server setup
+string.cpp		advanced string manipulation
+string.hpp		header for advanced string manipulation

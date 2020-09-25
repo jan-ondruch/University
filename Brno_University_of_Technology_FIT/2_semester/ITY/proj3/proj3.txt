@@ -1,0 +1,12 @@
+Základní informace o dokumentu
+------------------------------
+rozmìry stránky: A4
+rozmìry textové oblasti: 17x24cm
+mezera vlevo: 2cm
+mezera nahoøe: 3cm
+font: times 11pt
+
+Pøeklad
+---------------
+Pro pøeklad použijte makefile a pøíkazy latex, dvips a ps2pdf s parametrem -sPAPERSIZE=a4.
+

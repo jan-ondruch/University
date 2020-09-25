@@ -1,0 +1,202 @@
+<div class="page-wrapper container">
+
+  <ng-template #loading>
+    <div class="container loading-screen-text">
+      <div class="text-center">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <br>
+        Loading Teams...
+      </div>
+    </div>
+  </ng-template>
+
+  <div *ngIf="teams; else loading">
+
+    <div class="row">
+      <div class="col-sm-6">
+
+        <div *ngIf="recording, else manage_teams">
+          <h3>Selected Team - View/Edit</h3>
+          <hr>
+          <div class="alert alert-danger">
+            Recording is active, teams modification is disabled.
+          </div>
+        </div>
+        <ng-template #manage_teams>
+
+          <!-- view switch -->
+          <div *ngIf="view === 'edit'; then edit"></div>
+          <div *ngIf="view === 'add'; then add"></div>
+
+
+          <!-- edit / view team -->
+          <ng-template #edit>
+
+            <div class="heading-new-btn">
+              <h3>Selected Team - View/Edit</h3>
+              <button (click)='initAddForm()'
+                  class="btn btn-success">New Team</button>
+            </div>
+
+            <div *ngIf="selectedTeam">
+              <hr>
+              <form novalidate id="editTeamForm"
+                    [formGroup]="editTeamForm">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="form-group">
+                      <p class="form-label">Name</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="editName"
+                          maxlength="30" 
+                          required
+                          placeholder="Team name">
+                      <div class="form-control-feedback"
+                           *ngIf="editName.errors && (editName.dirty || editName.touched)">
+                        <p *ngIf="editName.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-2">
+                    <div class="submit-btn buttons-margin">
+                      <button 
+                          type="submit"
+                          (click)="onEditTeam()"
+                          [disabled]="!editTeamForm.valid"
+                          class="btn btn-success">Edit & Save</button> &nbsp;
+                    </div>
+                  </div>
+
+                  <div class="col-sm-2">
+                    <div class="submit-btn buttons-margin">
+                      <button 
+                          (click)='open(content)'
+                          class="btn btn-danger">Delete</button> &nbsp;
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="successfulEdit && edited" class="alert alert-success">
+                      Edit successful! The team has been renamed.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="successfulAdd && added" class="alert alert-success">
+                      New team has been successfuly adeed!
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="successfulDelete && deleted" class="alert alert-success">
+                      Team has been successfuly deleted!
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="cantRemove && removed" class="alert alert-danger">
+                      You can't remove the last team in your account!
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </ng-template>
+
+
+          <!-- add player -->
+          <ng-template #add>
+
+            <div class="heading-new-btn">
+              <h3>New Team - Add</h3>
+              <button 
+                  class="btn btn-default" (click)='onCancelNewTeamClick()'>Cancel</button>
+            </div>
+            
+            <div *ngIf="selectedTeam">
+              <hr>
+              <form novalidate id="addTeamForm"
+                    [formGroup]="addTeamForm" (ngSubmit)="onAddTeam()">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="form-group">
+                      <p class="form-label">Name</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="addName"
+                          maxlength="30"
+                          required
+                          placeholder="Team name">
+                      <div class="form-control-feedback"
+                           *ngIf="addName.errors && (addName.dirty || addName.touched)">
+                        <p *ngIf="addName.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-4">
+                    <div class="submit-btn buttons-margin">
+                      <button 
+                          type="submit"
+                          form="addTeamForm"
+                          [disabled]="!addTeamForm.valid"
+                          class="btn btn-success">Add</button> &nbsp;
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </ng-template>
+        
+        </ng-template>
+      </div>
+      <div class="col-sm-6">
+
+        <h3>Your Teams</h3>
+
+        <div *ngIf="teams" class="your-team-items">
+          <div *ngFor="let team of teams">
+            <button class="btn btn-info" (click)='onTeamClick(team.team_id)'>
+              {{ team.name }}
+            </button>
+          </div>
+        </div>
+
+        </div>
+    </div>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Do you really want to delete team "{{ teamToDelete.name }}"?</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)='onDeleteTeam()'>Delete</button>
+        <button type="button" class="btn btn-default" (click)="c('Close click')">Close</button>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

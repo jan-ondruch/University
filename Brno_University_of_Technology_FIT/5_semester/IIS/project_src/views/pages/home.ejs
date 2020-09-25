@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+<%- include('../partials/navbar', {user: user, type: type}); %>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary addPatientBtn" data-toggle="modal" data-target="#addPatient">
+  Přidat pacienta
+</button>
+
+<div class="searchFormBar">
+  <h2 class="headerHome">Seznam pacientů</h2>
+  <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="text" type="text" id="searchBar" onkeyup="filterSearchBarResults()" placeholder="Vyhledat příjmení nebo rč" aria-label="Search" autofocus maxlength="20"></input> 
+  </form>
+  <!-- filtering choices -->
+  <p>Filtrovat podle: </p>
+  <input type="radio" name="opts" id="filter_lastname" checked>Příjmení</input>
+  <input type="radio" name="opts" id="filter_birth_cn">Rodné číslo</input>
+  <p style="font-weight: normal; padding-left: 16px; font-size: 14px">[Cizí pacienti jsou označení <a style="color: #cc0000">*</a>]</p>
+</div>
+
+
+<div class="table-responsive">
+  <table class="table table-striped" id="tableOfPatients">
+    <thead>
+      <tr>
+        <th>Jméno</th>
+        <th>Příjmení</th>
+        <th>Rodné číslo</th>
+        <th>Pohlaví</th>
+        <th>Ulice a č.p.</th>
+        <th>Město</th>
+        <th>Pojišťovna</th>
+        <th>Telefon</th>
+        <th>E-mail</th>
+        <th>Prohlídky</th>
+        <th>Upravit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% var patients = patients || "" %>
+      <% if (patients.length > 0) { %>
+      <% patients.forEach(function(p) { %>
+      <% if (p.removed !== 'Y') { %>
+      <tr>
+        <% if (p.external === 'Y') { %>
+          <td><%= p.firstname %><a style="color: #cc0000"> *</a></td>
+        <% } else { %>
+          <td><%= p.firstname %></td>
+        <% } %>
+        <td><%= p.lastname %></td>
+        <td><%= p.birth_cn %></td>
+        <td><%= p.sex %></td>
+        <td><%= p.street_house %></td>
+        <td><%= p.city %></td>
+        <td><%= p.insurance %></td>
+        <td><%= p.phone %></td>
+        <td><%= p.email %></td>
+        <td><button class="btn btn-info choosebtn"><i class="fa fa-address-card-o" aria-hidden="true"></i></button></td>
+        <td><button class="btn editbtn" data-toggle="modal" data-target="#editPatient"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+      </tr>
+      <% }; %>
+      <% }); %>
+      <% }; %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Edit Patient -->
+<div class="modal fade" id="editPatient" tabindex="-1" role="dialog" aria-labelledby="editPatientLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPatientLabel">Upravit informace pacienta</h5>
+        <p>Pole označná <a style="color: #cc0000">*</a> jsou povinná.</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Form -->
+        <form id="editFormPatient" action="/patient" method="post">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault01">Jméno</label>
+              <input type="text" name="firstname" class="form-control" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault02">Příjmení <a style="color: #cc0000">*</a></label>
+              <input type="text" name="lastname" class="form-control" placeholder="Příjmení" value="" required maxlength="20" pattern="([A-Z-ÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍŘÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ][a-z-àáâäřãåąčćęďůťňèéêřěťďëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð ,.'-]+)+" title="Pouze písmena, první písmeno velké">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label for="validationDefault03">Rodné číslo</label>
+              <input type="text" name="birth_cn" class="form-control" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationDefault55">Pohlaví</label>
+              <input type="text" name="sex" class="form-control" readonly="">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="validationDefault04">Ulice a č.p.</label>
+              <input type="text" name="street_house" class="form-control" placeholder="Ulice a č.p." pattern="([a-z-A-Z-àáâäãåąčćřůěťďęèéêëėįìíîïłńòóôöõøùúûüųūřÿýżźñçďťňčšž∂ðÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØŘÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ ,.'-0123456789]+\s)+[\d{1,9}]+" title="Ulice a č.p., např. Na Sluneční 554" maxlength="40">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault05">Město</label>
+              <input type="text" name="city" class="form-control" placeholder="Město" pattern="([A-Z-ÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍŘÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽa-z-àáâäřãåąčćęďťňèéêëėįìíîïłńòóôöõøùúůûüųūÿýżźñçčšž∂ð][a-z-àáâäřãřěťďåąčćęďťňèéêëėįìíîïłńòóôöõøùůúûüųūÿýżźñçčšž∂ð ,.'-0123456789]+)+" title="Pouze písmena, první písmeno velké" maxlength="30">
+            </div>
+              <div class="col-md-6 mb-3">
+                <label for="validationDefault06">Pojišťovna</label>
+                <div class="col">
+                  <select class="form-control chosenInsurance" form="newPatientForm" required>
+                    <% var insurances = insurances || "" %>
+                    <% if (insurances.length > 0) { %>
+                    <% insurances.forEach(function(i) { %>
+                      <option value="<%= i.insurance %>">
+                        <%= i.insurance %>
+                      </option>
+                    <% }); %>
+                    <% }; %>
+                  </select>
+                  <input id="chosenInsuranceHolder" type="text" style="display: none; width: 1px" name="insurance" class="form-control" id="validationDefault06"  readonly>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="validationDefault08">Telefon</label>
+              <input type="text" name="phone" class="form-control" placeholder="Telefon" pattern="(\+[0-9]{2,3}\s){0,1}[0-9]{3}\s[0-9]{3}\s[0-9]{3}$" maxlength="16" title="Použijte číslo ve formátu: (+420) 123 456 789">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="validationDefault07">E-mail</label>
+              <input type="text" name="email" class="form-control" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" maxlength="40" title="Použijte klasický formát, např. lorem.ipsum@dolor.sit">
+            </div>
+          </div>
+          <div class="editPatientButtons">
+            <button class="btn btn-primary" type="submit" formaction="/edit-patient">Upravit</button>
+            <button class="btn btn-danger"  type="submit" formaction="/delete-patient">Odstranit pacienta</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Novy Pacient-->
+<div class="modal fade" id="addPatient" tabindex="-1" role="dialog" aria-labelledby="newPatientLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newPatientLabel">Přidat pacienta</h5>
+        <p>Pole označná <a style="color: #cc0000">*</a> jsou povinná.</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+				<!-- Form -->
+        <form  action="/new-patient" id="newPatientForm" method="post">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault01">Jméno <a style="color: #cc0000">*</a></label>
+              <input type="text" name="firstname" autofocus class="form-control" id="validationDefault01" placeholder="Jméno" value="" required maxlength="16" pattern="([A-Z-ÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍŘÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ][a-z-àáâäřãåąčćęďťňèéêëřůěťďėįìíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð ,.'-]+)+" title="Pouze písmena, první písmeno velké">
+              <div class="invalid-feedback">
+	              Políčko nesmí zůstat prázdné.
+	            </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault02">Příjmení <a style="color: #cc0000">*</a></label>
+              <input type="text" name="lastname" class="form-control" id="validationDefault02" placeholder="Příjmení" value="" required maxlength="20" pattern="([A-Z-ÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍŘÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ][a-z-àáâäřãåąčćęďťňèéêřěťďëėįìůíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð ,.'-]+)+" title="Pouze písmena, první písmeno velké">
+              <div class="invalid-feedback">
+	              Políčko nesmí zůstat prázdné.
+	            </div>
+            </div>
+	          <div class="col-md-8 mb-3">
+	            <label for="validationDefault03">Rodné číslo <a style="color: #cc0000">*</a></label>
+	            <input type="text" name="birth_cn" class="form-control" id="validationDefault03" placeholder="Rodné číslo" value="" required pattern="[0-9]{6}/[0-9]{4}" title="Rodné číslo musí být ve formátu ČČČČČČ/ČČČČ">
+	            <div class="invalid-feedback">
+	              Políčko nesmí zůstat prázdné.
+	            </div>
+	          </div>
+	          <div class="col-md-4 mb-3">
+	            <div class="row">
+	              <div class="col">
+                  <label for="validationDefault55">Pohlaví</label>
+	                <select class="form-control" name="sex" form="newPatientForm" required>
+	                  <option value="muž">muž</option>
+	                  <option value="žena">žena</option>
+	                </select>
+	              </div>
+	            </div>
+	          </div>
+          </div>
+          <div class="row">
+	          <div class="col-md-12 mb-3">
+	            <label for="validationDefault04">Ulice a č.p.</label>
+	            <input type="text" name="street_house" class="form-control" id="validationDefault04" placeholder="Ulice a č.p." pattern="([a-z-A-Z-àáâäãåąčćřěťďęèéêëėůįìíîïłńòóôöõøùúûüųūřÿýżźñçďťňčšž∂ðÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØŘÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ ,.'-0123456789]+\s)+[\d{1,9}]+" title="Ulice a č.p., např. Na Sluneční 554" maxlength="40">
+	          </div>
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault05">Město</label>
+              <input type="text" name="city" class="form-control" id="validationDefault05" placeholder="Město" pattern="([A-Z-ÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍŘÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽa-z-àáâäřãåąčůćęďťňèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð][a-z-àáâäřãřěťďåąčćęďťňèéêůëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð ,.'-0123456789]+)+" title="Pouze písmena, první písmeno velké" maxlength="30">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="validationDefault06">Pojišťovna</label>
+              <div class="col">
+                <select class="form-control" name="insurance" form="newPatientForm" required>
+                  <% var insurances = insurances || "" %>
+                  <% if (insurances.length > 0) { %>
+                  <% insurances.forEach(function(i) { %>
+                    <option value="<%= i.insurance %>">
+                      <%= i.insurance %>
+                    </option>
+                  <% }); %>
+                  <% }; %>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="validationDefault07">E-mail</label>
+              <input type="text" name="email" class="form-control" id="validationDefault07" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" maxlength="40" title="Použijte klasický formát, např. lorem.ipsum@dolor.sit">
+            </div>
+            <div class="col-md-8 mb-3">
+              <label for="validationDefault08">Telefon</label>
+              <input type="text" name="phone" class="form-control" id="validationDefault08" placeholder="Telefon" pattern="(\+[0-9]{2,3}\s){0,1}[0-9]{3}\s[0-9]{3}\s[0-9]{3}$" maxlength="16" title="Použijte číslo ve formátu: (+420) 123 456 789">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationDefault09">Cizí pacient</label></br>
+              <label class="checkbox-inline"><input name="external" class="form-control" type="checkbox" value="Y">Ano</label>
+            </div>
+          </div>
+          <div class="addPatientModal">
+            <button class="btn btn-primary" type="submit">Přidat pacienta</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/scripts.ejs %>
+
+<script>
+
+  // copy data from the table to the edit form
+  $(document).ready(function () {
+    // add columens from a table to a modal
+    $('.editbtn').click(function () {
+      var currentTD = $(this).parents('tr').find('td');
+      currentTD.splice(-1,1); // remove 'Edit'
+      currentTD.splice(-1,1); // remove ''  
+      var targetInput = $("#editFormPatient input.form-control");
+      var i = 0;
+      $.each(currentTD, function () {
+        targetInput[i].value = $(this).text();
+        i++;
+      });
+    });
+
+    // choose patient on the click and redirect to an url visits/?id=birth_cn
+    $('.choosebtn').click(function () {
+      var currentTD = $(this).parents('tr').find('td');
+      var value = currentTD[2].innerText;
+      var url = '/visits?birth_cn=' + value;
+      window.location = url;
+    });
+
+    // chosen insurance change in new patient
+    $(".chosenInsurance").change(function () {
+      $('#chosenInsuranceHolder').val($(".chosenInsurance option:selected").val())
+    })
+
+  });
+
+  // search bar filtering
+  function filterSearchBarResults() {
+    // Declare variables
+    var input = document.getElementById('searchBar');
+    var filter = input.value.toUpperCase();
+    var table = document.getElementById("tableOfPatients");
+    var numRows = table.rows.length;
+
+    var display = false;
+
+    var opt = 1;
+    if (document.getElementById("filter_lastname").checked === true)
+      opt = 1;
+    else
+      opt = 2;
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 1; i < numRows; i++) {
+      display = false;
+      td = table.rows[i].getElementsByTagName('td');
+      for (j = 0; j < td.length; j++) {
+        // if found -> display the whole row
+        if (td[opt].innerHTML.toUpperCase().indexOf(filter) > -1) {
+          display = true;
+        }
+      }
+
+      if (display == true) {
+        table.rows[i].style.display = "";
+      }
+      else {
+        table.rows[i].style.display = "none";
+      }
+    }
+  }
+
+</script>
+
+</body>
+</html>

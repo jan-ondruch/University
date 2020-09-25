@@ -1,0 +1,209 @@
+/* Navbar */
+
+.navbar-1 {
+  padding-top: 80px;
+  z-index: 3;
+  background-color: #66BB6A !important;
+}
+
+.navbar-2 {
+  padding-top: 130px;
+  z-index: 2;
+  background-color: #81C784 !important;
+}
+
+.record-exercise-btn {
+  margin-left: 12px !important;
+}
+
+.nav-text {
+  color: #fff !important;
+}
+
+.nav-text:hover {
+  cursor: default;
+  color: #f5f5f5 !important;
+  text-decoration: none !important;
+}
+
+.nav-no-hover:hover {
+  color: #fff !important;
+}
+
+p.required-field {
+  color: #fc0000;
+  line-height: 40px;
+}
+
+/* PLAYER CARD */
+
+.overview-wrapper {
+  margin: 0px 15px;
+}
+
+div.col-sm-3 {
+  margin: 0px !important;
+  padding: 0px !important;
+  border: 1px solid #ccc;
+  text-align: center !important;
+}
+
+.player-box {
+  padding: 16px;
+  background-color: #fff;
+}
+
+.heading {
+  text-align: center;
+  /*border-bottom: 1px solid #ccc*/
+}
+
+.player-metrics-wrapper {
+  position: relative;
+  text-align:center;
+}
+
+.relative-hr-wrapper {
+  color: red;
+}
+
+.relative-hr-wrapper h2 {
+  font-size: 42px;
+}
+
+.tag-not-connected h2 {
+  position: absolute;
+  top: 50%;  /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color: #ff7272;
+  background-color:rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.tag-not-connected h3 {
+  font-size: 20px;
+  position: absolute;
+  top: 50%;  /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
+  color: #ff7272;
+  z-index: 1;
+  background-color:rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 6px;
+}
+
+/* TEAM STATS */
+
+.team-stats {
+  padding: 16px;
+}
+
+.team-stats-border-right {
+  border-right: 0px !important;
+}
+
+.team-stats-border-left {
+ border-left: 0px !important; 
+}
+
+
+/* COMPARISON */
+.comparison-wrapper {
+  margin: 0px 15px;
+}
+
+div.col-sm-1 {
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+div.col-sm-2 {
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.data-unit {
+  padding-top: 30px !important;
+}
+
+/* HR ZONES */
+
+.zones-wrapper p:nth-child(1) {
+  margin-bottom: 18px;
+}
+
+.zones-wrapper p {
+  text-transform: uppercase;
+  font-size: 12px;
+  text-align: center;
+}
+
+.metrics-wrapper {
+  padding-top: 16px;
+  text-align: center;
+  display: flex;
+}
+
+.zones {
+  display: flex;
+  margin: -16px 0px;
+}
+
+.zones p {
+  padding: 0px 6px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.zones ngb-progressbar {
+  width: 100% !important;
+}
+
+/deep/ div.bg-red {
+  background-color: #fc0000!important;
+}
+
+/deep/ div.bg-orange {
+  background-color: #ff9900!important;
+}
+
+/deep/ div.bg-green {
+  background-color: #00AF34!important;
+}
+
+/deep/ div.bg-blue {
+  background-color: #00c3ff!important;
+}
+
+/deep/ div.bg-grey {
+  background-color: #d4d4d4!important;
+}
+
+/deep/ div.bg-deep {
+  background-color: #0000ff!important;
+}
+
+/deep/ div.bg-ocean {
+  background-color: #00c5ff!important;
+}
+
+/deep/ div.bg-light {
+  background-color: #a0eaff!important;
+}
+
+.hrz {
+  width: 70px;
+}
+
+.sz {
+  text-align: left;
+  width: 70px;
+}

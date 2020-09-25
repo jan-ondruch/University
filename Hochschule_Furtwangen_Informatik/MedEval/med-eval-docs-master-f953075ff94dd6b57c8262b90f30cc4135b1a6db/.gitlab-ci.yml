@@ -1,0 +1,7 @@
+compile_pdf:
+  image: aergus/latex
+  script:
+    - cd Documentation; latexmk -pdf main.tex
+  artifacts:
+    paths:
+      - Documentation/main.pdf

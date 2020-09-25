@@ -1,0 +1,11 @@
+.tag-status {
+  display: inline-block; 
+}
+
+.online {
+  color: #43A047;
+}
+
+.offline {
+  color: #fc0000;
+}

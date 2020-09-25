@@ -1,0 +1,143 @@
+<div class="page-wrapper container">
+
+  <!-- <h1>Settings</h1> -->
+
+  <ng-template #loading>
+    <div class="container loading-screen-text">
+      <div class="text-center">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <br>
+        Loading Settings...
+      </div>
+    </div>
+  </ng-template>
+
+  <div *ngIf="serverInfo; else loading">
+
+    <div class="row">
+      <div class="col-sm-6">
+
+        <h3>Server Settings</h3>
+        <hr>
+        <div *ngIf="recording, else change_settings">
+          <div class="alert alert-danger">
+            Recording is active, changing server settings is disabled.
+          </div>
+        </div>
+        <ng-template #change_settings>
+          <div *ngIf="serverInfo">
+            <form novalidate id="serverForm"
+                  [formGroup]="serverForm" (ngSubmit)="onEditServerSettings()">
+              <div class="row">
+                <div class="form-group col-sm-4">
+                  <p class="form-label">Server</p>
+                  <input
+                      type="text"
+                      class="form-control"
+                      formControlName="server"
+                      maxlength="60" 
+                      required
+                      placeholder="Server name">
+                  <div class="form-control-feedback"
+                       *ngIf="server.errors && (server.dirty || server.touched)">
+                    <p *ngIf="server.errors.required" class="required-field">
+                      This field is required
+                    </p>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-2">
+                    <p class="form-label">Port</p>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="port"
+                        maxlength="8" 
+                        required
+                        placeholder="Port number">
+                    <div class="form-control-feedback"
+                         *ngIf="port.errors && (port.dirty || port.touched)">
+                      <p *ngIf="port.errors.required" class="required-field">
+                        This field is required
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <p class="form-label">API key</p>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="api_key"
+                        maxlength="60"
+                        placeholder="API key">
+                    <div class="form-control-feedback"
+                         *ngIf="api_key.errors && (api_key.dirty || api_key.touched)">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-sm-4">
+                    <div class="submit-btn">
+                      <button 
+                          type="submit"
+                          form="serverForm"
+                          [disabled]="!serverForm.valid"
+                          class="btn btn-success">Edit & Save</button> &nbsp;
+                    </div>
+                  </div>
+                  <div class="col-sm-8">
+                    <div *ngIf="successfulEdit && edited" class="alert alert-success">
+                      Edit successful! The changes will propagate shortly.
+                    </div>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </ng-template>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <h3>Tags Information</h3>
+        <hr>
+        <div class="stats-header-margin">
+          <div class="row stats-header">
+            <div class="col-sm-2">
+              <p>tag id</p>
+            </div>
+            <div class="col-sm-3">
+              <p>status</p>
+            </div>
+            <div class="col-sm-7">
+              <p>battery level</p>
+            </div>
+          </div>
+
+          <div *ngFor="let ts of tagStatus">
+            <div class="row">
+              <div class="col-sm-2">
+                {{ ts.tag_id }}
+              </div>
+              <div class="col-sm-3">
+                <div *ngIf="ts.online; else offline">
+                  <p class="tag-status"><i class="fa fa-check online"></i> online</p>
+                </div>
+                <ng-template #offline>
+                  <p class="tag-status"><i class="fa fa-times offline"></i> offline</p>
+                </ng-template>
+              </div>
+              <div class="col-sm-7" style="padding-top: 6px !important">
+                <ngb-progressbar type="info" [value]="ts.battery">{{ ts.battery }}%</ngb-progressbar>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,9 @@
+.buttons-margin {
+  margin: 0px;
+  padding-bottom: 0px;
+  margin-top: 24px;
+}
+
+.alert-margin {
+  margin-top: -24px;
+}

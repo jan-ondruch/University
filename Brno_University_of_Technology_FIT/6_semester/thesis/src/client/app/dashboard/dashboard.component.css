@@ -1,0 +1,85 @@
+/* HR ZONES */
+
+.zones-wrapper {
+}
+
+.zones-wrapper p:nth-child(1) {
+  margin-bottom: 18px;
+}
+
+.zones-wrapper p {
+  text-transform: uppercase;
+  font-size: 12px;
+  text-align: center;
+}
+
+.metrics-wrapper {
+  padding-top: 16px;
+  text-align: center;
+  display: flex;
+}
+
+.zones {
+  display: flex;
+  margin: -16px 0px;
+}
+
+.zones p {
+  padding: 0px 6px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.zones ngb-progressbar {
+  width: 100% !important;
+}
+
+/deep/ div.bg-red {
+  background-color: #fc0000!important;
+}
+
+/deep/ div.bg-orange {
+  background-color: #ff9900!important;
+}
+
+/deep/ div.bg-green {
+  background-color: #00AF34!important;
+}
+
+/deep/ div.bg-blue {
+  background-color: #00c3ff!important;
+}
+
+/deep/ div.bg-grey {
+  background-color: #d4d4d4!important;
+}
+
+/deep/ div.bg-deep {
+  background-color: #0000ff!important;
+}
+
+/deep/ div.bg-ocean {
+  background-color: #00c5ff!important;
+}
+
+/deep/ div.bg-light {
+  background-color: #a0eaff!important;
+}
+
+.hrz {
+  width: 70px;
+}
+
+.sz {
+  text-align: left;
+  width: 70px;
+}
+
+/* DASHBOARD */
+.dashboard-data-wrapper {
+  margin: 2px 16px;
+}
+
+.heading-new-btn button {
+  margin-right: 16px;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="othello-client" default="run">
+
+    <path id="classpath">
+        <fileset dir="./lib" includes="**/*.jar"/>
+    </path>
+
+    <path id="application" location="dest-client/${ant.project.name}.jar"/>
+
+    <target name="clean">
+            <delete dir="build"/>
+    </target>
+    
+    <target name="compile" depends="clean">
+
+        
+        <!--downloading images -->
+        <exec executable="/bin/bash">
+            <arg value="./lib/get-libs.sh"/>
+        </exec>
+        
+
+        <!-- class compilation -->
+        <mkdir dir="build/classes"/>
+        <javac srcdir="./src" destdir="./build/classes" includeantruntime="false">
+        </javac>
+
+        <javadoc sourcepath="src" destdir="doc" />
+        
+        <!-- creation of the jar file -->
+        <jar destfile="dest-client/${ant.project.name}.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="main-class" value="ija.Reversi"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run">
+        <java jar="dest-client/${ant.project.name}.jar" dir="dest-client" fork="true"/>
+    </target>
+             
+</project>

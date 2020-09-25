@@ -1,0 +1,93 @@
+<div class="app">
+	<div *ngIf="this.router.url === '/login'; else home"></div>
+	<ng-template #home>
+
+	<div class="nav-side-menu">
+	    <div class="brand">IS Evidence řvp</div>
+	  
+	        <div class="menu-list">
+	  
+	            <ul id="menu-content" class="menu-content collapse out">
+	                <li>
+	                  <a routerLink="/dashboard" exact="true" routerLinkActive="active">
+	                  	Hledat
+	                  </a>
+	                </li>
+
+	                <li>
+	                  <a routerLink="/car-registration" routerLinkActive="active">
+	                  	Registrace vozidla
+	                  </a>
+	                </li>
+
+	                <!-- <li  data-toggle="collapse" data-target="#products">
+	                  <a> Změnit informace <span class="arrow"></span></a>
+	                </li>
+	                <ul class="sub-menu collapse" id="products">
+	                  <li><a routerLink="/find-person" routerLinkActive="active">Vyhledat osobu</a></li>
+	                </ul> -->
+
+	                <li>
+	                  <a routerLink="/history" routerLinkActive="active">
+	                  	Historie změn
+	                  </a>
+	                </li>
+	            </ul>
+	     </div>
+	</div>
+
+	<div class="navbar">
+		<li class="activePage" *ngIf="this.router.url === '/car-registration'">{{"Registrace vozidla"}}</li>
+		<li class="activePage" *ngIf="this.router.url === '/dashboard'">{{"Hledat"}}</li>
+		<li class="activePage" *ngIf="this.router.url === '/car'">{{"Vozidlo | 4L2 1719"}}</li>
+		<li class="activePage" *ngIf="this.router.url === '/person'">{{"Osoba | Petr Jareš"}}</li>
+		<li class="activePage" *ngIf="this.router.url === '/company'">{{"Firma | MotoJareš a.s."}}</li>
+		<li class="activePage" *ngIf="this.router.url === '/history'">{{"Historie změn"}}</li>
+  	<li class="alignRight icons">
+	  	<a routerLink="/login" exact="true" routerLinkActive="active">
+	  		<i class="fa fa-sign-out" aria-hidden="true"></i>
+	  	</a>
+  	</li>
+  	<li class="alignRight icons">
+  		<a (click)="changeMode()">
+  			<i class="fa fa-wrench" aria-hidden="true"></i>
+  		</a>
+  	</li>
+  	<li class="alignRight icons">
+  		<a data-toggle="modal" data-target="#myModal">
+  			<i class="fa fa-bug" aria-hidden="true"></i>
+  		</a>
+  	</li>
+  	<li class="alignRight">
+  		<i class="fa fa-user" aria-hidden="true"></i>
+			<a class="name">Květa Stará</a>
+  	</li>
+	</div>
+
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Nahlásit chybu</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="form-group">
+	          <textarea class="form-control" rows="5" id="comment" placeholder="Zde popište nalezenou chybu či závadu..."></textarea>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Nahlásit</button>
+	        <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">Zrušit</button>
+	      </div>
+	    </div>
+
+	  </div>
+	</div>
+
+	</ng-template>
+	<router-outlet></router-outlet>
+</div>

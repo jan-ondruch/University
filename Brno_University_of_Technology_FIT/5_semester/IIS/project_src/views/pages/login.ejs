@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+<div class="container">
+
+  <form id="loginForm" class="form-signin" action="/login-user" method="post">
+    <h3 class="form-signin-heading">Přihlášení do systému</h3>
+    <label for="inputUsername" class="sr-only">Přihlašovací jméno</label>
+    <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Uživatelské jméno" required autofocus value="" maxlength="10">
+    <label for="inputPassword" class="sr-only">Heslo</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Heslo" required value="" maxlength="10">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Přihlásit se</button>
+  </form>
+
+<div class="container">
+    <% var err_msg = err_msg || "" %>
+    <%if (err_msg.length > 0) { %>
+      <div id="loginErrorMessage">
+        <p><%= err_msg %></p>
+      </div>
+    <% } %>
+</div>
+
+<% include ../partials/scripts.ejs %>
+
+</body>
+</html>

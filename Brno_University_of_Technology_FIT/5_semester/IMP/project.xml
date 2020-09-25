@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project outputprefix="kblcd">
+
+    <!--  Project description -->
+    <name>Svetelne noviny</name>
+    <author>Jan Ondruch</author>
+    <authoremail>xondru14@stud.fit.vutbr.cz</authoremail>
+    <revision>20171204</revision>
+    <description>Svetelne noviny - projekt do predmetu IMP</description>
+
+    <!--  MCU part -->
+    <mcu>
+        <include>mcu/libs/keyboard/package.xml</include>
+        <include>mcu/libs/lcd/package.xml</include>
+        <file>main.c</file>
+    </mcu>
+
+    <!-- FPGA part -->
+    <fpga>
+        <include>fpga/ctrls/keyboard/package.xml</include>
+        <include>fpga/ctrls/lcd/package.xml</include>
+        <file>top_level.vhd</file>
+    </fpga>
+
+</project>

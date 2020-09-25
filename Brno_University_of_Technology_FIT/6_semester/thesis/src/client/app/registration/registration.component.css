@@ -1,0 +1,13 @@
+form {
+  width: 300px;
+  margin: 0 auto;
+  padding-top: 30vh;
+}
+
+form h2 {
+  text-align: center;
+}
+
+button {
+  width: 135px;
+}

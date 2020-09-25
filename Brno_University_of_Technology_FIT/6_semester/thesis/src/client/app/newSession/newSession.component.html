@@ -1,0 +1,113 @@
+<div class="page-wrapper">
+
+  <div class="container">
+
+    <!-- new session form -->
+    <div class="row">
+      <div class="col-sm-6">
+        <form novalidate id="newSessionForm"
+              [formGroup]="newSessionForm" (ngSubmit)="createSession()">
+          
+          <div class="form-group"
+               ngClass="{
+                     'has-error': !newSessionForm.get('sessionName').valid && newSessionForm.get('sessionName').touched,
+                     'has-feedback': !newSessionForm.get('sessionName').valid && newSessionForm.get('sessionName').touched
+                 }">
+              <input 
+                  type="text"
+                  class="form-control"
+                  formControlName="sessionName"
+                  maxlength="30" 
+                  required
+                  placeholder="Session name">
+              <div class="form-control-feedback"
+                   *ngIf="sessionName.errors && (sessionName.dirty || sessionName.touched)">
+                <p *ngIf="sessionName.errors.required" class="required-field">
+                  This field is required
+                </p>
+              </div>
+
+          </div>
+        </form>
+      </div>
+
+      <div class="col-sm-2">
+        <div class="submit-btn">
+          <button 
+              type="submit"
+              form="newSessionForm"
+              [disabled]="
+              newSessionForm.sessionName === '' ||
+              !newSessionForm.valid ||
+              selectedPlayers.length === 0"
+              class="btn btn-success">Start Session</button> &nbsp;
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div *ngIf="selectedPlayers.length === 0" class="alert alert-danger">
+          No player has been selected!
+        </div>
+      </div>
+
+    </div>
+
+    <!-- add players -->
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="container">
+            <h2>Players in the team</h2>
+            <button class="btn btn-info" (click)='addAllPlayers()'>Add all players</button>
+            <p class="change-on-click">Add player on click</p>
+              <div *ngIf="players">
+                <div *ngFor="let player of players">
+                  <div *ngIf="checkTagStatus(player.tag_id); else offlineTagAdd">
+                    <button (click)='addPlayer(player.player_id)' class="btn btn-success">
+                      {{ player.firstname }}
+                      {{ player.lastname }}
+                      | tag {{ player.tag_id }} | online <i class="fa fa-check"></i>
+                    </button>
+                  </div>
+                  <ng-template #offlineTagAdd>
+                    <button (click)='addPlayer(player.player_id)' class="btn btn-danger">
+                      {{ player.firstname }}
+                      {{ player.lastname }}
+                      | tag {{ player.tag_id }} | offline <i class="fa fa-times"></i>
+                    </button>
+                  </ng-template>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- remove players -->
+      <div class="col-sm-6">
+        <div class="container">
+            <h2>Selected players</h2>
+            <button class="btn btn-info" (click)='removeAllPlayers()'>Remove all players</button>
+            <p class="change-on-click">Remove player on click</p>
+              <div *ngIf="selectedPlayers">
+                <div *ngFor="let player of selectedPlayers">
+                  <div *ngIf="checkTagStatus(player.tag_id); else offlineTagRemove">
+                    <button (click)='removePlayer(player.player_id)' class="btn btn-success">
+                      {{ player.firstname }}
+                      {{ player.lastname }}
+                      | tag {{ player.tag_id }} | online <i class="fa fa-check"></i>
+                    </button>
+                  </div>
+                  <ng-template #offlineTagRemove>
+                    <button (click)='removePlayer(player.player_id)' class="btn btn-danger">
+                      {{ player.firstname }}
+                      {{ player.lastname }}
+                      | tag {{ player.tag_id }} | offline <i class="fa fa-times"></i>
+                    </button>
+                  </ng-template>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,386 @@
+<!-- pure html and bootstrap -->
+<div class="wrapper">
+<!--
+	<p>
+		VIN
+		SPZ (+ vymena tabulky za ztracenou / poskozenou...)
+		Kategorie vozidla (Firemní, Soukromé nebo Zaměstnanecké)
+		Druh vozidla (https://cs.wikipedia.org/wiki/Kategorie_vozidel)
+		Typ vozidla (Osobní, Tahač, Návěs, Autobus,  Nákladní, Přívěs, Vozidla v rostlinné výrobě, Tandemový přívěs, Motocykl nebo Jiné.)
+		Značka a obchodní označení
+		Barva vozidla (dropdown list)
+		Číslo technického průkazu
+		Číslo schválení technické způsobilosti
+		Pozn. : zvláštní výbava, povolené výjimky…
+		Účel využití vozidla (dropdown)
+		Vlastnik (jeden staci myslim)
+		Provozovatel (nwm jestli 1 nebo vice...)
+		Prevod vozidla -> zmena vlastnika nebo provozovatele
+		Vyřazeno: ano / ne, pokud ano, tak datum kdy bylo vyrazeno
+		Zanik: odstraneni vozidla z db -> jen se vypise, ze vozidlo bylo odstraneno a prepne se na hlavni stranku (dashboard)
+		Export dat -> vystaveni technickeho prukazu, vystaveni ORV (osvedceni o registraci vozidla)  modal window jednoduchy nafejkovat...
+		// mozno pridat "modal okno", jestli to myslite vazne to vymazani atd...
+	</p>
+
+	<form action="/dashboard" method="get">
+	<div class="row">
+	  <div class="col-md-6 mb-4">
+	    <label for="validationDefault01">First name</label>
+	    <input type="text" class="form-control" id="validationDefault01" placeholder="First name" value="Mark" required>
+	  </div>
+	  <div class="col-md-6 mb-4">
+	    <label for="validationDefault02">Last name</label>
+	    <input type="text" class="form-control" id="validationDefault02" placeholder="Last name" value="Otto" required>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 mb-4">
+	    <label for="validationDefault03">City</label>
+	    <input type="text" class="form-control" id="validationDefault03" placeholder="City" required>
+	    <div class="invalid-feedback">
+	      Please provide a valid city.
+	    </div>
+	  </div>
+	  <div class="col-md-4 mb-4">
+	    <label for="validationDefault04">State</label>
+	    <input type="text" class="form-control" id="validationDefault04" placeholder="State" required>
+	    <div class="invalid-feedback">
+	      Please provide a valid state.
+	    </div>
+	  </div>
+	  <div class="col-md-4 mb-4">
+	    <label for="validationDefault05">Zip</label>
+	    <input type="text" class="form-control" id="validationDefault05" placeholder="Zip" required>
+	    <div class="invalid-feedback">
+	      Please provide a valid zip.
+	    </div>
+	  </div>
+	</div>
+
+	<button class="btn btn-primary" type="submit" onclick="location.href = '/dashboard';">Submit form</button>
+	</form>
+-->
+	<div class="modal fade" id="zmenaspz" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="exampleModalLabel"></h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<input type="text" class="form-control" id="spzchange" placeholder="SPZ" maxlenght="8" >
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Zrušit</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Změnit</button><!-- asi by nebylo spatny nastavit aby se to fakt zmenilo, zatim nevim jak :D -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<form action="/dashboard" method="get">
+		<div class="row">
+			<div class="resultType">
+				<h4>Základní informace</h4>
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="spz">SPZ</label>
+				<input type="text" class="form-control" id="spz" value="4L2 1719" maxlenght="8">
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="znacka">Značka vozidla</label>
+				<input type="text" class="form-control" id="znacka" value="Porsche 911" disabled>
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="kategorie">Kategorie vozidla</label>
+				<input type="text" class="form-control" id="kategorie" value="M – motorová vozidla, která mají nejméně čtyři kola a používají se pro dopravu osob"  disabled>
+			</div>
+		</div>
+
+
+
+		<div class="row">
+			<div class="col-md-4 mb-4">
+				<label for="vin">VIN</label>
+				<input type="text" class="form-control" id="vin" value="LJCPCBLCX11000237" maxlenght="17" disabled>
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="typ">Typ vozidla</label>
+				<input type="text" class="form-control" id="typ" value="GT3 RS" disabled>
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="druh">Druh vozidla</label>
+				<input type="text" class="form-control" id="druh" value="Osobní automobil"  disabled>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2 mb-4">
+				<label for="bila">Barva vozidla</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1 mb-4">
+				<label class="form-control">
+					<input id="bila" name="radio" type="radio" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">bílá</span>
+				</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="zluta" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">žlutá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="oranzova" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">oranžová</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4"  style="">
+					<label class="form-control">
+						<input id="cervena" name="radio" type="radio" class="custom-control-input" checked>
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">červená</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="fialova" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">fialová</span>
+					</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="modra" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">modrá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+					  <input id="zelena" name="radio" type="radio" class="custom-control-input">
+					  <span class="custom-control-indicator"></span>
+					  <span class="custom-control-description">zelená</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+						<input id="seda" name="radio" type="radio" class="custom-control-input">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">šedá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+					  <input id="hneda" name="radio" type="radio" class="custom-control-input">
+					  <span class="custom-control-indicator"></span>
+					  <span class="custom-control-description">hnědá</span>
+					</label>
+			</div>
+			<div class="col-md-1 mb-4">
+					<label class="form-control">
+					  <input id="cerna" name="radio" type="radio" class="custom-control-input">
+					  <span class="custom-control-indicator"></span>
+					  <span class="custom-control-description">černá</span>
+					</label>
+			</div>
+		</div>
+
+		<div class="row" style="padding-top: 12px;">
+			<div class="col-md-4 mb-4">
+				<label for="technum">Číslo technického průkazu</label>
+				<input type="text" class="form-control" id="technum" value="UH 166067" disabled>
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="schvaleni">Číslo schválení technické způsobilosti</label>
+				<input type="text" class="form-control" id="schvaleni" value="OM53101EST17" disabled>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="resultType" style="padding-top: 12px">
+				<h4>Doplńující informace</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mb-4">
+				<label for="notes">Poznámky</label>
+				<input type="text" class="form-control" id="notes" value="keramické brzdové destičky">
+			</div>
+			<div class="col-md-4 mb-4">
+				<label for="druh">Účel využití vozidla</label>
+				<select id="druh" class="form-control" required>
+				  <option value="1">vozidlo taxislužby</option>
+				  <option value="2">silniční vozidlo s právem přednosti v jízdě</option>
+				  <option value="3">vozidlo půjčovny automobilů určené k nájmu</option>
+					<option selected value="4">vozidlo obecného užití</option>
+				</select>
+			</div>
+			<div class="col-md-4 mb-4" style="width: 200px">
+				<label for="vyrazeno">Vyřazeno z provozu</label>
+				<div class="radio" style="display: inline-block; padding-right: 8px">
+				  <label><input type="radio" name="optradio">ano</label>
+				</div>
+				<div class="radio" style="display: inline-block;">
+				  <label><input type="radio" name="optradio" checked="">ne</label>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="resultType" style="padding: 12px 0px">
+				<h4>osoby spojené s vozidlem</h4>
+			</div>
+			<div class="col-md-1 mb-4">
+				<h4>Vlastník</h4>
+				<i class="fa fa-user" aria-hidden="true" id="vlastnik"></i>
+				<a href="/person">Petr Novák</a>
+				<button style="margin-top: 8px" type="button" id="spzbutton" class="btn btn-primary" data-toggle="modal" data-target="#zmenavlastnika">
+					Změna vlastníka
+				</button>
+			</div>
+			<div class="col-md-1 mb-4">
+				<h4>Provozovatel</h4>
+				<i class="fa fa-user" aria-hidden="true" id="vlastnik"></i>
+				<a href="/person">Petr Novák</a>
+				<button style="margin-top: 8px" type="button" id="spzbutton" class="btn btn-primary" data-toggle="modal" data-target="#zmenavlastnika">
+					Změna provozovatele
+				</button>
+			</div>
+	 </div>
+
+	 <div class="modal fade" id="zmenavlastnika" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ 		<div class="modal-dialog" role="document">
+ 			<div class="modal-content">
+ 				<div class="modal-header">
+ 					<h3 class="modal-title" id="exampleModalLabel">Změna vlastníka</h3>
+ 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+ 						<span aria-hidden="true">&times;</span>
+ 					</button>
+ 				</div>
+ 				<div class="modal-body">
+ 					<input type="text" class="form-control" id="spzchange" placeholder="Rodné číslo / IČO"  >
+ 				</div>
+ 				<div class="modal-footer">
+ 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Zrušit</button>
+ 					<button type="button" class="btn btn-primary" data-dismiss="modal">Změnit</button>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+
+
+	<div class="resultType" style="margin-left: -16px; padding-top: 20px">
+		<h4>další akce</h4>
+	</div>
+	<div class="modal fade" id="vyradit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	 <div class="modal-dialog" role="document">
+		 <div class="modal-content">
+			 <div class="modal-header">
+				 <h3 class="modal-title" id="exampleModalLabel">Vyřazení z provozu</h3>
+				 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					 <span aria-hidden="true">&times;</span>
+				 </button>
+			 </div>
+			 <div class="modal-body">
+				 Opravdu chcete vyřadit vozidlo z provozu?
+			 </div>
+			 <div class="modal-footer">
+				 <button type="button" class="btn btn-secondary" data-dismiss="modal">Ne</button>
+				 <button type="button" class="btn btn-primary" data-dismiss="modal">Ano</button>
+			 </div>
+		 </div>
+	 </div>
+ </div>
+
+ <div class="row">
+	 <div class="col-md-2 mb-2">
+		 <label for="vyrazeno">Zánik vozidla</label>
+	 </div>
+	 <div class="col-md-2 mb-2">
+		 <label for="vyrazeno">Vystavení tech. průkazu</label>
+	 </div>
+	 <div class="col-md-2 mb-2">
+		 <label for="vyrazeno">Vystavení ORV</label>
+	 </div>
+ </div>
+
+ <div class="row">
+ 	<div class="col-md-2 mb-2">
+	 <button type="button" id="spzbutton" class="btn btn-primary" data-toggle="modal" data-target="#zanik">
+		 Zánik vozidla
+	 </button>
+ 	</div>
+	<div class="col-md-2 mb-2">
+	 <button type="button" id="spzbutton" class="btn btn-primary" >
+		 Vystavit
+	 </button>
+ 	</div>
+	<div class="col-md-2 mb-2">
+	 <button type="button" id="spzbutton" class="btn btn-primary">
+		 Vystavit
+	 </button>
+ 	</div>
+ </div>
+
+ <div class="modal fade" id="zanik" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title" id="exampleModalLabel">Zánik vozidla</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Opravdu chcete odstranit vozidlo z databáze?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Ne</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ok">Ano</button>
+			</div>
+		</div>
+	</div>
+ </div>
+
+ <div class="modal fade" id="ok" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title" id="exampleModalLabel">Zánik vozidla</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-success" role="alert">
+    			<strong>Vozidlo odstraněno</strong>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="location.href = '/dashboard';">OK</button>
+			</div>
+		</div>
+	</div>
+ </div>
+
+	</form>
+ <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin-top: 12px; float: right; margin-right: 100px">
+   Uložit změny
+ </button>
+ <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="margin-top: 12px; float: right; margin-right: 10px">
+   Zrušit změny
+ </button>
+
+</div>

@@ -1,0 +1,227 @@
+#!/bin/sh
+#wedi wrapper: text editor with an option of automatic file selection
+#Jan Ondruch (xondru14), sk. 32 BIB, 2014/2015
+#usage: wedi [FOLDER]
+#		wedi -m [FOLDER]
+#		wedi FILE
+#		wedi -l [FOLDER]
+#		wedi -b|-a DATE [FOLDER]
+#		
+#		for closer info read the assignment
+
+#script is executed as "wedi", since the path to this file is saved in $PATH
+
+#reseting opt values
+flag_m=false
+flag_l=false
+flag_a=false
+flag_b=false
+flag_file=false
+edit_before=false
+no_folder=true
+new_file=false
+
+if [ -z ${WEDI_RC} ]; then echo "WEDI_RC is unset" >&2; exit 1; fi #test if WEDI_RC is set
+export LC_ALL=C		#same working date for all OS
+
+#parsing arguments & dealing with optional arguments manually (not using getopts)
+while getopts :mla:b: opt; do
+		case "$opt" in
+        m)      flag_m=true;;	#the most edited file will be chosen
+		l)		flag_l=true;;
+		a)		flag_a=true;;
+		b)		flag_b=true;;
+        \?)     echo "Invalid option: -$OPTARG" >&2; exit 1;;
+		:)		echo "Option -$OPTARG requires an argument." >&2; exit 1;;
+        esac
+done
+
+#avoiding wrong flags options
+if [ "$flag_m" = true ] && [ "$flag_l" = true ]; then echo "Invalid options" >&2; exit 1; fi
+if [ "$flag_a" = true ] && [ "$flag_b" = true ]; then echo "Invalid options" >&2; exit 1; fi
+if [ "$flag_a" = true ] && [ "$flag_m" = true ]; then echo "Invalid options" >&2; exit 1; fi
+if [ "$flag_a" = true ] && [ "$flag_l" = true ]; then echo "Invalid options" >&2; exit 1; fi
+if [ "$flag_b" = true ] && [ "$flag_l" = true ]; then echo "Invalid options" >&2; exit 1; fi
+if [ "$flag_b" = true ] && [ "$flag_m" = true ]; then echo "Invalid options" >&2; exit 1; fi
+
+if [ $# -eq 0 ]; then DIRNAME="`pwd`"
+elif [ $# -eq 1 ]; then
+	if [ "$flag_m" = true ] || [ "$flag_l" = true ]; then DIRNAME="`pwd`"
+	else DIRNAME="$1"; fi
+elif [ $# -eq 2 ]; then
+	if [ "$flag_m" = true ] || [ "$flag_l" = true ]; then DIRNAME="$2"
+	elif [ "$flag_a" = true ] || [ "$flag_b" = true ]; then DIRNAME="`pwd`"; DATE="$2"
+	else echo "Invalid options" >&2; exit 1; fi
+elif [ $# -eq 3 ] && [ "$flag_a" = true ] || [ "$flag_b" = true ]; then DIRNAME="$3"; DATE="$2"
+else echo "Invalid options" >&2; exit 1; fi
+
+#process input date
+if [ "$flag_a" = true ] || [ "$flag_b" = true ]; then
+	D=`echo $DATE | grep '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$'`
+	if [ ! "$D" = "$DATE" ]; then echo "Wrong date format. Use YYYY-MM-DD." >&2; exit 1; fi
+fi
+
+#function for invoking editor
+editor () {
+	if [ "$new_file" = false ]; then FTE=`echo "$FTE" | cut -f1 -d\;`; fi
+	if [ -z ${EDITOR} ]; then
+		if [ -z ${VISUAL} ]; then echo "VISUAL and EDITOR are unset" >&2; exit 1;
+		else $VISUAL "$FTE"; fi
+	else $EDITOR "$FTE"; fi
+
+	if [ "$?" -ne "0" ]; then exit $?
+	else
+		DIRNAME="$FTE"
+		if [ -f "$DIRNAME" ]; then :
+    	else exit 1; fi 	#file was not created
+    fi
+}
+
+#if is a file/dir or none of it (1/2)
+if [ -d "$DIRNAME" ]; then flag_file=false
+elif [ -f "$DIRNAME" ]; then flag_file=true
+elif [ $# -eq 1 ]; then flag_file=true; new_file=true; FTE="$DIRNAME"; editor
+else echo "Invalid arguments" >&2; exit 1; fi
+
+#realpath does not exist on the mashine
+which realpath >/dev/null || {
+	echo "System utility realpath not found, install it to run the script" >&2
+	exit 1
+}
+if [ "$new_file" = false ]; then DIRNAME=`realpath "$DIRNAME"`; fi
+
+
+if [ "$flag_m" = true ] && [ "$flag_file" = true ]; then echo "Invalid options" >&2; exit 1
+elif [ "$flag_l" = true ] && [ "$flag_file" = true ]; then echo "Invalid options" >&2; exit 1
+elif [ "$flag_a" = true ] && [ "$flag_file" = true ]; then echo "Invalid options" >&2; exit 1
+elif [ "$flag_b" = true ] && [ "$flag_file" = true ]; then echo "Invalid options" >&2; exit 1; fi
+
+#no file specified (2)
+if [ "$flag_file" = false ]; then
+	#(3 -l option, listing files in $DIRNAME folder)
+	if [ "$flag_l" = true ]; then
+		IFS='
+		'	# make newlines the only separator (cause of tempo rary)
+		for line in `cut -f1 -d\; $WEDI_RC`; do line2=`echo "$line" | rev | cut -d'/' -f 2- | rev`
+			if [ "$DIRNAME" = "$line2" ] ; then
+				if [ -f "$line" ]; then	echo "$line" | rev | cut -d'/' -f1 | rev
+				else continue; fi
+			fi
+		done
+	exit 0; fi
+	#end if (3)
+
+	#check if was some file a folder edited, if not, it is an error (2.3)
+	if [ "$flag_m" = false ]; then
+		IFS='
+		'
+		for i in `cut -f1 -d\; $WEDI_RC | rev | cut -d'/' -f2 | rev`; do
+			if [ "`echo "$DIRNAME" | rev | cut -d'/' -f1 | rev`" = "$i" ]; then no_folder=false; fi
+		done
+		if [ "$no_folder" = true ]; then echo "No file has been edited in this folder yet" >&2; exit 1; fi
+	fi
+	#end of (2.3)
+
+	#sort files according their opening times, tac's them (emulated by sed)and for: if there has been edited a file in an entered folder [ADRESAR], it is taken and will be edited (passed to via function editor)
+	if [ "$flag_m" = true ]; then
+		FTE_path=`sort -n -t\; -k 3 $WEDI_RC`
+		FTE_path=`echo "$FTE_path" | sed '1!G;h;$!d'`
+		IFS='
+		'	# make newlines the only separator (cause of tempo rary)
+		for line in `echo "$FTE_path" | cut -f1 -d\;`; do line2=`echo "$line" | rev | cut -d'/' -f 2- | rev`
+			if [ "$DIRNAME" = "$line2" ] ; then
+				if [ -f "$line" ]; then	FTE="$line"	#FTE=FILE TO EDIT
+				else continue; fi
+				break
+			fi
+		done
+
+		if [ -z "$FTE" ]; then echo "No file has been edited in this folder yet" >&2; exit 1; fi
+		#calling function for editing files
+		editor
+	#end of -m flag
+
+	#take whole line, check if folder edited an the one in WEDI_RC match, if so, compare if the date entered is older than the one in WEDI_RC, if so, print out a name of that file
+	elif [ "$flag_a" = true ]; then
+		IFS='
+		'	# make newlines the only separator (cause of tempo rary)
+		while read line; do
+			full_line="$line"
+			line=`echo "$line" | cut -f1 -d\;`
+			line2=`echo "$line" | rev | cut -d'/' -f 2- | rev`
+			if [ "$DIRNAME" = "$line2" ] ; then
+				date_cmp=`echo "$full_line" | cut -f3 -d\;`
+
+				#convert dates to integer using sed
+				date_cmp=`echo "$date_cmp" | sed 's/[^0-9]//g'`
+				DATE=`echo "$DATE" | sed 's/[^0-9]//g'`
+
+				if [ "$date_cmp" -ge "$DATE" ]; then
+					if [ -f "$line" ]; then	echo "$line" | rev | cut -d'/' -f1 | rev
+					else continue; fi
+				fi
+			fi
+		done < $WEDI_RC
+		exit 0
+
+	elif [ "$flag_b" = true ]; then
+		IFS='
+		'	# make newlines the only separator (cause of tempo rary)
+		while read line; do
+			full_line="$line"
+			line=`echo "$line" | cut -f1 -d\;`
+			line2=`echo "$line" | rev | cut -d'/' -f 2- | rev`
+			if [ "$DIRNAME" = "$line2" ] ; then
+				date_cmp=`echo "$full_line" | cut -f3 -d\;`
+
+				#convert dates to integer using sed
+				date_cmp=`echo "$date_cmp" | sed 's/[^0-9]//g'`
+				DATE=`echo "$DATE" | sed 's/[^0-9]//g'`
+
+				if [ "$date_cmp" -le "$DATE" ]; then
+					if [ -f "$line" ]; then	echo "$line" | rev | cut -d'/' -f1 | rev
+					else continue; fi
+				fi
+			fi
+		done < $WEDI_RC
+		exit 0
+
+	# (1.1) choose the last file edited
+	else
+		FTE_path=`sort -n -t\; -k 2 $WEDI_RC`
+		FTE_path=`echo "$FTE_path" | sed '1!G;h;$!d'`
+		IFS='
+		'	# make newlines the only separator (cause of tempo rary)
+		for line in `echo "$FTE_path" | cut -f1 -d\;`; do line2=`echo "$line" | rev | cut -d'/' -f 2- | rev`
+			if [ "$DIRNAME" = "$line2" ] ; then
+				if [ -f "$line" ]; then	FTE="$line"; editor	#FTE=FILE TO EDIT
+				else continue; fi
+				break
+			fi
+		done
+		if [ -z "$FTE" ]; then echo "No file has been edited in this folder yet" >&2; exit 1; fi
+	fi
+else
+	if [ "$new_file" = false ]; then FTE="$DIRNAME"; editor; fi
+fi
+
+if [ "$new_file" = true ]; then DIRNAME=`realpath "$DIRNAME"`; fi
+
+#check if file was edited before (if yes, ++edit times), otherwise put it there
+while read line; do if [ "`echo $line | awk 'BEGIN { FS = ";" } ; { print $1 }'`" = "$DIRNAME" ]; then
+		edit_before=true
+
+		#incrementing number of times it has been edited
+		rec_o=`echo "$line" | cut -d ';' -f4`
+		k=`expr $rec_o + 1`
+
+		#replace date (actually replaces the whole line)
+		DIRNAME="`realpath "$DIRNAME"`;`date +%s`;`date +%F`;$k"
+		TMP=`grep -v "$line" $WEDI_RC`	#take all except the line to replace
+		#put the rest back (if there is) and add replaced line
+		if [ -z "$TMP" ]; then echo "$DIRNAME" > $WEDI_RC
+		else echo "$TMP" > $WEDI_RC; echo "$DIRNAME" >> $WEDI_RC; fi
+	fi
+done < $WEDI_RC
+
+if [ "$edit_before" = false ]; then echo "`realpath "$DIRNAME"`;`date +%s`;`date +%F`;1" >> $WEDI_RC; fi

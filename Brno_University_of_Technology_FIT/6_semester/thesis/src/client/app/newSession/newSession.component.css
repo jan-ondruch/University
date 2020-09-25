@@ -1,0 +1,26 @@
+.btn {
+  margin: 4px 0px !important;
+}
+
+.form-control-feedback {
+  padding-top: 8px;
+}
+
+.warning-alert-bottom {
+  position: fixed;
+  bottom: 5px;
+  left: 2%;
+  width: 96%;
+}
+
+.change-on-click {
+  color: #666;  
+}
+
+.submit-btn button {
+  margin: 0px !important;
+}
+
+ngb-alert {
+  padding: 4px 6px !important;
+}

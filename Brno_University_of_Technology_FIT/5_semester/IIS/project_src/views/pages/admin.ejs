@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+<div class="adminTableWrapper">
+  <div class="table-responsive">
+    <h3>Administrace účtů</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Typ účtu</th>
+          <th>Uživatelské jméno</th>
+          <th>Heslo</th>
+          <th>Upravit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% results.forEach(function(r) { %>
+        <tr>
+          <td><%= r.type %></td>
+          <td><%= r.username %></td>
+          <td><%= r.password %></td>
+          <td><button class="btn editbtn btn-info" data-toggle="modal" data-target="#editAccount">Upravit</button></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btns" data-toggle="modal" data-target="#addAccount">
+      Vytvořit nový účet
+    </button>
+    <a class="btn btn-primary btns" href="/login">Zpět na přihlášení</a>
+  </div>
+
+
+</div>
+
+<!-- Modal Edit Account -->
+<div class="modal fade" id="editAccount" tabindex="-1" role="dialog" aria-labelledby="editAccountLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAccountLabel">Upravit účet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Form -->
+        <form id="editFormAccount" action="/account" method="post">
+          <div class="row">
+            <div class="col">
+              <input type="text" name="type" class="form-control" required="true" readonly>
+            </div>
+          </div>
+          <div class="row editAccount">
+            <div class="col">
+              <input type="text" name="username" class="form-control" required="true" readonly>
+            </div>
+            <div class="col">
+              <input type="text" name="password" class="form-control" required="true" placeholder="Heslo" maxlength="10">
+            </div>
+          </div>
+          <button class="btn btn-primary editAccountFloating" type="submit" formaction="/edit-account">Upravit</button>
+          <button class="btn btn-danger editAccountFloating"  type="submit" formaction="/delete-account">Smazat účet</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+
+<!-- Modal Novy Ucet -->
+<div class="modal fade" id="addAccount" tabindex="-1" role="dialog" aria-labelledby="newAccountLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newAccountLabel">Vytvořit nový účet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Form -->
+        <form action="/new-account" id="newAccountForm" method="post">
+          <div class="row">
+            <div class="col">
+              <select class="form-control" name="type" form="newAccountForm" required="true">
+                <option value="lékař">lékař</option>
+                <option value="sestra">sestra</option>
+              </select>
+            </div>
+          </div>
+          <div class="row newAccount">
+            <div class="col">
+              <input type="text" name="username" class="form-control" required="true" placeholder="Uživatelské jméno" pattern="[a-z-A-Z-àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūřÿýżźñçďťňčšž∂ðÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØŘÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ ,.'-]{3,10}" title="Povoleny pouze alfanumerické znaky, délka 3-10 znaků." maxlength="10">
+            </div>
+            <div class="col">
+              <input type="text" name="password" class="form-control" required="true" placeholder="Heslo" pattern=".{5,}" title="Heslo musí obahovat alespoň 5 znaků." maxlength="10">
+            </div>
+          </div>
+          <button class="btn btn-primary newAccountFloating" type="submit">Vytvořit účet</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% include ../partials/scripts.ejs %>
+
+<script>
+  $(document).ready(function () {
+    // add columens from a table to a modal
+    $('.editbtn').click(function () {
+      var currentTD = $(this).parents('tr').find('td');
+      currentTD.splice(-1,1); // remove 'Edit'  
+      var targetInput = $("#editFormAccount .form-control");
+      var i = 0;
+      $.each(currentTD, function () {
+        targetInput[i].value = $(this).text();
+        i++;
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

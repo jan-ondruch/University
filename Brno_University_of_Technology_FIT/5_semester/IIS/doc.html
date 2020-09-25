@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Ordinace praktického lékaře</h1>
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Jan Ondruch
+		<a href="mailto:xondru14@stud.fit.vutbr.cz">xondu14@stud.fit.vutbr.cz</a> -
+	vše
+	</dd>
+	<dd>Richard Činčura
+		<a href="mailto:xcincu00@stud.fit.vutbr.cz">xcincu00@stud.fit.vutbr.cz</a> - 
+	nic (ukončil studium)
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="https://ordinace-praktickeho-lekare.herokuapp.com">https://ordinace-praktickeho-lekare.herokuapp.com</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>admin</td><td>heslo</td><td>Administrátor</td></tr>
+<tr><td>lekar</td><td>heslo</td><td>Lékař</td></tr>
+<tr><td>sestra</td><td>heslo</td><td>Sestra</td></tr>
+</table>
+
+<h2>Implementace</h2>
+<p>Jelikož implementace proběhla s využitím <i>node.js</i> a "šablonovacího" jazyka (templating language) <i>ejs</i>, 
+byly jednotlivé části aplikace rozděleny do šablon. Pro login slouží např. šablona <i>login.ejs</i>, pro novou návštěvu pacienta 
+<i>visits.ejs</i> apod.. Komunikace mezi backendem programu (<i>node.js</i>) a frontendem (<i>html</i> + <i>ejs</i>) je vyřešená 
+právě pomocí <i>ejs</i> a volání <i>AJAX</i>u. Pro organizaci aplikace do mvc modelu byl na backendu využit framework <i>Express.js</i>. 
+Pro ukládání dat byla použita databáze <i>MySQL</i>, pro jednotlivá sezení uživatelů aplikace využívá sessions (sezení). Prevence
+proti XSS byla zajištěna balíčkem <i>sanitizer</i>. Mezi další pomocné nástroje na frontendu patří <i>Bootstrap</i>, <i>CSS</i> 
+a <i>jQuery</i>.
+</p>
+Během implementace došlo k několika úpravám jak v návrhu ER diagramu, tak i v use-case diagramu. Všechny tyto změny napomohly výslednou
+aplikaci sestavit tak, jak by v ordinaci skutečně fungovala.
+<br></br>
+Návrh databáze (oproti návrhu předešlému) uvažuje externí vyšetření vázána na návštěvu pacienta a ne na pacienta samotného. 
+Tato změna vyplývá z reálných případů použití, kdy pacient nejprve dojde k lékaři, který pacienta pošle za odborníkem. 
+Navíc došlo ke zrušení tabulky <i>Lékařský případ</i>, která v návrhu nedávala smysl. Pro léky, výkony a pojišťovny byly navíc 
+přidány číselníky, ze kterých může lékař nebo sestra vybírat.
+<br></br>
+Use-case diagram byl pozměněn tak, že lékař faktury nevytváří manuálně, ty jsou však za něj generovány automaticky při každé návštěvě,
+během které byly provedeny nějaké výkony. Jedna faktura obsahuje součet částek výkonů provedených na dané návštěvě. Částky výkonů
+jsou pak obsaženy v číselníku <i>template_executions</i>. Další změna spočívá v přesunu akce evidence výkonu a předepsaných léků 
+od sestry k lékaři - tyto akce provádí sám lékař během návštěvy pacienta (sestře by tohle umožňeno být nemělo, jelikož nemá 
+dostatečnou kvalifikaci). Taktéž plánování očkování a prohlídek není prováděno zcela automaticky - variabilita pravidelností prohlídek
+a očkování se u každého pacienta téměř vždy liší a pacienti si data a časy vybírají sami (po konzultaci se sestrou). Řešením je tedy
+ponechání plánování na sestře, která po domluvě s pacientem následující prohlídku či očkování uloží do systému jako "Naplánovanou
+prohlídku / očkování". Prvotní návrh v use-case diagramu tedy nereflektoval realitu, pravidelné očkování řízené časem by dávalo snad 
+jen smysl u kojenců, kdy se během prvních měsíců provádí mnoho očkování, která se pro jednotlivé děti neliší.
+<br></br>
+Pokud nastane akutní případ u cizího pacienta, je nutno tohoto pacienta nejprve registrovat (funkce vytvoření nového pacienta). Není
+totiž možné někoho ošetřovat, aniž by o tomto vyšetření nebyl někde uložen záznam.
+<br></br>
+Do aplikace bylo přidáno několik redundantních popisků a značení pro vyšší přehlednost a rychlejší orientaci. 
+<p>
+
+<h2>Instalace</h2>
+<ul>
+<li>Aplikace byla nainstalována s využitím cloudové platformy (PaaS) Heroku</li>
+<li>Instalace byla provedena podle <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">tohoto návodu</a></li>
+<li>K lokální instalaci je potřeba mít nainstalovaný <i>node.js</i> verze 6 a vyšší (pro nižší verze není správná funkčnost zaručena)</li>
+<li>Dále je potřeba mít nainstalovaný nástroj <i>Heroku</i> a </i>npm</i> verze 5.3+ pro instalaci potřebných modulů a také pro spuštění aplikace</li>
+<li>Po konfiguraci všech potřebných knihoven a nástrojů je potřeba moduly nainstalovat příkazem <i>npm install</i></li>
+<li>Lokální spuštění aplikace se vykoná příkazem <i>npm start</i></li>
+<li>Aplikace je poté dostupná na <i>localhost:5000</i> (port je možno změnit)</li>
+<li>MySQL databáze (s formátem úložiště dat <i>InnoDB</i>) je taktéž spravována skrze Heroku (inicializace, správa, apod.)</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Aplikace splňuje všechny body zadání, při testování nebyly odhaleny žádné závažné nedostatky.</p>
+
+</body>
+</html>

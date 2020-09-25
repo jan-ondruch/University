@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: proj4.aux
+The style file: czechiso.bst
+Database file #1: proj4.bib
+Warning--empty title in WIKIbooks
+Warning--empty year in WIKIbooks
+Warning--empty year in WIKIbooks
+Warning--empty title in Strajt:LaTeX_pro_zacatecniky
+Warning--empty year in Strajt:LaTeX_pro_zacatecniky
+Warning--empty year in Strajt:LaTeX_pro_zacatecniky
+Warning--empty title in Svamberg:Jak_na_LaTeX
+Warning--empty year in Svamberg:Jak_na_LaTeX
+Warning--empty year in Svamberg:Jak_na_LaTeX
+You've used 10 entries,
+            2899 wiz_defined-function locations,
+            690 strings with 6309 characters,
+and the built_in function-call counts, 3373 in all, are:
+= -- 312
+> -- 121
+< -- 12
++ -- 43
+- -- 33
+* -- 207
+:= -- 581
+add.period$ -- 40
+call.type$ -- 10
+change.case$ -- 32
+chr.to.int$ -- 10
+cite$ -- 29
+duplicate$ -- 191
+empty$ -- 305
+format.name$ -- 56
+if$ -- 699
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 9
+newline$ -- 64
+num.names$ -- 50
+pop$ -- 88
+preamble$ -- 1
+purify$ -- 21
+quote$ -- 0
+skip$ -- 113
+stack$ -- 0
+substring$ -- 47
+swap$ -- 10
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 100
+warning$ -- 9
+while$ -- 32
+width$ -- 0
+write$ -- 144
+(There were 9 warnings)

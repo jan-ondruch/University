@@ -1,0 +1,255 @@
+<!-- pure html and bootstrap -->
+<!-- write only inside of the .wrapper class, otherwise the formatting will get fucked -->
+<div class="wrapper">
+<!--
+	<ul>
+		<p>Seznam polozek, ktere zde budou:</p>
+		<li>Jmeno a prijemni</li>
+		<li>Adresa</li>
+		<li>Rodne cislo</li>
+		<li>Prestupky - pocet + popis; pridat / zaskrnout zaplaceni / editovat</li>
+		<li>Vozidla ve vlastnictvi: pridat / editovat / odstranit</li>
+		<li>Provozuje vozidla: pridat / editovat / odstranit</li>
+		<li>Cislo ridicskeho prukazu</li>
+		<li>Neco dalsiho?</li>
+		<br>
+		<li>jmeno, adresa, rodne cislo nebudou editovatelne ("uz je tahame z jine db"), ostatni ano = "kvazi editovatelne, realne se zadna db nepouziva..."</li>
+		<li>Z bootstrapu se muze hodit: modal, forms, list group mozna atd... (http://getbootstrap.com/docs/4.0/components/modal/)</li>
+		<li>Mozne udelat linky napr. z vlastnika vozidla na stranku '/person', at tam je urcita dynamika...</li>
+		<li>Jeden muze dodelat vsechny tyhle forms a funkcionalitu a druhy muze udelat stylizaci (cele aplikace / whatever...)</li>
+		<li>Pokud mate jine napady / predstavu / whatever proste, tak to klidne zmente, tohle je jen navrh, co by to mohlo obsahovat...</li>
+		<li>Jestli nebude neco fungovat / nebo necemu nebudete rozumet, dejte mi vedet a mrknem na to, urcite ta kostra neni bug / bullet proof :D</li>
+	</ul>
+
+	<!-- jQuery example
+	<h1 class="title" style="display:none">
+	  {{title}}
+	</h1>
+	<button (click)="toggleTitle()"> ukazka jQuery - click me!</button>
+
+	<form action="/dashboard" method="get">
+	<div class="row">
+	  <div class="col-md-6 mb-3">
+	    <label for="validationDefault01">First name</label>
+	    <input type="text" class="form-control" id="validationDefault01" placeholder="First name" value="Mark" required>
+	  </div>
+	  <div class="col-md-6 mb-3">
+	    <label for="validationDefault02">Last name</label>
+	    <input type="text" class="form-control" id="validationDefault02" placeholder="Last name" value="Otto" required>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 mb-3">
+	    <label for="validationDefault03">City</label>
+	    <input type="text" class="form-control" id="validationDefault03" placeholder="City" required>
+	    <div class="invalid-feedback">
+	      Please provide a valid city.
+	    </div>
+	  </div>
+	  <div class="col-md-4 mb-3">
+	    <label for="validationDefault04">State</label>
+	    <input type="text" class="form-control" id="validationDefault04" placeholder="State" required>
+	    <div class="invalid-feedback">
+	      Please provide a valid state.
+	    </div>
+	  </div>
+	  <div class="col-md-4 mb-3">
+	    <label for="validationDefault05">Zip</label>
+	    <input type="text" class="form-control" id="validationDefault05" placeholder="Zip" required>
+	    <div class="invalid-feedback">
+	      Please provide a valid zip.
+	    </div>
+	  </div>
+	</div>
+
+	<button class="btn btn-primary" type="submit" onclick="location.href = '/dashboard';">Submit form</button>
+	</form>
+ -->
+ <form action="/dashboard" method="get">
+	 <div class="row">
+		 <div class="resultType">
+		 	<h4>osobní informace</h4>
+		 </div>
+	 	<div class="col-md-4 mb-3">
+	 		<label for="jmeno">Jméno</label>
+	 		<input type="text" class="form-control" id="jmeno"  value="Petr" disabled>
+	 	</div>
+		<div class="col-md-4 mb-3">
+	 		<label for="prijmeni">Příjmení</label>
+	 		<input type="text" class="form-control" id="prijmeni"  value="Jareš" disabled>
+	 	</div>
+		 <div class="col-md-4 mb-3" style="width: 140px;">
+			 <label for="rc">Rodné číslo</label>
+			 <input type="text" class="form-control" id="rc" value="820412/1234" disabled>
+		 </div>
+	 </div>
+
+	 <div class="row">
+		 <div class="col-md-4 mb-3">
+			 <label for="adresa">Adresa</label>
+			 <input type="text" class="form-control" id="adresa"  value="Novoměstská 12" disabled>
+		 </div>
+		 <div class="col-md-4 mb-3">
+			 <label for="mesto">Město</label>
+			 <input type="text" class="form-control" id="mesto"  value="Brno" disabled>
+		 </div>
+		 <div class="col-md-4 mb-3" style="width: 100px;">
+ 	    <label for="psc">PSČ</label>
+ 	    <input type="text" class="form-control" id="psc" value="612 00" disabled>
+ 	  </div>
+	 </div>
+
+	 <div class="row">
+		 <div class="col-md-4 mb-3" style="width: 200px;">
+			 <label for="ridicak">Číslo řidičského průkazu</label>
+			 <input type="text" class="form-control" id="ridicak" value="654987129874" disabled>
+		 </div>
+	 </div>
+
+
+	 <div class="row sprava">
+		 <div class="resultType">
+		 	<h4>přestupky a vozidla</h4>
+		 </div>
+		 <div class="col-md-4 mb-3">
+			 <table class="table table-reflow">
+			   <thead>
+			     <tr>
+			       <th>#</th>
+			       <th>Přestupek</th>
+						 <th>Zaplaceno</th>
+			     </tr>
+			   </thead>
+			   <tbody>
+			     <tr>
+			       <th scope="row">1</th>
+			       <td>Překročení rychlosti v obci (1-20km)</td>
+						 <td>
+							 <input type="checkbox" class="custom-control-input"checked disabled>
+						 </td>
+					 </tr>
+			     <tr>
+			       <th scope="row">2</th>
+			       <td>Nepovolené parkování</td>
+						 <td>
+							 <input type="checkbox" class="custom-control-input">
+						 </td>
+			     </tr>
+			     <tr>
+			       <th scope="row">3</th>
+			       <td>Průjezd křižovatkou na červenou</td>
+						 <td>
+							 <input type="checkbox" class="custom-control-input"checked disabled>
+						 </td>
+			     </tr>
+	          <tr>
+	            <th scope="row">4</th>
+	            <td>Nepovolená velikost disků</td>
+	     			 <td>
+	     				 <input type="checkbox" class="custom-control-input" disabled>
+	     			 </td>
+	          </tr>
+			   </tbody>
+			 </table>
+		 </div>
+
+			 <div class="col-md-4 mb-3">
+				 <table class="table table-reflow">
+				   <thead>
+				     <tr>
+				       <th>#</th>
+				       <th>Vozidla ve vlastnictví</th>
+							 <th>Upravit</th>
+				     </tr>
+				   </thead>
+				   <tbody>
+				     <tr>
+				       <th scope="row">1</th>
+							 <td>
+								 <i class="fa fa-car" aria-hidden="true"></i>
+							 		<a href="/car">LJCPCBLCX11000237</a>
+							</td>
+							 <td>
+								 <button type="button" class="btn btn-primary" data-toggle="modal">
+	 		            <a href="/car"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+	 		          </button>
+							 </td>
+						 </tr>
+				   </tbody>
+				 </table>
+			 </div>
+
+			 <div class="col-md-4 mb-3">
+				 <table class="table table-reflow">
+				   <thead>
+				     <tr>
+				       <th>#</th>
+				       <th>Provozovatel vozidel</th>
+							 <th>Upravit</th>
+				     </tr>
+				   </thead>
+				   <tbody>
+				     <tr>
+				       <th scope="row">1</th>
+				       <td>
+								 <i class="fa fa-car" aria-hidden="true"></i>
+							 		<a href="/car">LJCPCBLCX11000237</a>
+							</td>
+							 <td>
+								 <button type="button" class="btn btn-primary" data-toggle="modal">
+	 		            <a href="/car"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+	 		          </button>
+							 </td>
+						 </tr>
+						 <tr>
+				       <th scope="row">2</th>
+							 <td>
+								 <i class="fa fa-car" aria-hidden="true"></i>
+							 		<a href="/car">LUDKXBLCX11000237</a>
+							</td>
+							 <td>
+								 <button type="button" class="btn btn-primary" data-toggle="modal">
+	 		            <a href="/car"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+	 		          </button>
+							 </td>
+						 </tr>
+				   </tbody>
+				 </table>
+			 </div>
+
+	 </div>
+
+
+	 <!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin-top: 12px; float: right; margin-right: 100px">
+	  Uložit změny
+	</button>
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="margin-top: 12px; float: right; margin-right: 10px">
+	  Zrušit změny
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel"></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+					Opravdu chcete uložit změny?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Ne</button>
+	        <button type="button" class="btn btn-primary" onclick="location.href = '/dashboard';">Ano</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+ </form>
+
+
+</div>

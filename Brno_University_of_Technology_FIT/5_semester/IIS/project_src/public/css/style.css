@@ -1,0 +1,279 @@
+/* GENERAL */
+.form-group .required .control-label:after {
+  content:"*";color:red;
+}
+
+input::-webkit-calendar-picker-indicator {
+  display: none;/* remove default arrow */
+}
+.myarrow:after {
+    content: url(http://s25.postimg.org/6k40u5hcr/arrow.png);
+    margin-left: -20px; 
+    padding: .1em;
+    pointer-events:none;
+}
+
+/* END OF GENERAL */
+
+/* LOGIN PAGE */
+
+#loginForm {
+	width: 300px;
+	margin: 0 auto;
+}
+
+#loginForm input {
+	margin: 4px 0px;
+}
+
+#loginForm button {
+	margin-top: 8px;
+}
+
+#loginForm h3 {
+	text-align: center;
+	padding-bottom: 4px;
+}
+
+#loginErrorMessage {
+	margin: 0 auto;
+	text-align: center;
+	font-size: 1.5em;
+	margin-top: 4vh;
+	color: #cc0000
+}
+
+.form-signin-heading {
+	padding-top: 24vh;
+}
+
+/* END OF LOGIN PAGE */
+
+
+/* ADMIN PAGE */
+
+.adminTableWrapper {
+	text-align: center;
+}
+
+.adminTableWrapper .table-responsive {
+	width: 460px;
+	padding-top: 24vh;
+	margin: 0 auto;
+}
+
+.adminTableWrapper .btns {
+  margin-right:5px;
+}
+
+.newAccountFloating {
+	float: right;
+}
+
+.newAccount input {
+	margin: 4px 0;
+}
+
+.editAccountFloating {
+	float: right;
+	margin-left: 4px;
+}
+
+.editAccount input {
+	margin: 4px 0;
+}
+
+/* END OF ADMIN PAGE */
+
+
+/* HOME PAGE */
+
+.searchFormBar {
+	padding: 0px 32px;
+	margin-top: 16px;
+	float:left;
+	padding-bottom: 16px; 
+}
+
+.headerHome {
+	padding-right: 64px;
+}
+
+.searchFormBar * {
+	display: inline;
+}
+
+.searchFormBar input {
+	margin: 4px;
+}
+
+.searchFormBar p {
+	font-weight: bold;
+}
+
+.addPatientBtn {
+	margin-top: 16px;
+	float: right;
+	margin-right: 32px;
+}
+
+/* add patient */
+.modal-header p {
+	padding-top: 14px;
+}
+
+.addPatientModal button {
+	float: right;
+}
+
+.editPatientButtons button {
+	float: right;
+	display: inline-block;
+	margin-left: 4px;
+}
+
+/* END OF HOME PAGE */
+
+
+/* NAVBAR */
+
+.navbar a {
+	padding: 0 16px;
+}
+
+.navbar .mr-auto a {
+	font-size: 20px;
+}
+
+.navbar i {
+	padding-right: 4px;
+}
+
+.navbar-right form {
+	display: inline;
+}
+
+/* END OF NAVBAR */
+
+
+/* NEW-VISIT */
+
+.patient * {
+	display: inline-block;
+	padding-top: 4px;
+	padding-bottom: 8px;
+}
+
+.patient i {
+	font-size: 42px;
+	padding-left: 32px;
+}
+
+.patient button {
+	float: right;
+	padding-top: 8px;
+	margin-top: 11px;
+	margin-right: 16px;
+}
+
+textarea {
+  resize: none;
+}
+
+.visit {
+	padding: 16px;
+}
+
+.visit_1 {
+	background-color: #f2f2f2;
+}
+
+.modal-header {
+	text-align: center;
+}
+
+.limit {
+	color: #cc0000;
+	display: none;
+}
+
+.pacName {
+	padding: 4px;
+	border-radius: 4px;
+	background-color: #fff;
+	margin-left: 32px;
+	margin-bottom: 4px;
+}
+
+.pacName i {
+	margin: 0;
+	padding: 4px;
+}
+
+.visitHeader {
+	color: #333;
+	margin-left: 32px;
+	padding: 4px;
+	border-radius: 2px;
+	background-color: #fff;
+};
+
+/* END OF NEW-VISIT */
+
+
+/* INVOICES */
+
+/* END OF INVOICES*/
+
+
+/* VISITS */
+
+#dateValidity {
+	color: #cc0000;
+}
+
+.historyHeader * {
+	display: inline-block;
+}
+
+.jumbotron {
+	padding: 16px;
+	margin: 4px 0px;
+}
+
+.container .inside {
+	background-color: #f2f2f2;
+	padding: 10px;
+}
+
+.container .inside .row {
+	padding: 4px;
+}
+
+.panel-default:hover {
+	background-color: #5bc0de;
+}
+
+.datetimelabel {
+	padding-top: 8px;
+	padding-right: 4px;
+}
+
+.drugsBox {
+	display: inline-block;
+	padding: 0px 12px;
+}
+.visitsTableHeader {
+	background-color: #fff;
+	border: 1px solid #f2f2f2;
+}
+
+.visitsTableHeader h4 {
+	display: inline;
+}
+
+.visitsTableHeader h4:nth-child(2) {
+	float: right;
+}
+
+/* END OF VISITS */

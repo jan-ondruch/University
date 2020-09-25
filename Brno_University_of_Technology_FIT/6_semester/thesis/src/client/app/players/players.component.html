@@ -1,0 +1,428 @@
+<div class="page-wrapper container">
+
+  <ng-template #loading>
+    <div class="container loading-screen-text">
+      <div class="text-center">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <br>
+        Loading Players...
+      </div>
+    </div>
+  </ng-template>
+
+    <div *ngIf="players; else loading">
+
+    <div class="row">
+      <div class="col-sm-6">
+
+        <div *ngIf="recording, else manage_players">
+          <h3>Selected Player - View/Edit</h3>
+          <hr>
+          <div class="alert alert-danger">
+            Recording is active, players modification is disabled.
+          </div>
+        </div>
+        <ng-template #manage_players>
+      
+          <!-- view switch -->
+          <div *ngIf="view === 'edit'; then edit"></div>
+          <div *ngIf="view === 'add'; then add"></div>
+
+
+          <!-- edit / view player -->
+          <ng-template #edit>
+
+            <div class="heading-new-btn">
+              <h3>Selected Player - View/Edit</h3>
+              <button (click)='initAddForm()'
+                  class="btn btn-success">New Player</button>
+            </div>
+            
+            <div *ngIf="selectedPlayer">
+              <hr>
+              <form novalidate id="editPlayerForm"
+                    [formGroup]="editPlayerForm">
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p class="form-label">Firstname</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="editFirstname"
+                          maxlength="40"
+                          required
+                          placeholder="Firstname">
+                      <div class="form-control-feedback"
+                           *ngIf="editFirstname.errors && (editFirstname.dirty || editFirstname.touched)">
+                        <p *ngIf="editFirstname.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="editFirstname.errors.pattern" class="required-field">
+                          Only letters are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p class="form-label">Lastname</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="editLastname"
+                          maxlength="40"
+                          required
+                          placeholder="Lastname">
+                      <div class="form-control-feedback"
+                           *ngIf="editLastname.errors && (editLastname.dirty || editLastname.touched)">
+                        <p *ngIf="editLastname.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="editLastname.errors.pattern" class="required-field">
+                          Only letters are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Year</p>
+                      <select 
+                        formControlName="editYear" 
+                        class="form-control"
+                        required>
+                        <option *ngFor='let x of years' [value]="x">{{ x }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Month</p>
+                      <select 
+                        formControlName="editMonth" 
+                        class="form-control"
+                        required>
+                        <option *ngFor='let x of months' [value]="x">{{ x }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Day</p>
+                      <select 
+                        formControlName="editDay" 
+                        class="form-control"
+                        required>
+                        <option *ngFor='let x of days' [value]="x">{{ x }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Weight</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="editWeight"
+                          maxlength="3"
+                          required
+                          placeholder="Weight">
+                      <div class="form-control-feedback"
+                           *ngIf="editWeight.errors && (editWeight.dirty || editWeight.touched)">
+                        <p *ngIf="editWeight.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="editWeight.errors.min" class="required-field">
+                          The number is too low
+                        </p>
+                        <p *ngIf="editWeight.errors.max" class="required-field">
+                          The number is too high
+                        </p>
+                        <p *ngIf="editWeight.errors.pattern" class="required-field">
+                          Only numbers are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Tag</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="editTagId"
+                          maxlength="3"
+                          required
+                          placeholder="Tag">
+                      <div class="form-control-feedback"
+                           *ngIf="editTagId.errors && (editTagId.dirty || editTagId.touched)">
+                        <p *ngIf="editTagId.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="editTagId.errors.pattern" class="required-field">
+                          Only numbers are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-2">
+                    <div class="submit-btn buttons-margin">
+                      <button 
+                          type="submit"
+                          (click)="onEditPlayer()"
+                          [disabled]="!editPlayerForm.valid"
+                          class="btn btn-success">Edit & Save</button> &nbsp;
+                    </div>
+                  </div>
+
+                  <div class="col-sm-2">
+                    <div class="submit-btn buttons-margin">
+                      <button 
+                          (click)='open(content)'
+                          class="btn btn-danger">Delete</button> &nbsp;
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="successfulEdit && edited" class="alert alert-success">
+                      Edit successful!
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="successfulAdd && added" class="alert alert-success">
+                      New player has been successfuly adeed!
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-8 alert-margin">
+                    <div *ngIf="successfulDelete && deleted" class="alert alert-success">
+                      Player has been successfuly deleted!
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </ng-template>
+
+
+          <!-- add player -->
+          <ng-template #add>
+
+            <div class="heading-new-btn">
+              <h3>New Player - Add</h3>
+              <button 
+                class="btn btn-default" (click)='onCancelNewPlayerClick()'>Cancel</button>
+            </div>
+            
+            <div *ngIf="selectedPlayer">
+              <hr>
+              <form novalidate id="addPlayerForm"
+                    [formGroup]="addPlayerForm" (ngSubmit)="onAddPlayer()">
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p class="form-label">Firstname</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="addFirstname"
+                          maxlength="40"
+                          required
+                          placeholder="Firstname">
+                      <div class="form-control-feedback"
+                           *ngIf="addFirstname.errors && (addFirstname.dirty || addFirstname.touched)">
+                        <p *ngIf="addFirstname.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="addFirstname.errors.pattern" class="required-field">
+                          Only letters are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <p class="form-label">Lastname</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="addLastname"
+                          maxlength="40"
+                          required
+                          placeholder="Lastname">
+                      <div class="form-control-feedback"
+                           *ngIf="addLastname.errors && (addLastname.dirty || addLastname.touched)">
+                        <p *ngIf="addLastname.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="addLastname.errors.pattern" class="required-field">
+                          Only letters are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Year</p>
+                      <select 
+                        formControlName="addYear" 
+                        class="form-control"
+                        required>
+                        <option *ngFor='let x of years' [value]="x">{{ x }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Month</p>
+                      <select 
+                        formControlName="addMonth" 
+                        class="form-control"
+                        required>
+                        <option *ngFor='let x of months' [value]="x">{{ x }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Day</p>
+                      <select 
+                        formControlName="addDay" 
+                        class="form-control"
+                        required>
+                        <option *ngFor='let x of days' [value]="x">{{ x }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Weight</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="addWeight"
+                          maxlength="3"
+                          required
+                          placeholder="Weight">
+                      <div class="form-control-feedback"
+                           *ngIf="addWeight.errors && (addWeight.dirty || addWeight.touched)">
+                        <p *ngIf="addWeight.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="addWeight.errors.min" class="required-field">
+                          The number is too low
+                        </p>
+                        <p *ngIf="addWeight.errors.max" class="required-field">
+                          The number is too high
+                        </p>
+                        <p *ngIf="addWeight.errors.pattern" class="required-field">
+                          Only numbers are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <p class="form-label">Tag</p>
+                      <input 
+                          type="text"
+                          class="form-control"
+                          formControlName="addTagId"
+                          maxlength="3"
+                          required
+                          placeholder="Tag">
+                      <div class="form-control-feedback"
+                           *ngIf="addTagId.errors && (addTagId.dirty || addTagId.touched)">
+                        <p *ngIf="addTagId.errors.required" class="required-field">
+                          This field is required
+                        </p>
+                        <p *ngIf="addTagId.errors.pattern" class="required-field">
+                          Only numbers are allowed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-4">
+                    <div class="submit-btn buttons-margin">
+                      <button 
+                          type="submit"
+                          form="addPlayerForm"
+                          [disabled]="!addPlayerForm.valid"
+                          class="btn btn-success">Add</button> &nbsp;
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </ng-template>
+          
+        </ng-template>
+      </div>
+      <div class="col-sm-6">
+
+        <h3>Players In Your Team</h3>
+
+        <div *ngIf="players" class="your-team-items">
+          <div *ngFor="let player of players">
+            <button (click)='onPlayerClick(player.player_id)' class="btn btn-info">
+              {{ player.firstname }}
+              {{ player.lastname }}
+              {{ player.tag_id }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Do you really want to delete player "{{ playerToDelete.firstname }} {{ playerToDelete.lastname }}"?</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)='onDeletePlayer()'>Delete</button>
+        <button type="button" class="btn btn-default" (click)="c('Close click')">Close</button>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

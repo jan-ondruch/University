@@ -1,0 +1,107 @@
+\documentclass[
+	12pt,
+	a4paper,
+	bibtotoc,
+	cleardoubleempty, 
+	idxtotoc,
+	ngerman,
+	openright
+	final,
+	listof=nochaptergap,
+	]{scrbook}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\include{preamble}
+
+\begin{document}
+
+\setcounter{secnumdepth}{3}
+
+% Titelblatt
+\include{content/title}
+\cleardoubleemptypage
+
+\frontmatter
+
+\lstdefinestyle{myCustomSmallSizeStyle}{
+  language=Matlab,
+  numbers=left,
+  stepnumber=1,
+  numbersep=10pt,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false
+}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+% Abstract
+\include{content/abstract}
+\cleardoubleemptypage
+
+% Inhaltsverzeichnis
+\tableofcontents
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+\cleardoubleemptypage
+
+% Abbildungsverzeichnis einbinden und ins Inhaltsverzeichnis
+% WORKAROUND: tocloft und KOMA funktionieren zusammen nicht
+% korrekt\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename} 
+\listoffigures
+\cleardoubleemptypage
+
+% Tabellenverzeichnis einbinden und ins Inhaltsverzeichnis
+% WORKAROUND: tocloft und KOMA funktionieren zusammen nicht
+% korrekt\phantomsection
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\cleardoubleemptypage
+
+% Abkürzungsverzeichnis
+\include{content/abbreviations}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstlistlistingname}
+\lstlistoflistings
+\cleardoubleemptypage
+
+
+\mainmatter
+
+%add chapters here
+\include{content/einleitung}
+\include{content/grundlagen}
+\include{content/eigeneKapitel}
+
+% Schalgwortverzeichnis (Index)
+%\printindex
+
+% Literaturverzeichnis
+\singlespacing
+\bibliographystyle{alphadin}
+\bibliography{bibtex}
+
+% Eidesstattliche Erklärung
+\include{content/affirmation}
+
+\appendix
+% Hier können Anhaenge angefuegt werden
+
+\end{document}      

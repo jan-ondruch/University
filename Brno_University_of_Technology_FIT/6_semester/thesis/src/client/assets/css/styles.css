@@ -1,0 +1,135 @@
+* {
+  font-family: 'Oswald', sans-serif;
+}
+
+/* wrapps every page */
+.page-wrapper {
+  padding-top: 32px;
+}
+
+.navbar {
+/*  -webkit-box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.15);*/
+}
+
+/* padding for one extra navbar (online) */
+.with-navbar-1 {
+  padding-top: 72px;
+  z-index: -1;
+}
+
+/* padding for one extra navbar (online) */
+.with-navbar-2 {
+  padding-top: 50px;
+  z-index: -2;
+  position: relative;
+}
+
+nav.navbar li.nav-item a.nav-link {
+  color: #fff;
+}
+
+/* cursor for navbar links */
+nav.navbar li.nav-item a.nav-link:hover {
+  cursor: pointer;
+  color: #fcfcfc;
+  text-decoration: underline;
+}
+
+.navbar p {
+  color: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+li form {
+  margin-bottom: -14px !important;
+}
+
+li form div input {
+  height: 38px !important;
+}
+
+
+/* COMMON STYLES ACROSS MODULES */
+
+.jumbotron {
+  background-color: #f6f6f6 !important;
+}
+
+
+/* metrics online, dashboard */
+.label-metric {
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #999;
+}
+
+/* stats header - online comparison, dashboard recorded exercises */
+.stats-header {
+  font-size: 12px;
+  color: #333;
+  background-color: #f1f1f1 !important;
+  text-transform: uppercase;
+  height: 20px;
+  vertical-align: middle;
+}
+
+/* for dashboard and settings */
+.stats-header-margin {
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
+/* data loading for pages */
+.loading-screen-text {
+  padding-top: 30vh;
+}
+
+/* the field is required */
+.required-field {
+  color: #fc0000;
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+
+/* form label */
+.form-label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 2px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+/* teams and players "in your team" items */
+.your-team-items button {
+  margin: 2px 0px;
+}
+
+/* button position in teams and players */
+.heading-new-btn button {
+  display: inline-block !important;
+  margin-bottom: 8px;
+  position: absolute;
+  right: 16px;
+}
+
+.heading-new-btn h3 {
+  display: inline-block !important;
+  margin: 0px !important;
+}
+
+/* invalid form input */
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+/* alert text centering */
+.alert {
+  text-align: center;
+}

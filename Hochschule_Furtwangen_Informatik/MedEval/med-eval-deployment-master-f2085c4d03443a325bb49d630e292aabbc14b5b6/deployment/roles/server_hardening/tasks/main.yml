@@ -1,0 +1,57 @@
+---
+- name: Install ufw Firewall
+  apt: name=ufw
+
+- name: Add Firewall Rule for ssh
+  shell: ufw allow ssh
+
+- name: Add Firewall Rule for http
+  shell: ufw allow http
+
+- name: Add Firewall Rule for https
+  shell: ufw allow https
+
+- name: Activate ufw Firewall
+  shell: ufw enable
+
+- name: Upload Apache SSL config
+  copy: src=ssl.conf dest=/etc/apache2/mods-available/ssl.conf
+
+- name: Upload Sysctl config
+  copy: src=sysctl.conf dest=/etc/sysctl.conf
+
+- name: Load Sysctl config
+  shell: sysctl -p
+
+- name: Upload host config
+  copy: src=host.conf dest=/etc/host.conf
+
+- name: Upload Apache Security config
+  copy: src=security.conf dest=/etc/apache2/conf-available/security.conf
+
+- name: Install ModSecurity
+  apt: name=libapache2-mod-security2
+
+- name: Upload ModSecurity config
+  copy: src=modsecurity.conf dest=/etc/modsecurity/modsecurity.conf
+
+- name: Upload ModSecurity security2 config
+  copy: src=security2.conf dest=/etc/apache2/mods-enabled/security2.conf
+
+- name: Link ModSecurity SQL Injection attacks rules
+  file: src=/usr/share/modsecurity-crs/base_rules/modsecurity_crs_41_sql_injection_attacks.conf dest=/usr/share/modsecurity-crs/activated_rules/modsecurity_crs_41_sql_injection_attacks.conf state=link
+
+- name: Install fail2ban
+  apt: name=fail2ban
+
+- name: Upload fail2ban config
+  copy: src=jail.local dest=/etc/fail2ban/jail.local
+
+- name: Reload fail2ban
+  service: name=fail2ban state=reloaded
+
+- name: Reload Apache
+  service: name=apache2 state=reloaded
+
+- name: Install haveged
+  apt: name=haveged

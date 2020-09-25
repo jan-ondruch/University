@@ -1,0 +1,75 @@
+---
+- name: Install MySQL and Apache
+  apt: name={{ item }}
+  with_items:
+    - apache2
+    - mariadb-server
+
+- name: Install dependencies
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items: "{{ limesurvey.deb.dependencies }}"
+
+- name: reload apache
+  service: name=apache2 state=reloaded
+- name: create folder
+  file:
+    path: /root/python_scripts
+    state: directory
+    mode: 0755
+
+- name: upload urlparse script
+  copy: src=parseurl.py dest=/root/python_scripts
+
+- name: upload urlparse requirements.txt
+  copy: src=requirements-urlparsing.txt dest=/root/python_scripts
+
+- name: install urlparse requirements.txt
+  pip:
+    requirements: /root/python_scripts/requirements-urlparsing.txt
+
+- name: upload pdf_creation script
+  copy: src=pdf_creation.py dest=/root/python_scripts
+
+- name: upload pdf_creation requirements.txt
+  copy: src=requirements-pdf_creation.txt dest=/root/python_scripts
+
+- name: install pdf_creation requirements.txt
+  pip:
+    requirements: /root/python_scripts/requirements-pdf_creation.txt
+
+- name: Download Limesurvey package
+  command: python /root/python_scripts/parseurl.py
+
+- name: Extract Limesurvey package
+  unarchive: copy=no src=/tmp/{{ limesurvey.package }} dest={{ limesurvey.web.root }} group=users owner=root creates={{ limesurvey.web.root }}/limesurvey
+
+- name: Fix permissions
+  file: path={{ limesurvey.web.root }}/{{ item }} owner={{ limesurvey.web.user }} recurse=yes
+  with_items:
+    - limesurvey/tmp
+    - limesurvey/upload
+    - limesurvey/application/config
+
+- name: Create Limesurvey database
+  mysql_db: name={{ limesurvey.db.name }} state=present login_host={{ limesurvey.db.host }} login_user={{ limesurvey.db.adminuser }} login_password={{ limesurvey.db.adminpassword }}
+  register: limesurvey_db
+
+- name: Transfer SQL file
+  template: src=limesurvey.sql.j2 dest=/tmp/limesurvey.sql mode=0600
+  when: limesurvey_db|changed
+
+- name: Import empty SQL database
+  mysql_db: state=import name={{ limesurvey.db.name }} target=/tmp/limesurvey.sql login_host={{ limesurvey.db.host }} login_user={{ limesurvey.db.adminuser }} login_password={{ limesurvey.db.adminpassword }}
+  when: limesurvey_db|changed
+
+- name: Limesurvey database user
+  mysql_user: name={{ limesurvey.db.limeuser }} password={{ limesurvey.db.limepassword }} priv={{ limesurvey.db.name }}.*:ALL state=present
+
+- name: Transfer Limesurvey configuration file
+  template: src=config.php.j2 dest={{ limesurvey.web.root }}/limesurvey/application/config/config.php owner={{ limesurvey.web.user }} mode=0644
+
+- name: Copy php.ini to destination
+  copy: src=php.ini dest=/etc/php5/apache2/php.ini
+
+- name: reload apache
+  service: name=apache2 state=reloaded

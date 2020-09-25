@@ -1,0 +1,719 @@
+%=========================================================================
+% (c) Michal Bidlo, Bohuslav Křena, 2008
+\chapter{Introduction}
+In the past decades, team sports haven’t only been a way of entertainment and a mere prestige. Over the last century, sports have become very competitive and the domain has grown to be a lucrative business.
+
+Nowadays, with the dawn of real-time systems and advanced technologies, it has become possible to boost sportsmen’ performance by introduction of profound in-depth data analysis. Given that this type of technology is becoming more and more accessible and competition is rising, the demand for such systems has increased. This condition leads to the current situation where new companies are being found just to find their place in the new niche of the market. They have been developing various positional and tracking systems to bring competitive advantage for teams. Some focus on tactical analysis, others on physical performance of the players. With such data, teams can better tailor their strategy or training methods. 
+
+This project is concerned with the use of one of these real-time locating systems in a~web application focused on modern sports training. This will allow coaches to accurately measure certain aspects of the training and provide them with useful data they never had before.
+
+The first part described in chapter~\ref{uidesign} focuses on user interface design and its theoretical basis, which is useful for understanding the complete development process. The following section~\ref{research} is firstly concerned with the study of research methods to explore user needs, the positional system and existing sports applications. This knowledge is used in practice when meeting with sports coaches to identify key features of the application. Chapter~\ref{design} deals with general principles of design and prototyping. Subsequently, information structure of the application is proposed and on its basis a prototype is created. Pilot testing ~\ref{pilot-testing} is focused on improving this prototype with the use of usability testing. The end of this chapter presents a data model of the application. Chapter~\ref{implementation} includes the study of web technologies and web design, but it is primarily focused on implementing the application and testing it with professional coaches. The last paragraphs are concerned with user feedback and ideas about the future of the application.
+
+\chapter{User Interface Design}\label{uidesign}
+The first chapter contains a theoretical basis of \textit{user interface}, hereafter UI, and its design, which is crucial for understanding users. This will enable me to create a well-designed product, that meets the needs of the sports coaches. The following chapters are concerned with the UI - what it is and how to design it. Afterwards, a universal methodological approach called design thinking is presented, which will be very useful during the whole development process of the application.
+
+\section{What is UI}
+Nowadays, UI is something that we interact with on a daily basis and mostly without even noticing it. It allows us to effectively operate and control electronic devices. If we want to find an exact definition of UI, we come across various interpretations of this term. This is due to the complexity of the field and its relationship to many other disciplines such as human-computer interaction or human-machine interface~\cite{Dix}.
+
+Everett McKay defines UI as {\it an objective, principled form of human communication, and not as a subjective art}~\cite{McKay}. Other resources provide us with different definitions, e.g. stating UI as {\it the means by which the user and a computer system interact, in particular the use of input devices and software}~\cite{Oxford}. It is possible to encounter countless other definitions, differing in what the stress is put on. However, what all of them share together is an emphasis on the user. Quality of a particular UI can be measured by how self-explanatory it is or how little energy it requires us to think about using it~\cite{Krug}. The less input the operator puts in and the machine returns a desired outcome, the better. A good UI should render itself as if almost invisible, making the interaction seem effortless and straight-forward. Simply put, it has to be intuitive~\cite{Norman}.
+
+\section{UI Design}
+In order to create any kind of UI, we have to consider many aspects that play a role in the final quality of our design. First and foremost, we have to realize whom and what for is a particular UI going to serve. Since designers are very rarely the users~\cite{Norman}, they have to develop a good understanding for the target group. Therefore, cognitive empathy can be a~key element determining success of UI~\cite{Young}. This particular paradigm of the design process can be summarized as follows~\ref{img:ldap}:
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/ldap}
+\end{center}
+\caption{Process of understanding users}
+\label{img:ldap}
+\end{figure}
+
+This requires designers to master their listening skills to be able to truly understand user’s motivation and goals. This intense focus on an individual can go beyond data-driven research methods.
+
+In order to increase product usability, taking human behavior and biases into account, we require a set of {\it design rules}, that help us to navigate during the design process~\cite{Dix}. Some of the rules are required, others may be considered mere suggestions. They may also vary in their level of abstraction. These rules are then divided into three categories: Principles, Standards and Guidelines. If one embarks on studying these in a greater detail, they will soon find out that it requires a lot of energy to interpret them in any practical form. So few advocates on user-centered design came up with a set of heuristics - a kind of universal design advice, sometimes also called {\it Golden Rules}. There exist many Golden Rules, however, the most commonly used are Nielsen’s ten heuristics~\cite{Nielsen}, Norman’s seven principles and Shneiderman’s eight golden rules. All of the listed ones are very similar in nature. This is an example of Norman’s seven principles~\cite{Norman}:
+
+\begin{itemize}
+\item Use both knowledge in the world and knowledge in the head
+\item Simplify the structure of tasks
+\item Make things visible:  bridge the gulfs of Execution and Evaluation
+\item Get the mappings right
+\item Exploit the power of constraints, both natural and artificial
+\item Design for error
+\item When all else fails, standardize
+\end{itemize}
+
+All of these design rules apply in general and will help us create a better product for the user. They can be supported by psychological, cognitive, ergonomic, sociological, economic or computational theory. Combined with the cognitive empathy approach, it is possible to design desirable UIs. And as we have seen, designing a good UI is a challenge and often an evolving process. Since we design daily, we solve various problems to make our world better~- more intuitive to interact in, eventually shaping our view and perception of it~\cite{Norman}, it is important to understand the design process really well. And as it happens, once something new emerges, best practices develop and new methodologies are constructed to find the most effective way of doing things.
+
+\section{Design Thinking}
+As regards the UI design, a methodology called \textit{design thinking} was created. Design thinking is a design methodology that provides a solution-based approach to problems solving~\cite{InteractionDesign}. By understanding the human needs first, re-framing them, by creating many ideas in a~brainstorming session and their subsequent realization via prototypes and testing, it is possible to solve complex problems and design well. The process of design thinking isn’t unique to designing UIs, but it’s a general methodology for solving problems.
+
+The origin of design thinking dates back to the 1970’s and since then a lot of variations of the model were introduced, varying in the number of stages in the process. However, the general idea of all models is the same, thus rendering the nuances negligible. For instance, the first formal design thinking model by Herbert Simon had seven stages. Later developed models differed, such as the Double-Diamond Model~\cite{DoubleDiamond} produced in 2005 by the British Design Council, that has four stages. The model I chose to work with is a five stage model~\ref{img:design_thinking} consisting of the following parts~\cite{InteractionDesign}:
+
+
+\paragraph{Empathize}
+is the first stage with a direct usage of the need for empathy, mentioned in the previous chapter. It is necessary to understand and clearly identify the problem (the correct problem). It allows the designers to gain a better insight into the “world” of users. Since all the stages are directly dependent on each other, unless empathising is properly executed, the final product will not yield good results.
+
+\paragraph{Define}
+helps us to gather and then re-frame all information from the previous stage in a human-centric way, addressing exact problems. A well-defined problem statement is a~kind of transformation of discontent of a given issue that the user has put into a clearly articulated form. It strips away ambiguity and vagueness.
+
+\paragraph{Ideate}
+is the following stage of the process. After understanding the needs and their analysis, designers are now ready to come up with possible solutions to the problem. At this stage, techniques such as brainstorming, mindmapping, brainwalking or the worst possible idea are used to come up with a variety of the solutions. Some of the techniques allow designers to expand the problem space or to “think outside of the box”. Others provide a larger “democratic and safe” environment by having the people come up with solutions anonymously, thereby avoiding the authority bias~\cite{AuthorityBias}.
+
+\paragraph{Prototype}
+is the moment when designers are ready to create a number of scaled-down, quickly made and inexpensive prototypes and mock-ups. These will serve to further identify possible shortcomings and misconceptions, as well as to select “the best candidates” among the prototypes, that will be later presented to the user. At this point, the prototypes are consulted outside the team or the person who created them to get a more objective feedback from people, who are not biased~\cite{Kahneman}.
+
+\paragraph{Test}
+concludes the whole process. The prototypes are presented to the users. Naturally, designers gain more feedback, insight and nuances regarding the usage of the product. Afterwards, these results define an updated version of the current product. The users can be again re-emphasized, ideas re-defined and re-ideated. This process reflects the iterative nature of the model. If done right, with every step, we get closer to the desired outcome. The iterations continue as long as resources are available - time and money.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/design_thinking_5stag}
+\end{center}
+\caption{Design thinking process}
+\label{img:design_thinking}
+\end{figure}
+
+Armed with the knowledge of what UI is, how can it be designed well and how to proceed while designing it with the use of the design thinking methodology, we can embark on “deciphering” the assignment of creating the application for modern sports training.
+
+\section{The Process of Designing the Application Creation Process}
+Based on the findings gathered in this chapter, I propose to approach the design process using design thinking, as it’s a versatile and well-proven methodology for designing UIs. Taking advantage of the predefined steps, there is an exact procedure, that I will follow. Thanks to the non-linear iterative nature of the model, it will also be easy to adapt to possible changes at different stages of the development. This will ensure a 
+higher quality of the final product.
+
+I suggest to start with meeting the users (empathize stage), which are in this case coaches of sports teams. After talking to them and understanding their needs, I will aggregate all the acquired information and derive (define stage) clearly articulated needs of the coaches in a human-centered manner. Subsequently, I will come up with various solutions (ideation stage) using some of the ideation techniques and identify the most feasible ones, that will fit the overall idea of a sports application. More tangible representations of the ideas will be put into prototypes, that will be presented to the coaches (prototype stage). As changes in the design based on the user feedback are expected, after a number of iterations of the first four stages of the process, final prototype will be agreed on. This prototype will largely resemble the design of the final application - small changes will be necessary, based on the final testing of the product (test stage).
+
+
+
+\chapter{Exploring User Needs}\label{research}
+The first task in the process is to get to know the user. For this purpose, there are many research methods. The following paragraphs describe those that are important to the design of the UI, in more detail along with their pros and cons. Finally, I choose the best-fitting ones that will be used at the empathize stage of the design thinking process. This chapter also discusses the details of the project, as well as other sports applications similar to the one that I have been developing.
+
+\section{Research Methods}
+As mentioned above, a huge amount of various research methods has been developed in order to gather all sorts of data from people. We might encounter different classifications~\cite{Bordens}, such as experimental and non-experimental methods, laboratory vs. field studies, subjective vs. objective methods or, for example, qualitative and quantitative methods. Then also, selection and application of a particular set of methods strongly depends on the field of study in which we conduct research.
+
+The following is a list of applicable research methods suitable for collecting user requirements for the product:
+
+\paragraph{Interview}
+is one of the basic forms of research, when the interviewer (preferably the designer) is interviewing current or future user of a product. The ideal ratio of interviewers to interviewees is 2:1 or maximum 3:1. Meeting may preferably take place in the context of the product, that is being designed. The reason is to understand the user in the immediate vicinity and thus develop a high level of empathy. One session usually takes anywhere between 1\,-\,2 hours. There are various forms of an interview such as a \textit{structured interview}, when questions are prepared ahead, or, for instance, a \textit{semi-structured interview}, when sub-questions are prepared, in order to go into further detail of a particular question if necessary~\cite{Dix}. The latter one is oriented on a better quality quantitative research.
+
+\paragraph{Questionnaire}
+is the second query technique. In this case, questions are fixed in advance, which allows less probing. On the other hand, a wider participant group can be reached as this method takes less time to administer. It is crucial, that the questions are well prepared. Compared to the interview, the acquired sample is larger, but at the cost of quality of the answers. There are several styles of questions that can be part of the questionnaire, including general, open-ended, scalar, multi-choice and ranked questions. Each of them has their own pros and cons, suitable for different situations and purposes.
+
+\paragraph{Focus group}
+usually consists of 5\,-\,8 people~\cite{Krug}, that react to ideas and designs that are presented to them. It’s a form of qualitative research and can be great for determining what the audience wants. The moderator is in charge and directs the session. The client can passively watch the discussion via video cameras or from behind a semi-permeable mirror. This method is great to use in the early stages of the design process for quickly getting a sample of users’ opinions and feelings about things. One has to be careful with proper selection of the group to minimize possible authority bias~\cite{AuthorityBias}, when the more dominant individuals influence the opinions of the rest of the respondents.
+
+\paragraph{Observational research}
+is a type of research in which the researcher observes the ongoing behavior~\cite{ObservationalResearch}. Research can be either direct or indirect. \textit{Direct research}, also known as an observational study, consist in observing the subject in their usual environment with the aim of gathering evaluative information~\cite{DirectObservation}. 
+It is used when the formerly mentioned methods are ineffective and more qualitative data is needed. The observation can be either overt, when the watched subject is aware of the monitoring, or covert, when the subject is unaware of the purpose of the observation. \textit{Indirect research} is based on data collected by other researchers, thus depending on secondary sources. The advantage of this approach is its non-intrusiveness as well as the fact, that the observer and the researcher have different points of view. Disadvantages of this method are to be found in the second-hand data interpretation and their possible incompleteness of the observed situation~\cite{IndirectObservation}.
+
+\bigskip
+Before we conduct a research, it is necessary, that the test takers are informed about the fact, that they will be observed and monitored. The researcher (designer) usually obtains informed consent from the tested subject, where they agree on serving as a research participant after being informed about the nature of the research and their rights and responsibilities~\cite{Bordens}. This process is crucial, unless one wants to end up in a lawsuit.
+
+Also, a small study is conducted before the main research is fully started. It is called \textit{Pilot study}, also known as \textit{pilot research}. It is to test specific aspect of the research design and if necessary, to adjust it~\cite{AQR}. In this way, it is possible to, for example, fix ambiguous questions in a questionnaire.
+
+\section{Detailed Project Analysis}
+The goal of this thesis is to create a modern sports training application for coaches that will enable them to effectively train players and thus improve overall team performance. The customer is Sewio Networks s.r.o.\footnote{\url{https://www.sewio.net/}}. The company has their own \textit{Real-time locating system} (RTLS\footnote{To avoid ambiguity, RTLS represents a special kind of positional system. However, the words "locating" and "positional" are interchangeable in the context of this thesis.}) and they want to develop their own sports application that would use their system. The application should be a web application, universal for team sports, and is not uniquely targeted on one sport. The reason why this sports application is called "modern" lies in the way it gets and uses the data - and what kind of data it is.
+
+It will utilize data from the RTLS provided by Sewio\footnote{\url{https://www.sewio.net/technology/}}. The RTLS platform is a system based on \textit{Ultra Wideband technology} (UWB), which is a sort of radio technology for transmitting information, taking advantage of \textit{Time Difference of Arrival} (TDoA) scheme\footnote{\url{https://www.sewio.net/technology/time-difference-of-arrival/}}. \textit{Tags} - transmitters, which are small portable devices\footnote{Image source: \url{https://goo.gl/aPN9pQ}}~\ref{img:rtls}, transmit information, that they collect (such as position), to \textit{anchors} - receivers, that are usually 6\,-\,8 devices located on the sides of the monitored area. Subsequently, the anchors send the information via Wi-Fi or IP Network to the server, where the data is processed. Afterwards, it is stored into a~SQL database and also it is possible to directly send the data to the client. This process, depending on technology and settings, can take anywhere from 30\,ms to a number of seconds.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/rtls}
+\end{center}
+\caption{RTLS Overview}
+\label{img:rtls}
+\end{figure}
+
+In sports the tags are attached to players. As the players move, the type of information, that the tags periodically send to the system, which can eventually store it, lists as follows:
+\begin{itemize}
+\item \textbf{Position} - x, y, z coordinates
+\item \textbf{Timestamp} - time information
+\item \textbf{Heart rate} - hereafter HR, current heart rate of the player
+\item \textbf{Zone} - area in which the tag finds itself
+\end{itemize}
+
+In the application itself, by using simple physics equations, it will be possible to measure and store more information, such as for example:
+\begin{itemize}
+\item \textbf{Distance} - distance, that the player covered.
+\item \textbf{Speed} - current speed of the player along with various aggregates of the speed information, such as average speed, maximum speed, etc. It will also be possible to classify movement - walking, running, sprinting.
+\item \textbf{Average HR, maximum HR, HR zones} - various aggregates of the HR information.
+\item \textbf{Heat map, spaghetti map} - graphical representations of information characterizing player’s position.
+\end{itemize}
+
+This kind of information available for the coaches in real-time will be the crucial element of the whole application. This is important to stress, because this real-time system gives the application the competitive edge over other applications for sports training that don’t use any similar technology.
+
+\section{Applications for Modern Sports Training}
+The following part of the thesis features a number of currently existing applications that focus on modern sports training. All of them utilize some kind of a locating system acquiring real-time data and implement similar functionality to the application, that I have been developing. They will serve as a great inspiration. On top of that, they can be used as "free" prototypes later during the mock-up presentation stage~\cite{Krug}.
+
+\subsection{EchoSports}
+EchoSports\footnote{\url{http://www.echosports.eu/}} is a web application that implements both online and offline training analysis. It uses Sewio’s locating system and focuses on a variety of team sports. It provides the user with an in-depth analysis of the training session, allows comparisons across many trainings of both the team and individual players. This is visualized by multiple bar charts. One of the application’s prominent features is a timeline~\ref{img:echosports}, that enables the user to replay a~specific training section. All of the recorded trainings are stored and accessible through an event calendar.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=10cm,keepaspectratio]{images/echosports}
+\end{center}
+\caption{EchoSports timeline feature}
+\label{img:echosports}
+\end{figure}
+
+\subsection{Kinexon}
+Web application Kinexon\footnote{\url{https://kinexon-sports.com/}} focuses on both on tactics as well as on fitness of the players. Thanks to their locating system connected to a video system, it is possible to perform more-profound tactical analysis of the game. Compared to the other products, their huge advantage is the ability of ball tracking. As regards Kinexon’s second field of interest, the fitness module allows the coaches to specify the training load for the players, helps them prevent injuries by using sophisticated data analysis, and provides them with additional data aggregates useful for post-training analysis\footnote{Image source: \url{https://goo.gl/89P7KF}}~\ref{img:kinexon}. 
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=10cm,keepaspectratio]{images/kinexon}
+\end{center}
+\caption{Kinexon post-match analysis}
+\label{img:kinexon}
+\end{figure}
+
+\subsection{Catapult}
+Catapult\footnote{\url{https://www.catapultsports.com/}} is another world-class player in the modern sports training software, whose main goal is to improve team performance and manage the risk of injury. Their mobile application Playertek\footnote{\url{https://www.playertek.com/}} introduces some social features such as leaderboards or "Friends League", that boost users’ motivation. However, it means that Playertek is primarily designed for players themselves, rather then for coaches. Their other software products are comparable to the above-mentioned applications and offer similar functionality for in-depth analysis\footnote{Image source: \url{https://goo.gl/RDdYkz}}~\ref{img:catapult}.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=10cm,keepaspectratio]{images/catapult}
+\end{center}
+\caption{Catapult post-match analysis}
+\label{img:catapult}
+\end{figure}
+
+\bigskip
+Studying these sports applications gave me a hint about overall functionality and useful features of such systems. It also helped me to understand possible user needs. This information will be very useful during the meetings with the coaches.
+
+\section{Initial User Meeting Proposal}
+To design a great UI for the application, I will take advantage of some of the above-mentioned methods of research, that I studied. Due to the importance of developing a high level of empathy towards the user, I will focus on using qualitative methods of research. At this stage of the process, it is key to listen to the coaches and find out what they exactly need, how they train now and what their problems or “itches” are.
+
+\subsection{Overview}
+I suggest to conduct the initial meeting in the form of a semi-structured face-to-face interview combined with the use of audio recording (if allowed). There is going to be a set of questions prepared primarily focused on \textit{how do the coaches train today}~\ref{img:questions}. The basic is that if the application is going to solve some problem or help the coaches to achieve better training results, it has to respect the demand that stems from real situations. Upon completion of the interview and an overview of their problems, I am going to present the coaches with a spreadsheet, that is going to contain information about the possible functionality and data, that the company’s system can provide~\ref{img:sysopts}. At this stage, the identified needs of the coaches will be merged with the system capabilities, generating feasible solutions that I~will be able to implement later.
+
+There will be more of these initial meetings, depending on resources, as well as on how well the meetings will take place. As I am going to be the only interviewer there, I will meet maximum up to 2\,-\,3 coaches at once. I am also going to take notes during the meetings.
+
+\subsection{The Interview}
+The interview is going to be conducted in an informal way to ensure that the coaches feel comfortable and don’t feel pressured. If necessary, the meetings can take a looser form, and the discussion may not necessarily be structured around the questions. I am planning to keep the questions for myself rather as a guide and a reminder of the information that I~need to get from the coaches.
+
+\subsection{The Merging Stage}
+At this stage I am going to narrow-down all of the ideas gathered during the interview. We are going to talk about specific, tangible solutions and their implementation. In the course of this process, I may draw some of the proposals of the ideas, because if one can’t even do that, \textit{the solution probably isn’t there}~\cite{McCue}. In the context of the design thinking, we are talking about the define stage of the process.
+
+\subsection{Post-meeting Process}
+After all meetings, I am going to gather the acquired information and aggregate it in a clear form. At this moment, I am going to go over the audio recordings, drawings and notes from the meetings. Afterwards, I will be ready to move on the next phase described in~\ref{design}. 
+
+\section{Initial Meeting Results}
+Within two weeks, I managed to conduct three meetings with five coaches in total, of which three of them hold the A-license coaching qualification, allowing them to train the first league teams in the Czech Republic. The discussed sports were basketball, ice hockey, floorball, handball and volleyball.
+
+Before the first meeting took place, I firstly carried out pilot testing at home. My brother, who is well-versed in sports, was in the role of a coach. During this testing I was able to identify some shortcomings in my questions as well as in my preparation. In the course of the first meeting, there were several moments when I “froze” and didn’t have any follow-up question prepared, thus negatively influencing the quality of the discussion. However, I learned from my mistakes and the rest of the meetings were considerably better. Also the information and ideas gathered on those two were of a higher quality.
+
+\subsection{Key Features}\label{key-features}
+During the meetings, I found out that coaches rarely use any technology to measure player performance. It’s mostly their intuition and experience that tells them how to train. Nonetheless, all of them had a lot of ideas on what could be measured and how it could be beneficial in their training. Finally, in combination with the system capabilities, the following key features were identified across all of the above-mentioned sports~\ref{key-features-table}:
+
+\bigbreak
+\textbf{Simplicity (general principle):}
+trainings are nowadays quite intensive and coaches don’t have much time to keep an eye on the players as well as on the application. Also after training, coaches don’t have time for an hour-long analysis.
+
+\bigbreak
+
+\textbf{Features:}
+\restylefloat{key-features-table}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Online features} & \textbf{Offline features} & \textbf{Other features} \\ \hline
+complete training and exercises acquisition & training summary & tags status information \\ \hline
+speed and HR zones & individual exercises & teams and players management \\ \hline
+current and average HR & events calendar &  \\ \hline
+sprint distance and number of sprints &  &  \\ \hline
+total distance covered &  &  \\ \hline
+filtering: HR, distance, sprint distance &  &  \\ \hline
+\end{tabular}%
+}
+\caption{Key features}
+\label{key-features-table}
+\end{table}
+
+During the online (real-time) view, the coaches need to capture the entire training in order to get complete statistics such as total distance covered during the training. Sometimes they need to measure some section of the training separately, therefore exercises acquisition will also be possible. To characterize and conveniently display players’ HR and speed, HR and speed zones will be implemented to show relative ratio between the different zones and the time spent in them. Probably the most important information will be current HR of a~player, which the coaches really wanted to see in the application, because HR isn't "visible" under normal circumstances, but it tells a lot about the player’s physical condition. Another useful metrics will be sprint distance, number of sprints or average HR. Last but not least, there was a~demand for the possibility of filtering players according to different metrics, so the coaches can easily find out, how well is the player doing compared to the others.
+
+In terms of offline features, the coaches will be able to perform a post-analysis of the acquired training along with individual exercises. For this purpose, they required something like an event calendar, that would enable them to browse all the recorded events.
+
+Since the application is going to utilize data about players, it is necessary to divide the players into teams and have the possibility to manage all this information. The coaches also wanted to have some information about the status of the tags, so they can check if the system is functional.
+
+\subsection{Scenarios}
+The list of the key features was largely proposed based on actual situations during trainings and their overall form. Here are some examples:
+
+\paragraph{Measuring HR during an exercise:} it is often necessary, that the players should reach a certain HR value during exercise, whether it is for the purpose of reaching a given training load or to prepare them for the next part of the training.
+
+{\it Example:} the coach wants the players to reach a HR value of 140\,bpm\footnote{Bpm = Beats per minute, unit for measurement of the speed of the heartbeat.}, so they are ready for a subsequent "3 on 3 game". As the exercise starts, the coach checks the application to decide whether the exercise is effective or not.
+
+\paragraph{Keeping the players in a particular HR zone for a given amount of time:} the coach wants players to be at the aerobic threshold for a certain time to increase their stamina~\cite{Aerobic}.
+
+{\it Example:} the coach starts the exercise and wants the players to be at the aerobic threshold that is set at 160\,bpm. Then he monitors players’ values. Based on this information, he can decide, whether the exercise is effective enough or if it is too demanding, and adjust appropriately.
+
+\paragraph{Simple post-training analysis:} the coach can check the overall statistics summarizing the training or, if necessary, to go in greater detail. However, he doesn’t want to spend too much time dwelling on the numbers.
+
+{\it Example:} during the training, a player gets injured and another seems to be “out of shape”. The coach checks the data and finds out, that the training wasn’t unusually demanding or dangerous. But he knows that the player also did two other sports that day and that they are probably overtrained. The coach has a clear evidence, that the injury wasn’t his fault, but it was rather an aftermath of an ill-considered training load, that the player chose for themselves.
+
+\bigskip
+After learning about research methods, Sewio’s locating system and a few relevant sports applications, and after conducting the initial meetings and identification of the key features, scenarios and understanding the needs of the coaches, I am now prepared to move onto the next part of the project, which are the ideation and prototype stages of the process.
+
+
+\chapter{Prototype Design}\label{design}
+Now that exact specifications and application requirements have been obtained, I am ready to design a prototype. But before doing that, it is important to understand the design process. It is necessary to know how to design, what are some of the approaches to it and what can help us in designing. Afterwards, information structure will be outlined to enable us create the prototype. 
+
+\section{General Principles}
+Often good design is an evolving process. The design is tested, problems are found, design is modified~\cite{Norman}. The process repeats and continues until resources are depleted. But before we start designing something, it’s important to realize the main goal of our design, especially when it’s a user-centered design. It’s very common for designers to forget that they are doing the work for the user. At first glance this may sound stupid and obvious. However, there are a number of “traps” to step in.
+There are two deadly temptations for designers~\cite{Norman}:
+\begin{itemize}
+\item \textbf{Creeping Featurism} - keep adding useless features until it’s too difficult to use
+\item \textbf{The Worshipping of False Images} - make it complex because it looks cool
+\end{itemize}
+This is related to the idea, that design is a constant battle between usability and aesthetics. All this is caused by many human biases~\cite{HumanBiases}, that the designers have to cope with and ideally overcome. The usefulness of empathy still applies.
+
+
+\section{Prototyping}
+Due to the complexity of human behavior, designers find it very difficult to come up with a~"perfect" solution on the first attempt. Therefore, many iterations of the design process are usually required before the product is of a certain quality~\cite{Dix}. This is why prototypes are used as early-stage communication tools, presenting to the user early ideas and simplified versions of the final application. This saves time and money, that would have been otherwise wasted on building a perfect product, only to find out it’s nothing the client had expected it to be. It’s basically an experimental model of an idea.
+
+In some areas, technique of \textit{rapid prototyping} can be used, that has been recently strengthened by the broad availability of 3D-printers. However, something like an automatic UI generation can’t be applied in the field of UI development yet. Therefore, we have to use a different approach to rapid prototyping. As regards to web applications development, Google recommends using the following procedure~\cite{RapidPrototyping}:
+
+\paragraph{1. Sketching and Paper Prototyping} is the first step of the process, when low-fidelity prototypes are created. They are great for exploring all the initial ideas that the designer has. It is possible to outline the steps in a user flow, explore a variety of layouts and create a \textit{wireframe}\footnote{A two-dimensional illustration of page’s interface, representing the skeletal framework of a website.} - basic application structure. Then, higher-resolution paper prototypes can be made by adding colors, images and buttons.
+The next step is to create a paper prototype of the application. Using these, it is possible to simulate key user interactions or for instance explore elevations and shadows. A useful thing when prototyping is to print existing screens to avoid re-drawing them all the time again.
+
+\paragraph{2. Digital Prototyping} allows to rapidly explore an idea by building interactive prototypes, that run on device. This process still doesn’t require any programming knowledge. However, the product is already visually quite close to the final product and can be shown to the users (sketches can be presented to the users as well, but they may be limited by a relatively poor visual appearance). It also incorporates transitions between the screens along with other interactive elements. In the recent years, many tools such as Principle\footnote{\url{http://principleformac.com}}, InVision\footnote{\url{https://www.invisionapp.com}} or Marvel\footnote{\url{https://marvelapp.com}} have been introduced to the market, making this kind of prototyping very effective. 
+
+\paragraph{3. Native Prototyping} is the final stage of the process that allows to fully explore an idea along with its hardware functionality - finding out, how it will actually work. This means writing some code, HTML, CSS and JavaScript can be used for web applications. Native prototyping can help validate ideas by showing results to users on real devices. This gives clients the most realistic picture of the final product. The disadvantage is the complexity of this process as it requires a lot of resources. Native prototypes are built once we have a very clear idea of the application and want to communicate and sell our vision to the public.
+
+
+\section{Information Structure}
+Depending on the acquired requirements described in~\ref{research}, we can determine what actions the coaches will perform within the application. It is possible to make use of a \textit{Use Case diagram}\footnote{\url{https://www.lucidchart.com/pages/uml-use-case-diagram}}, that visualizes actions the user can perform within the given system~\ref{img:use_case}.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,keepaspectratio,trim={0 9cm 0 9cm}]{images/use_case}
+\end{center}
+\caption{Use Case diagram for a coach - key functionality}
+\label{img:use_case}
+\end{figure}
+
+However, even more useful during this stage will be a \textit{sitemap}~\ref{img:sitemap}, as it helps to layout a~structure of the application. Again, based on the key features described in the previous chapter~\ref{research}, the application’s functionality can be divided into three parts - online, offline and other features.
+
+I suggest to create a dashboard, that will serve as a "signpost" for the application. From there, the coaches will be able to start recording a new session and thus get into the online part. There will be overview of all of players containing information such as current HR and total distance covered. In addition, the coaches will also have a possibility to compare the players and filter them by different metrics. The offline part will enable the coaches to analyze the recorded training sessions - \textit{events}\footnote{To avoid ambiguity, new or online recorded trainings are called "sessions", whereas finished recordings are called "events".}. It will be possible for them to analyze team summary as well as individual exercises. As in the online part, the coaches will be also able to compare the players. Finally, additional features such as settings, players, and teams will be available to allow the user to modify the application’s dynamic data, for example server settings or players and team information.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,keepaspectratio,trim={0 14cm 0 6cm}]{images/sitemap}
+\end{center}
+\caption{Sitemap}
+\label{img:sitemap}
+\end{figure}
+
+Now that I know how the coaches will work with the application and how to structure the required features, I can start designing the first prototypes.
+
+\section{Prototype proposal}
+Based on the information I studied, I suggest to start by sketching and creating a number of low-fidelity sketches and paper prototypes. These will allow me to explore a whole range of design layouts of the key elements. In addition, I will be able to study interactions and transitions of screens and windows of the application.
+Once a satisfactory result is achieved, I will translate the paper version of the application into a digital prototype. These mock-ups will also be printed and presented to the coaches.
+
+After I explored all sorts of compositions using sketches, I came up with this digital prototype~\ref{img:dashboard} created in in the aforementioned tool Marvel:
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/dashboard}
+\end{center}
+\caption{Dashboard featuring events calendar and the last training information}
+\label{img:dashboard}
+\end{figure}
+
+The navigation bar menu contains the most important options that should be directly accessible throughout the application. \textit{Dashboard} switches user to the \textit{home} screen (dashboard itself), \textit{teams} allows editing teams (add, edit, remove). \textit{Players} function analogous to the teams, and similarly to these function \textit{settings}. As the coaches always want to know what team is currently active, the team’s name will be conveniently displayed right next to the teams option. There also may be a secondary navbar\footnote{"Navbar" is an abbreviation for "navigation bar", commonly used in the web development community.} just below the primary one, depending on the chosen screen.
+
+The dashboard of the application features a calendar containing events. This allows the coaches to effectively browse events. They can also access them for post-training analysis where they can inspect more profound data from the event and draw useful conclusions from it. On the right side of the screen is an overview of the last session. This is due to the fact, that the coaches usually want to analyze the session, that they just recorded. Both event summarization and individual exercises are displayed for brief overview. The new session button enables coaches to start recording a new training. After the user clicks on it, they enter a name for the session and choose which players to record (1\,-\,to\,-\,\(n\) number of players).
+
+After starting the session, there is going to be an overview displaying the most important information about each player~\ref{img:online_before}. Today, trainings are mostly designed to improve players’ agility and speed to simulate real match scenarios. Based on this fact and the given requirements, the following information will be displayed:
+
+\begin{itemize}
+\item \textbf{Relative HR} - information in percent compared to the player’s maximum HR, enables to quickly identify, how well is the player doing and draw conclusions from it. The process of faster recognition, such as critical HR (above 90\%) is enhanced by color resolution of the numbers.
+\item \textbf{Current HR} - provides more-detailed information about player’s condition.
+\item \textbf{Distance} - covered distance is a useful factor for identification of player’s abilities.
+\item \textbf{Number of sprints} - measurement unit that directly reflects the need for dynamic and agile training.
+\item \textbf{Sprint distance} - provides similar information to the coaches as the number of sprints unit of measure.
+\end{itemize}
+
+Having this data available in real-time, the coach will be able to immediately see information about his team and draw conclusions from it. In case the coach wants to see more information about each player, or compare the players by the current HR, distance or sprint distance, they can navigate to \textit{Comparison} view. It will be also possible to record exercises to capture specific parts of the training, which will be very valuable for later post-analysis. On the right side of the second navbar, there is going to be displayed total length of the session, so the coaches don’t need to measure it separately. The same applies to the exercises - after starting the exercise, its length is going to appear right next to the name of the exercise.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/online_before}
+\end{center}
+\caption{Online overview of players’ statistics}
+\label{img:online_before}
+\end{figure}
+
+
+
+\chapter{Pilot Testing}\label{pilot-testing}
+Once the design is complete and the mock-ups are ready, it’s time to submit it to the user. During this process, it is important to ascertain any inconsistencies between design and user expectations. For this purpose, \textit{usability testing} is available. After conducting this testing, the prototypes will be updated and I can design a data structure for the application, that is going to be used in implementation~\ref{implementation}.
+
+\section{Usability Testing}
+In a usability test, one user at a time is shown something (whether it’s a website, a~prototype of a website, or some sketches of individual pages) and asked to either (a) \textit{figure out what it is}, or (b) \textit{try to use it to do a typical task}~\cite{Krug}.
+
+Usability testing is a very important stage in the development process and should be done as soon as possible. The earlier we show the user our ideas, the more resources we can save. It is recommended that three to four participants take part in each round of tests. Single participant will already find out about 30\% of the usability problems and the other 2\,-\,3 will uncover the rest of them~\cite{Dix}. There is very little to be gained with more than five users~\cite{Krug}. Also, after the first round of testing is finished and the designs are improved, in the next round, the participants can focus on a new set of problems, because they won’t be stuck on the former ones.
+
+%\section{Methods}
+%Similarly to the Research stage, there is a number of methods available to help us in the process of gathering information about the quality of our prototypes. Some of the methods, such as observation or questionnaire, can be applied in both stages. The following list are some of the most-useful techniques:
+
+\section{Pilot Testing Proposal}
+To get good quality feedback from coaches, I suggest to show to them the paper prototypes and directly observe their reactions. Because \textit{nothing beats an honest reaction from the gut}~\cite{McCue}. Instead of using any of the recording technique such as video and lengthy analyze every nuance, I am going to focus on relatively simple methods. Moreover, these monitoring techniques are often very intrusive, which negatively affect user behavior. I am going to rely on a walkthrough through the designs, carefully observing users reactions. I am going to present to them the application and describe how it works, but not in a great detail. That’s how I am going to find out, if the UI is self-evident. I am also going to leave a lot of space for questions and observe, which of the elements are taken notice of and which are not registered, suggesting their possible uselessness. At the same time, I am going to ask the user about specific elements and features and how would they use them.
+
+\section{Prototype Presentation}
+Within one week, I managed to conduct two iterations of testings with four coaches altogether. During the second iteration, I introduced improved prototypes based on the feedback from the first round of the testing.
+
+The first meeting had positive reactions on the prototypes. The coaches agreed that it’s something they would definitely use, and they liked the idea in general. However, during the course of the testing, there were found several shortcomings. Probably the most important one was the absence of aggregates during the online overview - information summarizing team averages give the coach feedback about their team without having to manually estimate them. There was also a request for an always available new session button, that was missing. Lastly, we discussed the importance of some measurement units such as sprint distance or relative HR. We agreed that the number of sprints and the sprint distance show more or less the same information and the screen is already too crowded, so I decided to remove number of sprints.
+
+After the first round of the testing, I updated the prototypes according to the newly obtained requirements~\ref{img:online_after}. Aggregate information characterizing the whole team was added on the bottom part of the online overview screen, and the new session button was added to the navbar. I also chose the most-desired visual representation of the information about a player.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/online_after}
+\end{center}
+\caption{New corrected online overview of players’ statistics}
+\label{img:online_after}
+\end{figure}
+
+The second meeting had considerably better responses. The demanded requirements were met and the coaches could now focus on other set of problems or come up with more ideas. This happened after an unexpected visit of a sport nutrition expert, who came up with various propositions, how such data could be used to exactly monitor training load of players~\cite{TrainingLoad}. This led to brainstorming, which brought many ideas on how this application could be used in the future, and how many other benefits it could bring.
+I considered it more as a food for thought, rather than crucial features. On the other hand, sometimes it’s the detail (e.g. a smart aggregate function), which can make all the difference. Some of these features can be tested in the very final stage of the process after the application is fully implemented. 
+
+\section{Data Structure}
+Dynamically changing data of the application must be stored somewhere and it must be connected in one logical unit. There are many diagrams and graphs that help us visualize the entire data structure. I decided to use \textit{Entity Relationship} (ER) diagram\footnote{\url{https://www.lucidchart.com/pages/er-diagrams}}. It is composed of entity types and specifies relationships existing between these entities. This diagram~\ref{img:er_diagram} was created based on the functionality of the application described in the previous paragraphs.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[height=9cm,keepaspectratio,trim={0 9cm 0 4cm}]{images/er_diagram}
+\end{center}
+\caption{Data structure visualized with the use of ER diagram}
+\label{img:er_diagram}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Account} - each account has an email that is unique in the entire application and a~password.
+\item \textbf{Settings} - there are specific settings for each account that can be permanently stored.
+\item \textbf{Team} - teams are identified by an identification number. Teams can be created, edited or deleted by a user, to whom the team belongs.
+\item \textbf{Player} - players exist in a given team and the user is able to create, edit or delete them. Each player, in addition to other attributes, corresponds with a \textit{tag\_id} \-attribute, which assigns a particular tag to them.
+\item \textbf{Session} - recorded sessions, such as complete training.
+\item \textbf{Exercise} - recorded exercises during one session. For one session, any number of exercises can be recorded.
+\item \textbf{Record} - table linking individual sessions and the players, who participated in the session. It contains the most important data in the whole application - all the physical data needed to describe the player’s activity during training. All other data, such as HR zones, can be aggregated, filtered and derived from this table, as later described in~\ref{implementation}.
+\end{itemize}
+
+
+
+\chapter{Implementation}\label{implementation}
+After the pilot-testing is conducted and the mock-up is in line with user’s expectations, it’s time to start to implement. This chapter describes web technologies and web design, and then the system architecture - web application and application server, as well as a~visual appearance of the application and its overall functionality. In the end, testing of the application, results of those tests, possible future improvements of the system along with its evaluation are discussed.
+
+\section{Web Technologies and Web Design}
+Nowadays, there are many technologies and combinations of them suitable for web development. However, it is very important to choose the right ones to assure convenient implementation as well as the effective functionality of the application. The architecture of the application can be divided into two separate parts: \textit{front-end} and \textit{back-end}.
+
+\subsection{Front-end}
+Front-end, the "client-side", is responsible for converting data to a graphical user interface, thereby presenting it to the user and enabling them to interact with it. The most popular front-end technologies are:
+\begin{itemize}
+\item HTML5\footnote{\url{https://www.w3schools.com/html/default.asp}} - standard markup language used for creating web pages.
+\item CSS3\footnote{\url{https://www.w3schools.com/css/default.asp}} - language describing the style of a HTML document and how HTML elements should be displayed.
+\item JavaScript\footnote{\url{https://www.w3schools.com/js/default.asp}} - interpreted programming language used in web development.
+\end{itemize}
+
+It is possible to work with those in their "native" form, however, it is way more effective to use some kind of framework, that will ease the process of front-end development. Currently, there are many frameworks, e.g. React\footnote{\url{https://reactjs.org/}}, Vue.js\footnote{\url{https://vuejs.org/}} or Angular\footnote{\url{https://angular.io/}}, that would meet the purposes of this application. I chose Angular 5\footnote{\url{https://blog.angular.io/version-5-0-0-of-angular-now-available-37e414935ced}}, because Sewio has used it across multiple projects and it proved well. Moreover, it utilizes TypeScript\footnote{\url{https://www.typescriptlang.org/}}, which is a superset of JavaScript and provides us with type control, which will help me during the development. On top of that, there also exist other toolkits such as Bootstrap\footnote{\url{https://getbootstrap.com/}}, Foundation\footnote{\url{https://foundation.zurb.com/}} or Semantic UI\footnote{\url{https://semantic-ui.com/}}, that ease up the process of web development by combining HTML, CSS and JavaScript into simple libraries. With the right choice of framework along with other support tools, it is possible to create websites more effectively.
+
+\subsection{Back-end}
+Back-end, the "server-side", consists of a server, database, APIs and application. Similarly to front-end, there are many programming languages and frameworks, that are used for back-end development. Among the most popular languages and frameworks belong Node.js\footnote{\url{https://nodejs.org/en/}}, Ruby on Rails\footnote{\url{http://rubyonrails.org/}}, Go\footnote{\url{https://golang.org/}}, or PHP, that has a lot of various frameworks to offer\footnote{\url{https://www.dailyrazor.com/blog/best-php-frameworks/}}.
+
+Since the application is going to work with real-time data, one of the most important criteria for choosing the right language and framework is speed. Sewio used in one of their former projects PHP framework Slim\footnote{\url{https://www.slimframework.com/}}, but as I found out, the company ran into performance issues. Therefore, I chose to switch to Node.js, which is a JavaScript framework. According to benchmark tests\footnote{\url{http://www.hostingadvice.com/blog/comparing-node-js-vs-php-performance/}}, Node.js performs better, than PHP. Also, it uses \textit{event-driven, non-blocking I/O model}\footnote{\url{https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/}}, which is very efficient, for example, in parallel database queries. Combined with a package manager npm\footnote{\url{https://www.npmjs.com/}}, Node.js proves to be a very powerful, intuitive and effective framework to work with. To bundle all the assets together, I will use Webpack\footnote{\url{https://webpack.js.org/}}.
+
+\section{System Architecture}
+The application can be divided into two independent parts: web application and application server, corresponding with a \textit{client-server} model solution.
+
+The architecture is based on a \textit{model-view-controller} (MVC) architectural pattern\footnote{\url{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}}, which is suitable for web application development. It comprises of three basic parts, that are linked together, as demonstrated on \ref{img:sysarch}.
+
+\begin{itemize}
+\item \textbf{Model} - manages the data of the application
+\item \textbf{View} - is responsible for visual representation of the view
+\item \textbf{Controller} - controls interactions between the model and view
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/application_structure}
+\end{center}
+\caption{System architecture}
+\label{img:sysarch}
+\end{figure}
+
+\subsection{Data source}
+The system receives data in real time (if session recording is actively used) from an external data source. In the real usage of the application, the data source is a server from Sewio located in a sports hall that collects data from the tags. For development purposes of the application, its testing and for ensuring its self-sufficiency in the future, a simulator of the server \textit{simulator.js} was developed. This simulator only offers a subset of functions of the real server:
+
+\begin{itemize}
+\item \textbf{Handles multiple client connections} - multiple clients, which are in this case instances of the web application, can connect simultaneously to a given tag via a~communication protocol WebSockets\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API}}. On connection, in the body of the sent message, the client (the application server) incorporates a \textit{tag\_id}, identifying a given tag. If the tag doesn’t exist or it’s turned off, the simulator sends an error message. Otherwise, it periodically starts sending data, corresponding to the specified \textit{tag\_id}, in a JSON format to the application server. The period of sending new data varies, as it depends on many factors, such as tag settings or server load. In sports, the timespan between two sets of data is generally somewhere in between 100\,-\,400\,ms.
+\item \textbf{Provides a mock-up set of data} - mock-up data, that has been partially derived from a real set of data, and that credibly resembles movement of players during a training. The set of mock-up data is then sent in a loop, as it contains only a~few minutes of session sample. This turned out to be fully sufficient for simulation purposes.
+\end{itemize}
+
+\subsection{Application server}
+Application server \textit{server.js} is the core of the system linking all the components together. It comprises of many smaller components, each composing of multiple functions responsible for various tasks of the system. These tasks can be divided into these basic groups:
+
+\begin{itemize}
+\item \textbf{Database manipulation} - this functionality allows the system to create, read, update, or delete (CRUD\footnote{\url{https://en.wikipedia.org/wiki/Create,_read,_update_and_delete}}) information from the database. Typically, as data changes the database, it is subsequently retrieved over the model and then and then passed to the display component so that the status of the application is updated.
+\item \textbf{Data computation} - these functions either calculate metrics such as total distance covered or current speed data before it is stored in the database or after data is retrieved from it and needs to be further processed, before being further passed to the view - for instance average team HR or the time spent in speed zones for an individual player during a given exercise.
+\item \textbf{Other functions} - a set of functions responsible for other minor tasks, such as active monitoring of a connection to the data source, determination of a state of the application, establishing or closing a connection.
+\end{itemize}
+
+These functions are then part of the components, for example:
+
+\begin{itemize}
+\item \textbf{OnlineController} - its responsibility is to manage the entire session recording. It maintains active connections to the data source via WebSockets, handles multiple client connections and preserves state of each of them with the usage of \texttt{Session\-Connection} class instances, computes data and stores them into a database. Therefore, it’s the most complex controller in the application server.
+\item \textbf{EventsController} - its task is to return post-match statistics of a session. For this purpose, it utilizes many data computation functions, which together return one JSON object containing all relevant data of the event.
+\item \textbf{TeamsController} - responsible for anything related to teams, such as new team creating, editing of an existing team or deletion of a team. It also retrieves information about a single team, or about all of existing teams for a given account.
+\item \textbf{PlayersController} - similarly to the \texttt{TeamsController}, the controller also comprises of functions for database manipulation, used for a single, or a multiple players management.
+\end{itemize}
+
+There are more controllers in total, such as \texttt{LoginController} or \texttt{RegistrationControl\-ler}, that are responsible for authentication and registration of users. What all of them have in common is that they control interaction between the database and the web application.
+
+\begin{figure}[H]
+  \begin{verbatim}
+{
+    "body":{
+        "id":"12",
+        "datastreams":[
+            {
+                "id":"posX",
+                "current_value":"24.556420421554",
+                "at":"2018-03-16 11:38:30.063210"
+            },   
+            {
+                "id":"posY",
+                "current_value":"8.0526151107857",
+                "at":"2018-03-16 11:38:30.063210"
+            },
+            {
+                "id":"posZ",
+                "current_value":"0.64529517502524",
+                "at":"2018-03-16 11:38:30.063210"
+            },
+            {
+                "id":"hr",
+                "current_value":"70",
+                "at":"2018-03-16 11:38:30.063210"
+            },
+            {
+                "id":"batLevel",
+                "current_value":"90%",
+                "at":"2018-03-16 11:38:30.063210"
+            }
+        ]
+    },
+    "resource":"/feeds/12"
+}
+  \end{verbatim}
+  \caption{JSON object payload for one tag}
+  \label{jsonobj}
+\end{figure}
+
+After the application server connects to the data source, it extracts and computes the received data. The computational process is implemented in the \texttt{calcData()} function, transforming the raw data from the received JSON object~\ref{jsonobj} into the following metrics (for each connected tag): current speed, current HR and total distance covered. Total distance and current speed are computed with the use of basic mathematical and physics equations. Current HR is a~simple \texttt{current\_value} extraction from the current JSON object payload corresponding to the \texttt{"id":"hr"} key. The following is an example of a part of the function:
+
+\newpage
+\begin{verbatim}
+// onlineController.js; calcData() function extract
+this.t2 = moment(data.body.datastreams[0].at);
+...
+// calculate distance between two positions A1 <---> A2
+let x1_x2 = Math.sqrt(Math.pow((this.x1 - this.x2), 2) + 
+            Math.pow((this.y1 - this.y2), 2));
+            
+// calculate time difference between two positions A1 <---> A2
+let t1_t2 = this.t2 - this.t1;	// this.t1 initial value set on start
+
+this.distance += x1_x2;
+this.speed = x1_x2 / t1_t2;
+
+// save the current point as the previous one for the next iteration
+this.x1 = this.x2;
+this.y1 = this.y2;
+this.t1 = this.t2;
+    
+// extract the current HR from the JSON object
+this.hr = parseInt(data.body.datastreams[3].current_value);
+\end{verbatim}
+
+The calculated data is continually being saved in the application server in attributes of \texttt{SessionConnection} class instances, and on a continual basis stored in a database. In this case, MySQL database was used because of its simplicity and sufficiency for the system. The data is stored every second with the use of \texttt{saveSessionData()} method to ensure that no information is lost if the application server fails. One second storage intervals were identified by the coaches as a sufficient rate to guarantee desired precision of the this system. If the intervals were bigger, the data would lost their accuracy. On the other hand, too frequent saving turns out to be merely a waste of resources, because fluctuations in players’ physical data aren’t so large\footnote{The players would need to accelerate and decelerate so fast, that it would be humanly impossible to do so to radically influence the computed data. The same applies to HR frequency.}.
+
+When the application is running, it requires data from the application server so it can be displayed to the user. Communication between the application server and the web application (client) is facilitated by the \textit{REST application programming interface} (API) architecture\footnote{\url{http://www.restapitutorial.com/}}. The client makes an API call and the router on the server side (file \textit{index.js} in the \textit{router} folder) decides, what action should be taken - such as saving a new exercise, turning off a current recording , or requesting the player’s physical data in that session. In the latter case, the data is retrieved from the database, possibly aggregated and calculated (for example, time in HR zones is calculated) and then sent to the web application as a~JSON object. It can then finally update the view, hereby presenting the data to the user.
+
+\subsection{Web application}\label{web_application}
+Not only does the web application provide a view, but it also partially performs on the controller and model parts of the entire system.
+
+As demonstrated on~\ref{img:angular}, the client communicates with the application server through \textit{services}. Services are modules that contain sets of functions that define API calls. Here is an example of \texttt{getTeams()} function:
+
+\begin{verbatim}
+// data.service.ts; get all teams
+getTeams(): Observable<Team[]> {
+  return this._http.get("/api/teams", this.options)
+    .map((response: Response) => <any>response.json().data); 
+}
+\end{verbatim}
+
+
+The application uses multiple services such as \textit{data.service.ts} or \textit{authentication.service.ts}, which divide the functions according to their usage. They can be then \textit{injected} into controllers\footnote{Through so called dependency injection.}. Controllers control the data, which is defined by the model. Controllers define components that are the basic building blocks of an UI in an Angular application. Together with templates, they manage what the user sees or can do. Components play the part of the controller/viewmodel, and the templates, with the use of \textit{.html} and \textit{.css} files, represent the view.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/angular_mvc}
+\end{center}
+\caption{Angular MVC architecture}
+\label{img:angular}
+\end{figure}
+
+\textit{2-way data binding} ensures continuous synchronization between the model and the view. The client also uses its own routing table, defined in the \textit{app.routing.ts} file, to render different components depending on the current url. If the entered url doesn’t match any of the routes specified, the default fallback route is set to \texttt{HomeComponent}, which represents the application’s home page.
+
+\section{Data Models and Database}
+Each data model corresponds to a table from the data model (ER diagram). Due to the architecture of the system, there are models defined in both the application server and the web application.
+
+The application server defines the models in a \textit{/models} directory, for example \textit{/models/\-team.js}. These files are then imported to the controllers. For illustration, this is an~example of the \texttt{team} model export and import:
+
+\begin{verbatim}
+// team.js; exports a constructor function representing a team
+team = function(team_id, name, email) {
+  this.team_id = team_id;
+  this.name = name;
+  this.email = email;
+};
+module.exports = team;
+
+...
+// teamsController.js; imports the exported constructor function
+const _team = require('../models/team');
+\end{verbatim}
+
+MySQL database manipulation is carried out with the help of mysql library\footnote{\url{https://www.npmjs.com/package/mysql}}. The library allows to connect to a MySQL database and perform queries. Such a query may look like this\footnote{This query example partly uses Promises \url{https://developer.mozilla.org/cs/docs/Web/JavaScript/Reference/Global_Objects/Promise}}:
+
+\begin{verbatim}
+// eventsController.js
+let sql = 'SELECT DISTINCT playerId from session_player 
+           WHERE sessionId = ?';
+con.query(sql, sessionId, (err, rows) => {
+  if (err) {
+    reject();
+  } else {
+    ...
+    resolve();
+  }
+});
+\end{verbatim}
+
+In the web application, the models are defined in the \textit{data-model.ts} file. Analogously to the application server, the model must be firstly exported from the \textit{data-model.ts} file and then imported to the controllers as needed:
+
+\newpage
+\begin{verbatim}
+// data-model.ts
+export class Team {
+  team_id: number;
+  name: string;
+  email: string
+}
+
+// ./teams/teams.component.ts
+import { Team } from '../data-model';
+
+...
+private teams: Team[];	// all teams
+\end{verbatim}
+
+\section{Visual Design and Functionality}
+In line with the principles of the design (described in the chapters~\ref{uidesign} and~\ref{design}), together with the mock-ups (presented in~\ref{pilot-testing}), I created a simple UI that allows the coaches to use the sports application effectively. I named the application "Sporterizer".
+
+\subsection{General Appearance}
+To make Sporterizer visually appealing, I took advantage of CSS3 in combination with the Bootstrap and ng-bootstrap frameworks. All views (apart from the home, login and registration pages) incorporate a navbar. The green color of the navbar matches with other products and software developed by Sewio. It was very important to enhance the feeling of using a~sort of sports application, but also maintain the "clean" look of it. This can be done, for example, by color adjustment~\cite{Color} or font change~\cite{Fonts}. That’s why I decided  to use the white background color and sans-serif font Oswald, which together have the intended psychological effect. Icons in the application are used from Font Awesome toolkit\footnote{\url{https://fontawesome.com/}}.
+
+\subsection{Functionality}
+After the coaches register and log into the application, they are presented with the dashboard~\ref{img:dashboard_implem} implemented in the \texttt{DashboardComponent}. Before the component gets the data to display (events, last session data) through services, as described in~\ref{web_application}, it displays a~loading icon, so the user is never presented with a blank screen and does not know what is going on. This functionality applies across all components, thereby increasing the user-friendliness of Sporterizer.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/dashboard_implem}
+\end{center}
+\caption{Dashboard}
+\label{img:dashboard_implem}
+\end{figure}
+
+The calendar by default shows events that were recorded during the current day. Time (start of training) and name clearly identify a given event. It is also possible to view any given month, week or day. An event can be selected by either clicking on the red dot or the "time event-name" text. This solution makes the calendar both fast and easy to interact with - which is exactly what the coaches need.
+
+The right part of the dashboard screen features last event overview. HR zones and speed zones are one of the key UI elements of the whole application. In this case, they display team averages of the complete training. HR zones display five different zones that represent HR ranges in which a sportsman can be~\cite{HRzones}. The higher span of values the zone represents, the more "vigorous" color it has - from light gray showing very little of importance, across green meaning the optimal activity, all the way to red marking very intensive performance, that should be taken notice of. Speed zones function analogously. The UI elements were implemented as a variation of ng-bootstrap’s HTML element \texttt{<ngb-progressbar>}. Tags that are offline during the session recording are taken into account and don’t skew any of the aggregated data - neither the whole session nor exercise summaries are affected.
+
+The new session button was designed to be the most prominent element inside the navbar. Its yellow border and text color contrast well on the green background and when the user hovers over it, the whole buttons turns yellow and becomes even more forward. When a~session is currently being recorded, the button turns red and changes its text to "Recording" - this allows the coach to clearly see, that the recording is active, thus also preventing them to accidentally want to start simultaneously recording another session (which the system wouldn’t handle). After clicking on the button, the \texttt{NewSessionComponent} is rendered. While choosing the players to record, tags that are online were designed in green color, whereas those offline in red, so the coach can quickly see their status. Unless name for the new session is entered and at least one player is chosen, there will be a red warning message displayed, clearly notifying the user, that they forgot something. Afterwards, new session is created and the view of \texttt{OnlineComponent}~\ref{img:online_implem} is displayed.
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=14cm,height=8cm,keepaspectratio]{images/online_implem}
+\end{center}
+\caption{Online overview}
+\label{img:online_implem}
+\end{figure}
+
+The view is regularly updated with current data every three seconds. From a practical point of view, the frequency of data update is sufficient and does not need to be higher, because the coaches don’t need to see the current data immediately\footnote{Even a few seconds delay is perfectly fine because the coaches are more interested in aggregate numbers and the information whether a player has sprinted 524\,m or 528\,m makes practically no difference during online recording.}. API calls last between 50\,-\,400\,ms before fetching new data depending on the number of selected players\footnote{These numbers were obtained during testing of the application on one computer running both server, simulator and the application.}. This is done using the RxJs library\footnote{\url{http://reactivex.io/rxjs/}}. An \textit{observer} in the controller subscribes to an Observable \texttt{getSessionData} (defined in \textit{data.service.ts}) and the observer reacts to the data that the Observable emits. On this event, the model as well as the view are updated and the user is presented with new data. Subscription frequency is moderated with the use of \texttt{TimerObservable} and \texttt{takeWhile} operators.
+
+The coach can during the recording also notice which tags may be offline - marked with a red text warning of the top of the player "card". They can clearly see the current HR value relative to the maximum HR value of the player, calculated as \(220 - age\)~\cite{HRmax}. This is the most important metric that a coach has at his disposal during recording. Therefore, the numbers are larger and distinguished by different colors that correspond to the colors in HR zones, which makes the application more comfortable to work with. The lengths, as well as the buttons of the currently recorded exercise and the whole session, were designed in neutral white and gray, so they are sufficiently visible on the light-green color of the navbar, but don’t draw too much attention from the more important elements.
+
+While recording is active, it is possible to leave the current view or even exit the application. The recording will stay active as long as the user doesn’t save it, or it will continue to capture the data for another three hours. This is implemented on the application server as a~timeout (\texttt{closeSessionTimeout()}). It is also possible to browse through the application~- view the status of tags in the settings, analyze already recorded events, etc. However, some functionality such as teams, players and server modification is for the sake of application’s consistency disabled. When the user visits the views containing this functionality, they are presented with a warning message.
+
+Once the recording is complete, the observer unsubscribes from the observer, the session is saved and the user is presented with Dashboard. \texttt{PlayersComponent} and \texttt{TeamsComponent} allow the coaches to add, edit and delete players and teams. Information about the entities is presented using \textit{reactive forms}\footnote{\url{https://angular.io/guide/reactive-forms}}. This solution offers a better form validation of the entered data and comes across as more user-friendly. Also, as described in~\ref{uidesign}, there should be some feedback from the application on any action the user is doing. Therefore, when any of the forms in Sporterizer is submitted, an informative message pops up, describing result of the executed action. Finally when the coaches log out of the application, they are redirected to the \texttt{LoginComponent} and presented with a message informing them about~a successful logout, which is prominently displayed in green. All these types of notifiers throughout the application are designed in the same way (except for colors - green for success and red for warning or failure) to preserve a certain visual unity.
+
+\subsection{Application Security}
+Security on the authentication level is ensured with the use of JSON Web Token\footnote{\url{https://jwt.io}}. The standard defines an independent way for secure transmission of information between parties as a JSON object. This information is digitally signed on the application server with the use of a RSA key, therefore it can be trusted. Implemented in the \textit{authentication.service} and \textit{auth.guard.ts}, it prevents unauthorized users to access pages of the application visible only for those that are logged in. On login, the user’s credentials are posted to the API and the response is checked for a valid JWT token. On success, the authentication is successful and an updated expiration timestamp is stored in the localStorage\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage}}. In this way, until the user logs out, they stay logged in, even if the browser is refreshed or browser sessions are changed.
+
+\section{Testing}
+The last part of the design thinking process is testing. Now the user decides if they like the implemented application and provides the designer with valuable feedback, that will help them to improve it.
+
+\subsection{Testing proposal}
+The optimal case would be to firstly test overall functionality of the application (such as tag connection, modules functionality) in the Baluo application center in Olomouc\footnote{\url{https://www.acbaluo.cz/}}, where Sewio has their locating system set up, and subsequently test the application with coaches during the training. However, due to currently not yet fully functional\footnote{The system should have been ready for the testing, but Sewio had some technical issues with implementation of HR measurement.} system, that was not possible. Therefore, I had to abandon this process and rely on the data server simulator, that I created. This allowed me at least to explore usability of the application itself and intuitiveness of the UI.
+
+As Krug recommends in his book, \textit{the best way to learn how to make anything more usable is to watch people actually try to use it}~\cite{Krug}. Based on this idea, I suggest to directly observe the coaches use the application. I am going to present them with a set of tasks to be done, and with the use of \textit{think aloud protocol}~\cite{ThinkAloud} find out what their thought process is. I will also measure total execution time of the set of tasks and see how fast the coaches are going to complete it. Because this type of application will be used regularly, I assume that the first interaction with the system will be slower, as the user is going to be faced with a lot of novelty. This is why they will perform a complete set of tasks twice - the second iteration should be considerably faster because the user will be more familiar with the system. Finally, once the set of the tasks is done, I will ask the users about their impressions. The following is the set of prepared tasks:
+
+\begin{itemize}
+\item Log into the application (email: lorem@ipsum.dolor, password: secret)
+\item Add a new player (firstname: Dwayne, lastname: Wade, year: 1982, month: April, day: 13, weight: 106 kg, tag: 12)
+\item Record a new session (name: Test 1). Add at least five players
+\item Record an exercise (name: Warm up)
+\item Compare players and filter them by current HR
+\item Save the exercise and the session
+\item Find out who covered the most distance during the "Warm up" exercise in the "Test~1" event
+\item Log out of the application
+\item Execute the tasks in the list one more time (you are going to do the list twice in total)
+\end{itemize}
+
+\subsection{Testing results}
+In the course of one week, I managed to meet with four professional coaches and a few other people who have a good knowledge of sports training. The testing took place informally so the testers felt comfortable and without pressure. As I gained some experience during the research part of the thesis~\ref{research}, the interaction with users was considerably better.
+
+Following the procedure above, I received many positive comments on the application, but also many ideas and recommendations on what could be improved. All of the tested users liked the UI of the application and said that it was visually very appealing. They appreciated the functionality and possibilities of the system.
+
+Just as I expected, the first time, when the coaches completed the set of tasks, was way slower than the second time. However, it was mostly during the first iteration, when I discovered most of the shortcomings of the application - the users were struggling with recording a new exercise and finding out how to compare players. Thanks to the think aloud protocol as well as to user impressions (conducted after the testing of the set of tasks), I~found out that it was because of the green color of the navbar combined with "gray" text. Some of the coaches reported that for the first time, when they saw the application, there was too much new information for them. This implies that the application’s structure or at least its design could be improved. However, the big time difference in completion of the sets of tasks was also caused by the fact, that the users weren’t used to the keyboard of the laptop, on which they were tested. Especially typing of numbers was critical and it got significantly better during the second round of the tasks execution. There is one more factor why it could be more difficult to complete the tasks - English is none of the tester’s native language and some of them don’t speak it fluently, therefore it took them more time to figure out, where to look for certain things.
+
+There were many comments on what could be improved, such as having a possibility to add or delete all players at once at the start of a new session. There was a demand for having the \textit{tag\_id} displayed next to the player’s name during the online recording. As mentioned above, there was a need for better navbar design, so the buttons and texts on it are more readable. One coach said, that some of the lines, which are dividing different information, such as in the \texttt{EventsComponent} or \texttt{OnlineComponent} could be bolder to enhance quicker visual navigation throughout the information. Another pointed out that having to wait for the application to render a new screen for longer than two seconds could be really frustrating, so it’s really important to keep the application as fast as possible. There was also an idea to add different colors to the metrics in comparison view (both online and offline) to improve their readability. Finally, one coach thought that it would be great to have a possibility to choose what metrics to display during the online view.
+
+Based on the feedback, I fixed some of the issues and left the rest for possible improvements in the future, as described in the next part.
+
+\section{Future of the Application}
+After testing I visited Sewio and presented to them a final version of the application. They were thrilled by it and said, that the result had exceeded their expectations. This was followed by the discussion about the possibility of testing and deploying the application in the Baluo application center, once the system is ready. Similarly to Sewio, I also presented my work in Baluo to some people in the center (including the director), and their reactions were really positive - we immediately started thinking about deploying the application, its possible extensions and market place.
+
+In the future, it is possible to add many new functions, modules and metrics to the current application. As I described in~\ref{research}, the coaches had countless ideas about what such an application could do - everything from recording sessions, profound in-depth post-analysis to eventually using the application in a real match and linking it with another system to broadcast the data in real-time on TV.
+
+Therefore, it is important to first find the target audience, identify a unique selling point of the application, and so focus it on a niche segment of the market. Only then will it be clearer, what functions exactly should the final product have.
+
+One option is to take the current application and use it as it is. The second is to use the know-how, that I have acquired during my work on this thesis and build a new application from scratch, that will be better targeted. Both of the possibilities are currently in discussion with Sewio and Baluo. The latest idea was to create an application for coaches, parents and children and use it to monitor training load of the children and be able to report to their parents, if their child is training healthy.
+
+
+
+\chapter{Conclusion}
+The main goal of the thesis was to develop a web application for modern sports training, that utilizes data from a real-time locating system. While working on the project I tried to find out what data and functionality the application should offer, so the sports coaches who use it are maximally satisfied and will always want to have this tool in trainings.
+
+The introductory part deals with the user interface and its design. After learning what design thinking is and what stages it comprises of, I had a clear idea of the complete process of the application development.
+
+Acquainted with the knowledge of building UIs, I started studying research methods, that would enable me to identify the needs of coaches. Simultaneously, I studied the real-time locating system used by Sewio. After learning how the system collects, manages and pre-processes data, I could finally meet up with the coaches, understand their needs and merge them with the capabilities of the system.
+
+After meeting with five professional coaches, I aggregated their needs and identified the most useful application features. I learned about web technologies and designing web applications. I created an information structure based on the user requirements. I studied prototyping to later create mock-ups of the application, that helped me translate the aggregated information into a more tangible form, that I could present to the coaches. After several iterations of this process, the final version of the application was agreed on.
+
+The result of the thesis is a system consisting of an application server that was implemented with Node.js and a web application programmed in Angular 5. For development and testing purposes, I also created a simulator simulating real-time motion and biometric data of players that would otherwise be obtained from a server located in a sports center. The application is divided into two key parts. The first is dedicated to online recording, where the coaches can see in real-time multiple metrics about each player, such as current heart rate or total distance covered. It is also possible to record exercises, compare players or check team averages. The second part is for offline post-analysis of the information that was recorded online. Other features include managing players, teams, or server settings.
+
+The application was tested with four professional coaches, whose feedback was very positive. I also presented the final product to Sewio and to a few key people in Baluo application center. Both parties were thrilled about my work, which I was very happy about. Immediately after my presentation, there was a discussion about the future of the application, its possible improvements and market position. I really want to continue working on this product and it seems to me that I have full support in this.
+%=========================================================================

@@ -1,0 +1,176 @@
+<div class="page-wrapper">
+
+  <ng-template #nosessions>
+
+    <div class="container loading-screen-text">
+      <div class="text-center">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <br>
+        Loading Dashboard...
+      </div>
+    </div>
+
+  </ng-template>
+
+  <div *ngIf='sessions; else nosessions'>
+
+    <ng-template #allsessions>
+
+      <div>
+        <div class="text-center loading-screen-text">
+          <h2>Nothing has been recorded yet!</h2>
+        </div>
+      </div>
+
+    </ng-template>
+
+    <div *ngIf='sessions.length > 0; else allsessions'>
+
+      <div class="dashboard-data-wrapper">
+        <div class="row">
+          <div class="col-sm-6">
+
+            <div class="container">
+              <mwl-demo-component>Loading...</mwl-demo-component>
+            </div>
+
+          </div>
+          <div class="col-sm-6">
+          
+            <div *ngIf="lastSessionData">
+              
+              <div class="container">
+                <div>
+
+                <div class="heading-new-btn">
+                  <h3>Last Event - Overview</h3>
+                  <button (click)='onLastSessionClick()'
+                      class="btn btn-primary">Event detail</button>
+                </div>
+
+                <hr>
+                <h4>Complete Event</h4>
+
+                <div class="row">
+                  <div class="col">
+                    <h5>
+                      name: {{ lastSessionData.session.name }}
+                    </h5>
+                  </div>
+                  <div class="col">
+                    <h5>
+                      duration: {{ lastSessionData.session.duration | timeToDate:'milliseconds' | date:'HH:mm:ss' }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h5><i class="fa fa-male"></i> {{ lastSessionData.session.players_count }}</h5>
+                    <p class="label-metric">Players</p>
+                  </div>
+                  <div class="col">
+                    <h5><i class="fa fa-heartbeat"></i> {{ lastSessionData.session.avg_hr | number:'1.0-0' }} bpm</h5>
+                    <p class="label-metric">Avg HR</p>
+                  </div>
+                  <div class="col">
+                    <h5><i class="fa fa-road"></i> {{ lastSessionData.session.avg_distance | number:'1.0-0' }} m</h5>
+                    <p class="label-metric">Avg Distance</p>
+                  </div>
+                  <div class="col">
+                    <h5><i class="fa fa-tachometer"></i> {{ lastSessionData.session.avg_sprint_distance | number:'1.0-0' }} m</h5>
+                    <p class="label-metric">Avg Sprint Distance</p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="zones-wrapper">
+                      <p>hr zones</p>
+                      <div *ngFor="let hrz of lastSessionData.session.hr_zones.reverse(); let i = index">
+                        <div *ngIf="i < 6 && i !== 0">
+                          <div class="zones">
+                            <p class="hrz">zone {{ 6 - i }}</p>
+                            <ngb-progressbar [type]="hr_types[i-1]" height="16px" [value]="hrz.percentage">{{   hrz.percentage | number:'1.0-0' }}%</ngb-progressbar>
+                            <p>
+                              {{ hrz.count |   timeToDate:'seconds' | date:'HH:mm:ss'}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="zones-wrapper">
+                      <p>speed zones</p>
+                      <div *ngFor="let sz of lastSessionData.session.speed_zones.reverse(); let i = index">
+                        <div *ngIf="i < 4 && i !== 0">
+                          <div class="zones">
+                            <p class="sz">{{ speed_names[i-1] }}</p>
+                            <ngb-progressbar [type]="speed_types[i-1]" height="16px" [value]="sz.percentage">{{   sz.percentage | number:'1.0-0' }}%</ngb-progressbar>
+                            <p>
+                              {{ sz.count |   timeToDate:'seconds' | date:'HH:mm:ss'}}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <br>
+              <div *ngIf="lastSessionData.exercises.length > 0">
+                <hr>
+                <h4>Recorded Exercises</h4>
+                <div class="stats-header-margin">
+                  <div class="row stats-header" style="background-color: #f1f1f1;">
+                    <div class="col">
+                      Name
+                    </div>
+                    <div class="col">
+                      Avg HR [bpm]
+                    </div>
+                    <div class="col">
+                      Rel HR [%]
+                    </div>
+                    <div class="col">
+                      Avg Distance [m]
+                    </div>
+                    <div class="col">
+                      Duration
+                    </div>
+                  </div>
+                  
+                  <div *ngFor="let exercise of lastSessionData.exercises">
+                  <div class="row">
+                    <div class="col">
+                      {{ exercise.name }}
+                    </div>
+                    <div class="col">
+                      <i class="fa fa-heartbeat"></i> {{ exercise.avg_hr | number:'1.0-0' }}
+                    </div>
+                    <div class="col">
+                      <i class="fa fa-heart"></i> {{ exercise.relative_hr | number:'1.0-0' }}
+                    </div>
+                    <div class="col">
+                      <i class="fa fa-road"></i> {{ exercise.avg_distance | number:'1.0-0' }} 
+                    </div>
+                    <div class="col">
+                      {{ exercise.duration | timeToDate:'milliseconds' | date:'HH:mm:ss' }}
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+
+</div>

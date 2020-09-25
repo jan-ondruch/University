@@ -1,0 +1,14 @@
+---
+- pause: prompt="SSH Key on remote? Is the SSH Key copyed to your local machine?"
+- name: Create backup from limesurvey database
+  mysql_db: state=dump name=all target=/tmp/database_backup.sql
+- stat: path=database_limesurvey
+  register: database
+- name: Remove old backup archive
+  file: path=database_limesurvey state=absent
+- name: Split limesurvey database into fat32 compliant parts
+  raw: 7z a -v1G database_limesurvey/databasebackup.7z /tmp/database_backup.sql -aoa
+- stat: path=.ssh/id_rsa
+  register: sshkey
+- name: Load backup to your tmp folder, please navigate there and collect data
+  synchronize: mode=pull src=database_limesurvey dest={{ vars.limesurvey.backupandrestore.backupdir }}

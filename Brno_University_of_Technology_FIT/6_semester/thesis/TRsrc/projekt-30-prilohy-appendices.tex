@@ -1,0 +1,61 @@
+% Tento soubor nahraďte vlastním souborem s přílohami (nadpisy níže jsou pouze pro příklad)
+% This file should be replaced with your file with an appendices (headings below are examples only)
+
+% Umístění obsahu paměťového média do příloh je vhodné konzultovat s vedoucím
+% Placing of table of contents of the memory media here should be consulted with a supervisor
+%\chapter{Obsah přiloženého paměťového média}
+
+%\chapter{Manuál}
+
+%\chapter{Konfigurační soubor} % Configuration file
+
+%\chapter{RelaxNG Schéma konfiguračního souboru} % Scheme of RelaxNG configuration file
+
+%\chapter{Plakát} % poster
+
+%\
+\chapter{Interview Documents}
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=11cm,keepaspectratio]{images/questions}
+\end{center}
+\caption{Interview questions}
+\label{img:questions}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+  \includegraphics*[width=11cm,keepaspectratio]{images/sysopts}
+\end{center}
+\caption{Sewio system options}
+\label{img:sysopts}
+\end{figure}
+
+\chapter{CD Contents}
+\begin{itemize}
+	\item src
+      \begin{itemize}
+      	\item Source files for the application
+      \end{itemize}
+    \item documents
+      \begin{itemize}
+         \item Technical report
+         \item Video
+         \item Poster
+       \end{itemize}
+    \item TRsrc
+      \begin{itemize}
+      	\item Source files for the technical report
+      \end{itemize}
+\end{itemize}
+
+\chapter{Installation Manual}
+Since the system is implemented in Node.js and Angular 5, to run the application on a~local computer, it is necessary to install some tools. Then specific commands must be run in order to install and start the application. The following are the steps for the installation:
+
+\begin{enumerate}
+  \item Download and install Node.js\footnote{\url{https://nodejs.org/}}, npm\footnote{\url{https://www.npmjs.com/}}, Angular CLI\footnote{\url{https://cli.angular.io/}} and MySQL\footnote{\url{https://www.mysql.com/}} (in this order\footnote{Detailed installation instructions of these tools can be found on their websites.}).
+  \item Create a local MySQL database and populate it with the content of the enclosed \texttt{db.sql} file.
+  \item Change to the \texttt{src} folder (root folder of the application, where \texttt{package.json} file is located) and run the command \texttt{npm install} and then \texttt{ng build}.
+  \item Run \texttt{npm start} and visit \texttt{localhost:3000} to start the application.
+  \item Login with the test account - email: \textit{lorem@ipsum.dolor}; password: \textit{secret}. Or register and create a new account. 
+\end{enumerate}

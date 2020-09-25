@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+	<%- include('../partials/navbar', {type: type, user: user}); %>
+
+	<div class="container">
+		<div class="patient">
+			<i class="fa fa-user" aria-hidden="true"></i>
+		  <h3><%= patient[0].firstname %></h3>
+		  <h3><%= patient[0].lastname %></h3>
+		  <h3> [<%= patient[0].birth_cn %>]</h3>
+		  <% var type = type || "" %>
+		  <% if (type.length > 0) { %>
+		    <% if (type !== 'nurse') { %>
+		    	<button type="button" class="btn btn-primary plan-visit-modal" data-toggle="modal" data-target="#planVisitModal">Naplánovat prohlídku / očkování</button>
+		    	<button type="button" class="btn btn-primary new-visit">Nová (akutní) prohlídka</button>
+		    <% } else { %>
+		    	<button type="button" class="btn btn-primary plan-visit-modal" data-toggle="modal" data-target="#planVisitModal">Naplánovat prohlídku / očkování</button>
+		    <% } %>
+		  <% } %>
+		</div>
+	  <div class="panel-group" id="accordion">
+      <div class="panel jumbotron visitsTableHeader">
+        <div class="panel-heading">
+          <h4>
+  		      Datum a čas návštěvy
+          </h4>
+          <h4>
+						Naplánovaná návštěva
+          </h4>
+        </div>
+      </div>
+	  	<% var results = results || "" %>
+	  	<% var i = 1; %>
+	  	<% if (results.length > 0) { %>
+	  	<% results.forEach(function(r) { %>
+	  		<!-- visit bar -->
+		    <div class="panel panel-default jumbotron" data-toggle="collapse" data-parent="#accordion" href="#navsteva<%= i %>">
+		      <div class="panel-heading">
+		        <h4 class="panel-title">
+		          <a>
+				        <% var dtr = r.visit.date.toISOString().slice(0, 19).replace('T', ' ') %>
+				        <% var idx = dtr.indexOf(" ") %>
+				        <%= dtr.substr(0, idx).split("-").reverse().join(".") %>,
+				        <%= dtr.substr(idx + 1).substr(0, 5) %>
+				        <% if (r.visit.date > new Date()) { %>
+				        	<a style="float: right;"><i class="fa fa-check" aria-hidden="true"></i></a>
+				        <% } else { %>
+				        	<a style="float: right;"><i class="fa fa-ban" aria-hidden="true"></i></a>
+				        <% }%>
+		          </a>
+		          <p class="id_visit_plan" style="display: none">
+		          	<%= r.visit.id_visit %>
+		          </p>
+		        </h4>
+		      </div>
+		      <div id="navsteva<%= i %>" class="panel-collapse collapse in">
+		        <div class="panel-body">
+	          	<div class="container inside">
+	          		<!-- description and diagnosis -->
+	          	  <div class="row">
+	          	    <div class="col-sm-6">
+	          	    	<h4>Diagnóza</h4>
+	          	    	<%= r.visit.diagnosis %>
+	          	    </div>
+	          	    <div class="col-sm-6">
+	          	    	<h4>Popis</h4>
+	          	    	<%= r.visit.description %>
+	          	    </div>
+	          	  </div>
+	          	  <!-- executions and drugs -->
+	          	  <div class="row">
+	          	    <div class="col-sm-6">
+	          	    	<h4>Výkony</h4>
+	          	    	<% if (r.executions.length === 0) { %>
+	          	    		<p>Nebyly provedeny/naplánovány žádné výkony.</p>
+	          	    	<% } else { %>
+	          	    		<% r.executions.forEach(function(e) { %>
+												<li style="margin-left: 12px;"><%= e.name %></li>	    				
+	          	    		<% }); %>
+	          	    	<% } %>
+	          	    </div>
+	          	    <div class="col-sm-6">
+	          	    	<h4>Léky</h4>
+	          	    	<% if (r.drugs.length === 0) { %>
+	          	    		<p>Nebyly předepsány žádné léky.</p>
+	          	    	<% } else { %>
+	          	    		<% r.drugs.forEach(function(d) { %>
+	          	    			<div class="drugsBox">
+	          	    				<li><%= d.name %></li>
+	          	    				<p><%= d.amount %>ks</p>	    				
+	          	    			</div>
+	          	    		<% }); %>
+	          	    	<% } %>
+	          	    </div>
+	          	  </div>
+	          	  <!-- external med checks -->
+	          	  <div class="row">
+	          	    <div class="col-sm-12">
+	          	    	<h4>Externí vyšetření</h4>
+	          	    	<% if (r.extern_med_checks.length === 0) { %>
+	          	    		<p>Pacient nebyl poslán na žádná externí vyšetření.</p>
+	          	    	<% } else { %>
+		          	    	<% r.extern_med_checks.forEach(function(e) { %>
+		          	    		<p><b>Odborné pracoviště: </b><%= e.name %></p>
+		          	    		<p><b>Stručný popis: </b><%= e.diagnosis %></p>	    				
+		          	    	<% }); %>
+	          	    	<% } %>
+	          	    	<% if (type === 'nurse') { %>
+	          	    		<p id="visitID" style="display: none"><%= i %></p>
+	          	    		<button type="button" class="btn btn-danger deletebtn deleteNumber" data-toggle="modal" data-target="#deleteVisitModal">
+	          	    		  Smazat prohlídku
+	          	    		</button>
+	          	    	<% } else { %>
+	          	    		<p id="visitID" style="display: none"><%= i %></p>
+          	    			<button type="button" class="btn btn-danger deletebtn deleteNumber" data-toggle="modal" data-target="#deleteVisitModal">
+          	    			  Smazat prohlídku
+          	    			</button>
+          	    			<p id="visitID" style="display: none"><%= i %></p>
+	          	    		<% if (r.visit.diagnosis === "Doplní lékař...") { %>
+	          	    			<button type="button" class="btn btn-primary deletebtn open-visit">
+	          	    		  	Otevřít prohlídku
+	          	    			</button>
+	          	    		<% } %>
+	          	    	<% }%>
+	          	    </div>
+	          	  </div>
+	          	</div>
+		        </div>
+		      </div>
+		    </div>
+		    <!-- end of visit bar -->
+		    <% i++ %>
+	  	<% }); %>
+	  	<% } else { %>
+				<h4 style="padding: 32px 16px;">Pacinet neabsolvoval žádné prohlídky ani nejsou žádné naplánované.</h4>
+	  	<% } %>
+	    </div>
+	  </div> 
+	</div>
+
+	<!-- Delete Visit Modal -->
+	<div class="modal fade" id="deleteVisitModal" role="dialog">
+	  <div class="modal-dialog">
+	  
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">Smazat prohlídku</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	      <div class="modal-body">
+	        <p>Opravdu chcete smazat tuto prohlídku? Veškerá spojená s touto prohlídkou budou ztracena.</p>
+	        <p class="number"></p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Zpět k prohlídkám</button>
+	        <button type="button" class="btn btn-danger btns delete-visit">Smazat prohlídku</button>
+	      </div>
+	    </div>
+	    
+	  </div>
+	</div>
+
+	<!-- Plan Visit Modal -->
+	<div class="modal fade" id="planVisitModal" role="dialog">
+	  <div class="modal-dialog">
+	  
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">Naplánovat prohlídku / očkování</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="container">
+	            <div class="row">
+	                <div class="form-group">
+	                    <div class='input-group date datetimeform'>
+	                    		<label class="datetimelabel" for="datetime">Datum a čas prohlídky</label>
+	                        <input value="22.06.2018 13:15" type='text' name="date" class="form-control" required="required" />
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	        	<div class="container">
+	          	<!-- Execution -->
+	            <div class="form-group">
+	          	  <h4>Výkony</h4>
+	          	  <table class="table" id="execTable">
+	          	      <tr>
+	          	          <th style="">
+	          	              <p>Název výkonu</p>
+	          	          </th>
+	          	          <th>
+	          	              <p>Smazat</p>
+	          	          </th>
+	          	      </tr>
+	          	      <tr>
+	          	          <td class="ev_exec">
+	          	              <input type="text" style="" name="execution" class="form-control execData" value="Vyšetření a potvrzení pro řidičský průkaz." maxlength="60" required='required' readonly="readonly" />
+	          	          </td>
+	          	          <td>
+	          	              <button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+	          	          </td>
+	          	      </tr>
+	          	  </table>
+
+	           		<label for="searchExec">
+	           			Vyhledat výkon
+	           			<input id="searchExec" list="searchExecList" class="form-control" value="" placeholder="např. Očkování proti malárii" style="width: 400px">
+	           			<datalist id="searchExecList">
+	           				<% var template_execution = template_execution || "" %>
+	           				<% if (template_execution.length > 0) { %>
+	           				<% template_execution.forEach(function(te) { %>
+	           					<option value="<%= te.name %>">
+	           					</option>
+	           				<% }); %>
+	           				<% }; %>
+	           			</datalist>
+	           		</label>
+	           		<p>
+	          	    <input type="button" value="Přidat výkon" class="addNewExec btn btn-info">
+	          	  </p>
+	          	  <p id="limitExec" class="limit">Maximální počet naplánovaných výkonů je omezen na 3.</p>
+	          	  <p id="dateValidity" style="display: none; color: #cc0000">Zadané datum není validní. Použijde datum ve formátu DD.MM.RRRR HH:MM (např. 22.01.2018 13:15)</p>
+	            </div>
+	            <!-- Of of Execution -->
+	          </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger btns" data-dismiss="modal">Zpět k návštěvám</button>
+	        <button type="button" class="btn btn-primary plan-visit">Naplánovat návštěvu</button>
+	      </div>
+	    </div>
+	    
+	  </div>
+	</div>
+
+<% include ../partials/scripts.ejs %>
+
+<script>
+
+$(document).ready(function () {
+
+	// add new execution
+	$('#execTable').on('click', 'button[type="button"]', function () {
+			$('#formValidity').css("display", "none");
+	    $(this).closest('tr').remove();
+	    var len = $('#execTable .smazat').length;
+	    if (len > 2) {
+	    	$('#limitExec').css("display", "inline");
+	    }
+	    else {
+	    	$('#limitExec').css("display", "none");	
+	    }
+	})
+	$('.addNewExec').click(function () {
+			$('#formValidity').css("display", "none");
+			// check number first, maximum is 3
+			var len = $('#execTable .smazat').length;
+			if (len > 2) {
+				$('#limitExec').css("display", "inline");
+			}
+		  else {
+				var value = $('#searchExec').val();
+				if (!(value === "")) {
+					$('#limitExec').css("display", "none");
+					var str = '<tr><td class="ev_exec"><input type="text" style="" name="execution" class="form-control execData" value="' + value + '" maxlength="60" required="required" readonly="readonly"/></td><td><button type="button" class="btn btn-danger smazat"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td></tr>'
+		    	$('#execTable').append(str);
+		    	$('#searchExec').val("");
+		  	}
+		  }
+	});
+
+	// add new visit doctor
+	$('.new-visit').click(function () {
+		var birth_cn = <%- JSON.stringify(patient[0].birth_cn) %>;
+	  var url = '/new-visit?birth_cn=' + birth_cn;
+	  window.location = url;
+	});
+
+	// open planned visit
+	$('.open-visit').click(function () {
+		var birth_cn = <%- JSON.stringify(patient[0].birth_cn) %>;
+	  var visit_number = $(this).prev().text();
+	  var results = <%- JSON.stringify(results) %>;
+	  var id_visit = results[visit_number-1].visit.id_visit;
+
+	  var data = {};
+
+	  data.birth_cn = birth_cn;
+	  data.id_visit = id_visit;
+
+	  $.ajax({
+	    type: 'POST',
+	    data: JSON.stringify(data),
+	    contentType: 'application/json',
+	    url: '/open-visit',
+	    success: function(response) {
+	      if (response.result == 'redirect') {
+	        //redirecting to main page from here.
+	        window.location.replace(response.url);
+	      }
+	    }
+	  });
+	});
+
+	// plan new visit nurse
+	$('.plan-visit').click(function () {
+		var data = {};
+
+		// datetime
+		var datetime = $('.datetimeform').find('input').val();
+		var idx = datetime.indexOf(" ");
+		var pDate = datetime.substr(0, idx).split(".").reverse().join("-");
+		var pTime = datetime.substr(idx + 1);
+		datetime = pDate + " " + pTime;
+		
+		if (Object.prototype.toString.call(new Date(Date.parse(datetime))) === "[object Date]" ) {
+		  // it is a date
+		  if (isNaN(new Date(Date.parse(datetime)))) {
+		    $('#dateValidity').css("display", "inline");
+		  }
+		  else {
+				// old date, invalid
+				if (new Date(Date.parse(datetime)).toISOString() < new Date().toISOString()) {
+					$('#dateValidity').css("display", "inline");
+				}
+				else {
+
+					data.datetime = datetime;
+
+					// executions
+					var executions = <%- JSON.stringify(template_execution) %>;
+					var executions_arr = [];
+					var e_name, execution_code;
+					e_name = "";
+					$('.ev_exec').each(function() {
+						if (e_name === "") {
+							e_name = ($(this).find("input").val());
+
+							executions.forEach(function(e) {
+								if (e.name === e_name) {
+									execution_code = e.execution_code;
+								}
+							});
+							
+							var jsonObj = {
+							  execution_code : execution_code
+							}
+							executions_arr.push(jsonObj);
+							e_name = "";
+						}
+					});
+					data.executions = executions_arr;
+					
+					var patient = <%- JSON.stringify(patient) %>;
+					data.birth_cn = patient[0].birth_cn;
+					data.insurance = patient[0].insurance;
+
+					$.ajax({
+					  type: 'POST',
+					  data: JSON.stringify(data),
+					  contentType: 'application/json',
+					  url: '/save-visit',
+					  success: function(response) {
+					    if (response.result == 'redirect') {
+					      //redirecting to main page from here.
+					      window.location.replace(response.url);
+					    }
+					  }
+					});
+				}
+		  }
+		}
+		else {
+		  $('#dateValidity').css("display", "inline");
+		}
+	});
+
+	// delete visit helper
+	$('.deleteNumber').click(function () {
+		var visit_number = $(this).prev().text();
+		var results = <%- JSON.stringify(results) %>;
+		var id_visit = results[visit_number-1].visit.id_visit;
+		
+		// send it to the modal
+		$("#deleteVisitModal p.number").val(id_visit);
+	});
+
+	// delete visit nurse
+	$('.delete-visit').click(function () {
+		var id_visit = $('p.number').val();
+		var patient = <%- JSON.stringify(patient) %>;
+		var birth_cn = patient[0].birth_cn;
+
+		data = {};
+
+		data.id_visit = id_visit;
+		data.birth_cn = birth_cn;
+
+	  $.ajax({
+	    type: 'POST',
+	    data: JSON.stringify(data),
+	    contentType: 'application/json',
+	    url: '/delete-visit',
+	    success: function(response) {
+	      if (response.result == 'redirect') {
+	        //redirecting to main page from here.
+	        window.location.replace(response.url);
+	      }
+	    }
+	  });
+	});
+});
+
+</script>
+
+</body>
+</html>

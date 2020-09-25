@@ -1,0 +1,47 @@
+\documentclass[11pt,a4paper,oneside]{article}
+\special{papersize=210mm,297mm}
+\usepackage[left=2cm,text={17cm, 24cm},top=3cm]{geometry}
+
+\usepackage{times}
+\usepackage[utf8x]{inputenc} 
+\usepackage[czech]{babel}
+\usepackage[IL2]{fontenc}
+
+\usepackage{natbib}
+\usepackage{dtklogos}
+
+\usepackage{url}
+\DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
+\bibliographystyle{czechiso}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+
+{\Huge\textsc{{Vysoké učení technické v~Brně}}}\\
+\bigskip
+{\huge\textsc{{Fakulta informačních technologií}}}\\
+\vspace{\stretch{0.382}}
+{\LARGE{Typografie a publikování\,--\,4. projekt}}\\
+\medskip
+{\Huge{Bibliografické citace}}
+\vspace{\stretch{0.618}}
+\end{center}		
+\Large{\today \hfill Jan Ondruch}
+\end{titlepage}
+
+	\section*{Typografie a její praktické užití}
+	\LaTeX~je \texttt{velmi} kvalitní sázecí nástroj, se kterým můžeme vytvořit jednoduché dokumenty nebo také pomocí designových prvků technické a vědecké dokumenty. \LaTeX~je k~dispozici jako volný software.
+	
+	Z~tohoto plyne, že tento sázecí nástroj se může naučit bezplatně kdokoliv. Pro zvládnutí základních kroků, ale i~pokročilých sázecích technik je vhodná publikace \cite{J_Rybicka_LPZ}. Pokud spíše preferujete angličtinu, nabízí se poté \cite{S_Kottwitz_LBG}. V~dnešní době by však mohl někdo považovat investici do klasické knihy, popř. její výpujčky za zbytečnou. V~tomto případě osobně doporučuji stránku \cite{uvod_ds_latex}, která je velmi přehledná a~nabízí řadu názorných příkladů.
+	
+	Po zvládnutí základních technik a~práce se sázecím prostředím - např. \emph{Texmaker} se můžete pustit do pokročilejších technik \LaTeX u, které vám napomůžou strukturovat text způsobem, aby již na první pohled čtenáře zaujal. Zde se můžete inspirovat webovou stránkou \cite{typomil}. Naleznete zde např. pravidla kompozice textu nebo užitečné informace o~písmu a~jeho struktuře. Dalším pomocným zdrojem by se mohl pro vás stát práce \cite{zlaty_rez}.
+	
+	Jak moc přínosnou pro vás typografie může být dokazuje článek \cite{wong_typography}, který poukazuje na důležitost výběru správného fontu písma při zasílání žádosti o~práci. Jiným příkladem může být \cite{berleant_proposal}. \cite{dig_typografie} se zabývá tvorbou webových prezentací, v~nichž je písmo jedním ze stěžejních bodů celého konceptu práce a~němelo by zůstat v~žádném případě opomenuto. Například i~\cite{web_typografie} tvrdí, že je typografie i~přes moderní přístup k~navrhování a vytváření webových prezentací poněkud opomíjena. Fakt, že zobrazení textu (v~tomto případě dynamického) na moderních zařízeních je problematickou a~ne úplně vyřešenou oblastí nám abstrahuje práce \cite{dyn_text}.
+
+\newpage
+\renewcommand{\refname}{Literatura}
+\bibliography{proj4}	
+	
+\end{document}

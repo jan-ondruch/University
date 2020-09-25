@@ -1,0 +1,48 @@
+---
+limesurvey:
+  package: 'limesurvey.tar'
+  admin:
+    email: 'jan.stodt@hs-furtwangen.de'
+    password: '016504e043011faefd940ad84267ab4090a33906a49180237cde0d555a7e8de4'
+  deb:
+    dependencies: # Limesurvey dependencies
+      - 'python-mysqldb'
+      - 'python-pip'
+      - 'php5'
+      - 'php5-cli'
+      - 'php5-curl'
+      - 'php5-mcrypt'
+      - 'php5-gd'
+      - 'php5-ldap'
+      - 'php5-imap'
+      - 'libapache2-mod-php5'
+      - 'php5-mysql'
+      - 'tar'
+      - 'unzip'
+      - 'bzip2'
+      - 'gzip'
+      - 'p7zip'
+      - 'p7zip-full'
+      - 'curl'
+      - 'python-dev'
+      - 'zlibc'
+      - 'zlib1g'
+      - 'zlib1g-dev'
+      - 'libtiff5-dev'
+      - 'libjpeg8-dev'
+      - 'libfreetype6-dev'
+      - 'liblcms2-dev'
+      - 'libwebp-dev'
+      - 'tcl8.6-dev'
+      - 'tk8.6-dev'
+      - 'python-tk'
+  web:
+    root: '/var/www/html'
+    user: 'www-data'
+  db:
+    adminuser: root
+    adminpassword:
+    limeuser: limesurvey
+    limepassword: limesurvey
+    host: localhost
+    name: limesurvey

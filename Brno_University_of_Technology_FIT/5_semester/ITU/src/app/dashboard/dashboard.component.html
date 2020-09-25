@@ -1,0 +1,371 @@
+<div class="wrapper">
+	
+	<div class="searchForm">
+	  <div class="row searchFilter" >
+	     <div class="col-sm-12" >
+	      <div class="input-group" >
+	       <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Hledat pojem" value="Jareš" >
+	       <div class="input-group-btn" >
+	        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Kategorie</span> <span class="caret" >&nbsp;</span></button>
+	        <div class="dropdown-menu dropdown-menu-right" >
+	           <ul class="category_filters" >
+	            <li >
+	             <input class="cat_type category-input" data-label="All" id="all" value="" name="radios" type="radio" checked="checked" ><label for="all" >Vše</label>
+	            </li>
+	            <li >
+	             <input type="radio" name="radios" id="Osoby" value="Osoby" ><label class="category-label" for="Osoby" >Osoby</label>
+	            </li>
+	            <li >
+	             <input type="radio" name="radios" id="Vozidla" value="Vozidla" ><label class="category-label" for="Vozidla" >Vozidla</label>
+	            </li>
+	           </ul>
+	        </div>
+	        <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Hledat</span></button>
+	       </div>
+	      </div>
+	     </div>
+	  </div>
+	</div>
+
+	<div class="container-wrap">
+
+		<main role="main">
+
+	    <div class="container-wrap">
+				
+
+				<!-- OSOBY -->
+				<div class="resultType">
+					<h4>osoby</h4>
+				</div>
+
+				<!-- header -->
+	   		<div class="row">
+	   		    <div class="col-md-3">
+	   		    	Jméno a příjmení
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Adresa
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Rodné číslo
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Číslo ř.p.
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Počet přestupků
+	   		    </div>
+	   		    <div class="col-md-1">
+	   		    	Upravit
+	   		    </div>
+	   		</div>
+
+				<!-- data -->
+	      <div class="row">
+	          <div class="col-md-3">
+	          	<i class="fa fa-user" aria-hidden="true"></i>
+	          	<a href="/person">Petr Jareš</a>
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-2">
+	          	548432/6242
+	          </div>
+	          <div class="col-md-2">
+	          	654987129874
+	          </div>
+	          <div class="col-md-2">
+	          	3
+	          </div>
+	          <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	      </div>
+
+	      <div class="row">
+	          <div class="col-md-3">
+	          	<i class="fa fa-user" aria-hidden="true"></i>
+	          	<a href="/person">Uršula Jarešová</a>
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-2">
+	          	456654/1242
+	          </div>
+	          <div class="col-md-2">
+	          	654987123456
+	          </div>
+	          <div class="col-md-2">
+	          	0
+	          </div>
+	          <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	      </div>
+
+	      <div class="row">
+	          <div class="col-md-3">
+	          	<i class="fa fa-user" aria-hidden="true"></i>
+	          	<a href="/person">Adam Jareš</a>
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-2">
+	          	874565/1042
+	          </div>
+	          <div class="col-md-2">
+	          	654987127894
+	          </div>
+	          <div class="col-md-2">
+	          	0
+	          </div>
+	          <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	      </div>
+
+	      <div class="row">
+	          <div class="col-md-3">
+	          	<i class="fa fa-user" aria-hidden="true"></i>
+	          	<a href="/person">Jan Jareš</a>
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-2">
+	          	513654/1545
+	          </div>
+	          <div class="col-md-2">
+	          	654987123345
+	          </div>
+	          <div class="col-md-2">
+	          	1
+	          </div>
+	          <div class="col-md-1">
+	            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+	              <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+	            </button>
+	          </div>
+	      </div>
+
+	      <hr>
+
+	      <!-- FIRMY -->
+	      <div class="resultType">
+	      	<h4>firmy</h4>
+	      </div>
+
+	      <!-- header -->
+	      <div class="row">
+	          <div class="col-md-3">
+	          	Název
+	          </div>
+	          <div class="col-md-2">
+	          	Sídlo
+	          </div>
+	          <div class="col-md-2">
+	          	Místo podnikání
+	          </div>
+	          <div class="col-md-2">
+	          	IČ
+	          </div>
+	          <div class="col-md-2">
+	          	Registrační místo
+	          </div>
+	          <div class="col-md-1">
+	          	Upravit
+	          </div>
+	      </div>
+
+	      <!-- data -->
+	      <div class="row">
+	          <div class="col-md-3">
+	          	<i class="fa fa-user" aria-hidden="true"></i>
+	          	<a href="/company">MotoJareš a.s.</a>
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-2">
+	          	Praha 120 00
+	          </div>
+	          <div class="col-md-2">
+	          	548432684164
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	      </div>
+
+	      <div class="row">
+	          <div class="col-md-3">
+	          	<i class="fa fa-user" aria-hidden="true"></i>
+	          	<a href="/company">Jareš a Živčák s.r.o.</a>
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-2">
+	          	Praha 120 00
+	          </div>
+	          <div class="col-md-2">
+	          	789432684544
+	          </div>
+	          <div class="col-md-2">
+	          	Brno 612 00
+	          </div>
+	          <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	      </div>
+
+	      <hr>
+
+				<!-- VOZIDLA -->
+	      <div class="resultType">
+					<h4>vozidla</h4>
+				</div>
+
+	   		<div class="row">
+	   		    <div class="col-md-3">
+	   		    	VIN
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	SPZ
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Typ
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Model
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Vlastnik
+	   		    </div>
+	   		    <div class="col-md-1">
+	   		    	Upravit
+	   		    </div>
+	   		</div>
+
+	   		<div class="row">
+	   		    <div class="col-md-3">
+	   		    	<i class="fa fa-car" aria-hidden="true"></i>
+	   		    	<a href="/car">LJCPCBLCX11000237</a>
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	4L2 1719
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Ferrari
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Octavia
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Petr Jareš
+	   		    </div>
+	   		    <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	   		</div>
+
+	   		<div class="row">
+	   		    <div class="col-md-3">
+	   		    	<i class="fa fa-car" aria-hidden="true"></i>
+	   		    	<a href="/car">LUDKXBLCX11000879</a>
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	5K9 8721
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Trabant
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	911
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Adam Jareš
+	   		    </div>
+	   		    <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	   		</div>
+
+	   		<div class="row">
+	   		    <div class="col-md-3">
+	   		    	<i class="fa fa-car" aria-hidden="true"></i>
+	   		    	<a href="/car">LJCPCBLCX11000412</a>
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	4L2 1771
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Audi
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Quatro
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Jan Jareš
+	   		    </div>
+	   		    <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	   		</div>
+
+	   		<div class="row">
+	   		    <div class="col-md-3">
+	   		    	<i class="fa fa-car" aria-hidden="true"></i>
+	   		    	<a href="/car">LUDKXBLCX11000111</a>
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	5K9 8722
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Ford
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Focus
+	   		    </div>
+	   		    <div class="col-md-2">
+	   		    	Uršula Jarešová
+	   		    </div>
+	   		    <div class="col-md-1">
+		          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		            <a href="/person"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+		          </button>
+	          </div>
+	   		</div>
+	      <hr>
+
+	    </div> 
+	    <!-- /container -->
+
+	  </main>
+
+	</div>
+	
+</div>

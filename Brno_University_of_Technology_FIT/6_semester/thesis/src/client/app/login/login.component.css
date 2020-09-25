@@ -1,0 +1,19 @@
+form {
+  width: 300px;
+  margin: 0 auto;
+  padding-top: 30vh;
+}
+
+form h2 {
+  text-align: center;
+}
+
+button {
+  width: 300px;
+}
+
+.create-new-accout {
+  text-align: center;
+  margin: auto;
+  margin-top: 0px;
+}

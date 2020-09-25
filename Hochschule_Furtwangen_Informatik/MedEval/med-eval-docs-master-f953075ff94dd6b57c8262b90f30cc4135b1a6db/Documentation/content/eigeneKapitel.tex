@@ -1,0 +1,174 @@
+\chapter{Realisierung}
+
+\section{limesurvey}
+LimeSurvey (früher PHPSurveyor) ist eine Online-Umfrage-Software, welche unter
+GPL Open Source Lizenz. Sie ermöglicht es, ohne Programmierkenntnisse Online-Umfragen zu erstellen, diese zu veröffentlichen, sowie deren Ergebnisse zu speichern und für weiter Auswertung in bestimme Formate zu exportieren.
+
+Sie ist in PHP geschrieben und nutzt eine MySQL(auch MariaDB)-, PostgreSQL- oder MSSQL-Datenbank. Die Software bietet eine Vielzahl von Sprachen und Dialekten für die Oberfläche und Umfragen an.
+
+
+\section{limesurvey Erweiterung}
+
+\subsection{Requirements Server}
+
+\begin{itemize}
+\item Server mit Ubuntu Version 14.04
+\item Internet-Domain
+\item Laufender ssh Zugriff mit root Rechten per sudo
+\item Freischaltung von ssh, http, dns, https ins Internet, falls hostseite Firewall vorhanden ist
+\item ein gültiges SSL/TLS Zertifikat, jedoch ist dies ein optionale Schritt da wir per Let's encrypt, dies automatisch beziehen.
+\end{itemize}
+
+\subsection{Requirements Limesurvey}
+\begin{itemize}
+\item Apache Web mit PHP Modul
+\\Benötigte PHP Erweiterungen:
+\begin{itemize}
+\item mbstring (Multibyte String Functionen)
+\item PDO Datenbanktreiber für MySQL (pdo\_mysql oder pdo\_mysqli) oder Postgres (pdo\_pgsql) oder MSSQL (pdo\_sqlsrv für Windows and pdo\_dblib für Linux)
+\item PHP-Standard-Bibliotheken (wie hash, session, etc.)
+\end{itemize}
+Optionale PHP Erweiterungen:
+
+\begin{itemize}
+\item GD-Bibliothek mit FreeType Unterstützung installiert. (Voraussetzung für CAPTCHAs oder Statistik-Graphen)
+\item IMAP wird für das Email bounce tracking system benötigt
+\item LDAP-Bibliothek (wird benötigt, um Umfrageteilnehmer über LDAP importieren zu können)
+\item Zip und Zlib für das ComfortUpdate
+\end{itemize}
+\end{itemize}
+
+
+\subsection{Statements zur Sicherheit}
+\begin{itemize}
+  \item Codeausführung welche nicht für Limesurvey benötigt wird, sollte nach Möglichkeit abgeschalten werden
+  \item Brute Force Angriffe auf HTTP, HTTPS und SSH sollen nach einer bestimmten Anzahl von Fehlversuchen unterbunden werden
+  \item Verschlüsselung der Daten wird stark empfohlen, da Gesundheitsbereich und Datenschutzgesetz dies empfehlen, da aber keine vertretbare Lösung gefunden wurde, welche Personen mit Behinderung ausschließen würden. Sollte eine Lösung gefunden werden, die diesen Gesichtspunkt löst, kann dies in der Zukunft implementiert werden. In der Zwischenzeit wird ein Hoster empfohlen, welcher Bundesdatenschutz unterliegt.
+  \item Da SQL nicht im gewünschten Rahmen Patches anbietet, wurde auf MariaDB umgestellt, welche sich eigenständig patchen lässt.
+  \item Sollten keine Sicherheitsupdates oder nur sporadisch Updates für Ubuntu, Apache sowie PHP5 in der aktuell verwendeten Ubuntu Version (14.04 LTS) angeboten werden, wird eine Migration auf eine aktuelle LTS Version empfohlen. Sollte dies nicht möglich sein, sollte eine ausschließlich interner Betrieb mit keinen direkten Zugang zum Internet in Erwägung gezogen werden.
+  \item Tests ergaben zudem, das das Setup in der aktuellen Konfiguration nicht von der OpenSSL Lücke Heartbleed \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=cve-2014-0160} nicht betroffen ist.
+\end{itemize}
+
+
+
+\newpage
+\subsection{Ansible Grundlagen}
+Ansible \url{https://www.ansible.com} bietet eine Open-Source Plattform, welche zur Orchestrierung und allgemeinen Konfiguration und Administration von Computern verwendet wird. Ansible kombiniert Softwareverteilung, Ad-hoc-Kommando-Ausführung sowie Konfigurationsmanagement innerhalb eines Programms.
+Netwerkcomputer werden per SSH angesprochen und erfordern deshalb neben Python keine weitere Abhängigkeit.
+Tasks, welche sich zu Playbooks kombinieren lassen, sind in der Markup Language YAML geschrieben.
+Die Firma RedHat ist derzeit Sponsor des Hauptentwicklers Michael DeHaan, welcher bereits andere Server-Provisioning Software geschrieben hat.
+Große Firmen wie IBM oder NSA nutzen Ansible um Server zu deployen oder Updates der Umgebung aufzuspielen.
+\section{Installation mit Ansible}
+Soll Ansible genutzt werden, muss dies zunächst auf dem für die Orchestrierung Computer installiert werden. Je nach Betriebssystem kann dieses per Paket-Manager des OS oder mittels Python Paket-Manager pip installiert werden. Ubuntu bedarf aufgrund der meist veralteten Paketquellen einer aufwendigeren Installation.
+\begin{itemize}
+  \item \url{https://www.digitalocean.com/community/tags/ansible?type=tutorials}
+  \item \url{https://serversforhackers.com/an-ansible-tutorial}
+  \item \url{http://docs.ansible.com/ansible/intro_getting_started.html}
+\end{itemize}
+
+\subsection{Ubuntu PPA}
+\begin{lstlisting}[language=bash]
+$ sudo apt-get install software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install ansible
+\end{lstlisting}
+
+\newpage
+\section{Playbook}
+Nachdem Ansible installiert wurde, kann nun ein Playbook erstellt werden.
+Playbooks an sich stellen eine Ordnerstruktur dar, welche sich an einen von Ansible vorgegebenen Standard halten sollte. \cite{ansibledirectory}
+\\\\
+Playbooks beinhalteten verschiedene Unterordner für sogenannte Rollen, welche einen Workflow beschreiben.
+Diese Rollen beinhalten wiederum verschiedene Ordner. Diese sind meist tasks, templates, files sowie vars. Tasks beinhaltet ein in YAML geschriebenen Workflow, welche die auszuführenden Aktionen beschreibt. Templates beinhalten üblicherweise Dateien, welche mittels Ansible angepasst werden können, während diese an das Ziel System übertragen werden. Der Ordner files beinhaltet meist statische Dateien wie Konfigurationen. Der Ordner vars beinhaltet eine in YAML geschriebene Datei, welche Host spezifische Variablen beinhaltet, dies kann eine URL, ein Benutzername oder Namen von zu installierende Paketen sein.
+Ist ein Playbook erfolgreich beschrieben, kann dies mittels Ansible Konsolen Kommando ausgeführt werden. Da dies aber meist statisch aufgebaut ist, ist es zu empfehlen ein Bash Deploy Script zu schreiben, so das nur dieses ausgeführt werden muss (siehe Anhang \ref{lst:deploy}).
+\\\\
+Im Rahmen des Aufbaus des Environments wurden verschiedene Playbooks erstellt.
+\subsection{Installation}
+Die Installations Role umfasst alle Schritte um Limesurvey auf einem Ubuntu 14.04 LTS Host zu installieren. So werden Abhängigkeiten von Limesurvey installiert und die Limesurvey Software heruntergeladen. In Test viel auf, das Limesurvey keine statische Download URL anbietet. Dies führte zu Mehraufwand, da jeweils die korrekte URL von Hand gesucht und in die entsprechenden Vars eingetragen werden mussten. Um dies zu beheben, wurde ein Python Script entwickelt, welches dies übernimmt und die Software in einen vorbestimmten Ordner lädt (siehe Anhang \ref{lst:url}).
+Ist dies geschehen, wird Limesurvey in den Apache Ordner verschoben und verschiedene Konfigurationsdateien in die entsprechenden Ordner verschoben. Es wird eine leere Datenbank sowie ein User für Limesurvey erstellt.
+\\\\
+Die Automation über Ansible benötigt je nach Geschwindigkeit des Servers so wie dessen Internet Anbindung zwischen 2 und 5 Minuten. Eine händische Installation würde, angenommen sämtliche Schritte sind bekannt ca. 10 bis 20 Minuten benötigen.
+
+\subsection{Hardening}
+Nachdem die Installation abgelaufen ist, wird Hardening vorgenommen. Hierbei werden, zB. verschiedenste Parameter in den PHP 5 und Apache Konfigurationen geändert, um die Sicherheit zu stärken. Zudem wird die UFW Firewall installiert und Einstellungen festgelegt. Zusätzlich wird die Software fail 2 ban, welche verdächtige IPs automatisch sperrt, installiert. Auch wird die Software ModSecurity installiert, welche verschiedenste Attacken aufspüren und blockieren kann.
+\\\\
+Die Automation über Ansible benötigt je nach Geschwindigkeit des Servers so wie dessen Internet Anbindung zwischen 2 und 5 Minuten. Ein händisches Hardening würde, angenommen sämtliche Schritte sind bekannt ca. 15 bis 25 Minuten benötigen.
+\subsection{Backup und Restore}
+Soll ein Server neu aufgebaut werden, muss zunächst ein Backup der Datenbank angefertigt und anschießend wieder Wiederhergestellt werden.
+Hierzu wurden 2 Roles geschrieben, welche dies automatisieren dies übernehmen.
+\\\\
+Die Automation über Ansible benötigt je nach Geschwindigkeit des Servers so wie dessen Internet Anbindung zwischen 2 und 5 Minuten. Ein händisches Hardening würde, angenommen sämtliche Schritte sind bekannt ca. 15 bis 25 Minuten benötigen.
+
+\section{Hinweise zur Wartung}
+Wir empfehlen eine Trennung von Entwicklungssystem, Testumgebung und Produktionssystem.
+\begin{itemize}
+  \item Entwicklungssystem für Entwicklung und testen neuer Technologien - spiegelt nicht Produktionssystem wieder
+  \item Testumgebung spiegelt den Softwarestand des Produktionssystems wieder, sowie die notwendigen Änderungen aus der Entwicklung
+  \item Produktionssystem enthält den aktuell freigegebenen Softwarestand. Änderungen dürfen nur nach Freigabe durch Test eingespielt werden. Änderungen sollen zu einem günstigen Zeitpunkt eingespielt werden.
+\end{itemize}
+\newpage
+\subsection{Systemsoftware}
+Änderungen lassen sich in der Regel meist direkt übernehmen, jedoch ist ein Mindestmaß an Test durchgeführt werden.
+Solle von Ubuntu 14.04 auf 16.04 oder neuer umgestellt werden, muss zunächst überprüft werden, ob sich die Paketnamen geändert haben.
+\subsection{Limesurvey und Konfigurationsdateien}
+Änderungen an Limesurvey sowie dazugehörige Konfigurationsdateien (Hardening) sollten mittels git versioniert werden (Tags pro Releasewechsel).
+Jede Änderung oder Upgrade von Limesurvey so wie den Konfigurationsdateien sollten durch alle verfügbaren Test überprüft werden. Diese Änderungen sollten nur im Entwicklungssystem vorgenommen werden. Entsprechende Releasenotes der entsprechenden Software sollten konsultiert werden. Bevor eine Änderung in das Produktionssystem übernommen wird, sollten die Benutzerdaten in geeigneter Form gesichert werden. Wird ein Major Release eingespielt werden, sollte ein mit Sample Daten in der Testumgebung erfolgen.
+\subsection{Entwicklung von Erweiterungen}
+Limesurvey bietet die Möglichkeit Zusatz Funktionen ins Framework mit einzubinden.
+Einerseits ist es möglich über Extenstions, die in PHP geschrieben sind, in Limesurvey einzubinden. Zum anderen bietet sich die Möglichkeit eine Umfrage Seite direkt über JavaScript, HTML und CSS zu manipulieren.
+In unseren 2 Implementierungen wurde ausschließlich mit der zweiten Variante gearbeitet. Dabei wurde der Code direkt in die Seite eingefügt und nicht als externe Datei geladen.
+\subsubsection{Allgemeine Hinweise}
+\begin{itemize}
+\item Für die Nutzung von JavaScript muss in Limesurvey. In den Sicherheitseinstellungen muss der XSS Schutz ausgestellt werden, da sonst die Ausführung von eingebundenen Code durch Limesurvey selbst unterbunden wird.
+\item Sofern möglich den Javascript Code immer in den Hilfstext Block einbinden, um Kollisionen mit dem Fragetext zu vermeiden.
+\item Sofern eine neue Funktion auch CSS Inhalte enthalten, sollten diese Elemente im Template Editor angefügt werden. Dabei immer auf einer Kopie arbeiten, um ein Roll-back zu vereinfachen.
+\item Der JavaScript Parser in Limesurvey hat leider Probleme mit { und } . Dadurch kommt es immer wieder zu Komplikationen beim Ausführen von JavaScript Code. Um den Parser zufriedenstellen reicht es aus, wenn VOR und HINTER einer geschweiften Klammer jeweils ein Leerzeichen steht.
+\end{itemize}
+\subsubsection{Geolocation, Wetterdaten und Mondphasen}
+Für die Erfassung von Geolocation und Wetter werden jQuery Konstrukte sowie die Weather Underground API genutzt. Für letztere ist ein API Key nötig, diesen kann man sich bei https://www.wunderground.com/weather/api/. Dieser API Code muss an betreffender Stelle eingefügt werden um Wetterdaten erfassen zu können.
+Die Abfrage für jeweiligen Daten läuft rein programmatisch linear, wie folgt ab:
+Erfassen der Geolocation, auf Basis der Geolocation wird über die Weather Underground API das Wetter am jeweiligen Ort erfasst. Die Berechnung der Mondphasen geschieht unabhängig von der Lokation. Die Formeln sowie der Source Code sind dabei aus http://www.ben-daglish.net/moon.shtml entnommen.
+Die Daten werden, sofern möglich, automatisch in die Formularfelder eingetragen. Dazu müssen die jeweiligen Formularfelder mit bestimmten IDs versehen sein. Diese sollten bei Erstellung der Frage wie folgt vergeben werden:
+\begin{itemize}
+\item ORT1 (Ort)
+\item WTR1 (Wetter)
+\item TMP1 (Temperatur)
+\item LFT1 (Luftfeuchtigkeit)
+\item MND1 (Mondphase Simple)
+\item MND2 (Mondphase Conway)
+\item MND3 (Mondphase Trig1)
+\item MND4 (Mondphase Trig2)
+\end{itemize}
+Dabei sei zu beachten: die Berechnung der Mondphasen erfolgt auf unterschiedliche Art und Weise, jedoch liefern die Berechnungen alle ein ähnliches Ergebnis. Welches man davon nutzt, ist eigentlich egal. Die Werte die dabei errechnet bilden die Mondphase wie folgt ab:
+\begin{itemize}
+  \item 15 – Vollmond 
+  \item 8 – erstes Viertel 
+  \item 0 – Neumond 
+  \item 24 – letztes Viertel 
+\end{itemize}
+Wichtig: nie den Durchschnitt von allen Formeln Berechnen und als Mondphase auswerten. Immer nur eine Berechnungsvariante wählen.
+\subsection{Körper}
+Der Klickbare Körper besteht aus drei einzelnen Teilen diese müssen an unterschiedlichen Stellen eingebaut werden. Das Grundgerüst selbst wird durch eine Vektorgrafik gebildet. Das funktionierende Beispiel läuft basiert auf dem Beispiel von folgender Seite. https://www.sitepoint.com/dynamic-geo-maps-svg-jquery/. Dabei sei zu beachten, dass die SVG Dateien für den menschlichen Körper schon vorhanden sind, jedoch nur die Außenlinien eine Funktion bringen. Ein einfacher Klick auf ein Körperteil liefert keine Reaktion des Codes. Dies sollte noch nachgebessert werden. Außerdem sollte noch Knopf implementiert werden mit dem man zwischen männlich und weiblich wechseln kann. Aus Zeitgründen ist uns die Implementierung nicht mehr gelungen. Der Code des SVG Files wird in die Frage box mit eingebunden. Und wird bei Aufruf der Frage aufgerufen und anhand der Bildschirmgröße ohne Qualitätsverlust skaliert. Der JavaScript Code wird analog zum Wetter in der Hilfe Box untergebracht. Dieser Code ist dafür verantwortlich, dass das gewählte Körperteil hervorgehoben wird und das jeweilige Körperteil in die Antwortbox geschrieben wird bzw. bei erneutem Klicken entfernt wird und die Hervorhebung rückgängig gemacht wird. Um die Hervorhebung zu erzielen, muss im Template Editor noch zusätzlicher Code in die CSS Datei \textit{template.css} geändert werden. Hierbei nochmals der Verweis auf die allgemeinen Hinweise: Arbeiten Sie auf einer Kopie von einem Template! Die gewählten Körperteile werden in eine Antwortbox geschrieben. Nehmen Sie hierzu eine mittlere Text Box als Frage Typ.
+\subsubsection{PDFtool}
+Diese Funktion soll es erlauben auf Basis der, in der Datenbank gespeicherten Umfragen, PDF Dateien zur Verfügung zu stellen. Als Basis dient dabei eine Node.js Applikation.
+Die grundlegendes Idee ist es über das Node.js Script die Umfrage ID und den Umfragen Namen aus der Datenbank zu ziehen, diese Daten an ein Python Script zu übergeben.
+Das Python Script erstellt dann auch Basis das Übergeben Daten (<PARAM LISTE>) dann PDF Dateien, die den jeweiligen QR Code(der auf die Umfrage verweist) enthält.
+Am Schluss werden alle Dateien wie auf einem FTP Server dem Nutzer zur Verfügung gestellt.
+Aus Zeitlichen Engpässen ist die Implementierung dieser Funktion nur teilweise erfüllt. Funktionen wie das Python Script und die Node.js Basis sind bereits Implementiert. Was fehlt, ist die Zusammenführung von Node.js und Python Script sowie die Funktion im Node.js Code an die Daten aus der Datenbank zu kommen.
+\subsubsection{Danksagungen}
+Besonderer Dank gilt dem Support von Limesurvey, besonders Herrn Flür, welcher uns in der Implementierung an einigen Baustellen die passenden Hinweise zu Lösung gegeben hat. Außerdem den Limesurvey Foren welche an vielen Stellen wichtige Hinweise und Vorschläge für die Lösungsansätze geboten haben.
+\subsubsection{Ausblick}
+An noch vielen Punkten gibt es noch Baustellen die noch nicht ganz gelöst sind. Der menschliche Körper benötigt noch einen Umschaltmechanismus zwischen männlichem und weiblichem Körper. Außerdem muss das SVG File so überarbeitet werden, dass man nicht nur an die Ränder eines Körperteils Klicken muss, um eine Reaktion zu erhalten, sondern, wie im Karten Beispiel, mitten rein Klicken kann. Die PDF Dateien Darstellung bedarf noch der Implementierung, der Datenbankzugriff sowie Kombination von Node.js und Python Script.
+
+\newpage
+\section{Codeanhänge}
+\lstset{basicstyle=\small}
+\lstinputlisting[language=HTML, caption=body.css, style=myCustomSmallSizeStyle, label=lst:body]{content/file/body.css}
+\lstinputlisting[language=JavaScript, caption=map.js, style=myCustomSmallSizeStyle, label=lst:map]{content/file/map.js}
+\lstinputlisting[language=JavaScript, caption=wetter.js, style=myCustomSmallSizeStyle, label=lst:wetter]{content/file/wetter.js}
+\lstinputlisting[language=Python, caption=URL Parsing, style=myCustomSmallSizeStyle, label=lst:url]{content/file/parseurl.py}
+\newpage
+\lstinputlisting[language=Python, caption=PDF Creation, style=myCustomSmallSizeStyle, label=lst:pdf]{content/file/pdf_creation.py}
+\lstinputlisting[caption=Requirements, style=myCustomSmallSizeStyle, label=lst:req]{content/file/requirements.txt}
+\lstinputlisting[language=Bash, caption=Bash Deploy, style=myCustomSmallSizeStyle, label=lst:deploy]{content/file/deploy.sh}
